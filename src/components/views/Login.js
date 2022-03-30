@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {api, handleError} from 'helpers/api';
-import User from 'models/User';
-import {useHistory} from 'react-router-dom';
-import {Button} from 'components/ui/Button';
-import 'styles/views/Login.scss';
 import BaseContainer from "components/ui/BaseContainer";
+import { Button } from 'components/ui/Button';
+import { handleError } from 'helpers/api';
+import { login } from "helpers/authentification";
 import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import 'styles/views/Login.scss';
 
 /*
 It is possible to add multiple components inside a single file,
@@ -37,22 +37,15 @@ FormField.propTypes = {
 
 const Login = props => {
   const history = useHistory();
-  const [name, setName] = useState(null);
   const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
 
   const doLogin = async () => {
     try {
-      const requestBody = JSON.stringify({username, name});
-      const response = await api.post('/users', requestBody);
-
-      // Get the returned user and update a new object.
-      const user = new User(response.data);
-
-      // Store the token into the local storage.
-      localStorage.setItem('token', user.token);
-
-      // Login successfully worked --> navigate to the route /game in the GameRouter
-      history.push(`/game`);
+    // Login successfull --> navigate to the route /game in the GameRouter
+    await login(username, password, () => {
+      history.push("/game");
+    });
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }
@@ -68,13 +61,14 @@ const Login = props => {
             onChange={un => setUsername(un)}
           />
           <FormField
-            label="Name"
-            value={name}
-            onChange={n => setName(n)}
+            label="Password"
+            value={password}
+            type="password"
+            onChange={pw => setPassword(pw)}
           />
           <div className="login button-container">
             <Button
-              disabled={!username || !name}
+              disabled={!username || !password}
               width="100%"
               onClick={() => doLogin()}
             >
