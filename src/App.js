@@ -1,5 +1,5 @@
-import Header from "components/views/Header";
 import AppRouter from "components/routing/routers/AppRouter";
+import Header from "components/views/Header";
 
 /**
  * Happy coding!
@@ -8,9 +8,9 @@ import AppRouter from "components/routing/routers/AppRouter";
  */
 const App = () => {
   return (
-    <div>
-      <Header height="100"/>
-      <AppRouter/>
+    <div style={{ height: "100vh" }}>
+      <Header height="100" />
+      <AppRouter />
     </div>
   );
 };
