@@ -1,8 +1,9 @@
-import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-import {GameGuard} from "components/routing/routeProtectors/GameGuard";
+import { GameGuard } from "components/routing/routeProtectors/GameGuard";
+import { LoginGuard } from "components/routing/routeProtectors/LoginGuard";
 import GameRouter from "components/routing/routers/GameRouter";
-import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
 import Login from "components/views/Login";
+import Test from "components/views/Test";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 /**
  * Main router of your application.
@@ -19,16 +20,19 @@ const AppRouter = () => {
       <Switch>
         <Route path="/game">
           <GameGuard>
-            <GameRouter base="/game"/>
+            <GameRouter base="/game" />
           </GameGuard>
         </Route>
         <Route exact path="/login">
           <LoginGuard>
-            <Login/>
+            <Login />
           </LoginGuard>
         </Route>
         <Route exact path="/">
-          <Redirect to="/game"/>
+          <Redirect to="/game" />
+        </Route>
+        <Route exact path="/test">
+          <Test />
         </Route>
       </Switch>
     </BrowserRouter>
@@ -36,6 +40,6 @@ const AppRouter = () => {
 };
 
 /*
-* Don't forget to export your component!
+ * Don't forget to export your component!
  */
 export default AppRouter;
