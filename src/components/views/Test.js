@@ -1,4 +1,5 @@
 import { Canvas } from "@react-three/fiber";
+import Box from "components/ui/Box";
 import { Scene } from "components/ui/Scene";
 import { Suspense } from "react";
 
