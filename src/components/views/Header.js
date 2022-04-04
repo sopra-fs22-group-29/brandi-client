@@ -1,6 +1,8 @@
-import PropTypes from "prop-types";
 import React from "react";
+import PropTypes from "prop-types";
 import "styles/views/Header.scss";
+import { IoLogOutOutline } from "react-icons/io5";
+import { BiUser } from "react-icons/bi";
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -12,7 +14,11 @@ import "styles/views/Header.scss";
  */
 const Header = (props) => (
   <div className="header container" style={{ height: props.height }}>
-    <h1 className="header title">SoPra FS22 rocks with React!</h1>
+    <p className="header title">
+      Brändi Dog
+      {/* <IoLogOutOutline className="header icons" />
+      <BiUser className="header icons" /> */}
+    </p>
   </div>
 );
 

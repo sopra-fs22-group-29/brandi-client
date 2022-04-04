@@ -11,17 +11,24 @@
       transform: none;
     }
   }
-  padding: 6px;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 13px;
+  margin: 30px;
+  font-size: 25px;
   text-align: center;
-  height: 35px;
+  height: 57px;
+  width: 225px;
   border: none;
   border-radius: $borderRadius;
   cursor: pointer;
-  opacity: 1;
-  color: $background;
+  // opacity: 1;
+  color: $textColor;
   background-color: $accent;
   transition: all 0.3s ease;
+}
+.eye {
+  position: absolute;
+  top: 314px;
+  right: 28px;
+  width: 50px;
+  height: 40px;
+  background-color: $container;
 }

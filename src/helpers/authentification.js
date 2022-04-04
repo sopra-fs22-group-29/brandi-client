@@ -41,10 +41,17 @@ export async function logout(redirect) {
   }
 }
 
-export async function register(registerUser, redirect) {
-  const requestBody = JSON.stringify(registerUser);
+export async function register(username, password, redirect) {
+  const requestBody = JSON.stringify({ username, password });
+  const authData = window.btoa(username + ":" + password);
   try {
-    await api.post("/register", requestBody);
+    const response = await api.post("/register", requestBody);
+    const user = new User(response.data);
+
+    if (user) {
+      user.authData = authData;
+      localStorage.setItem("user", JSON.stringify(user));
+    }
     redirect();
   } catch (error) {
     localStorage.removeItem("user");
