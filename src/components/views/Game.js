@@ -6,17 +6,19 @@ import { useHistory } from "react-router-dom";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Game.scss";
+import "styles/views/Welcome.scss";
 import { logout } from "helpers/authentification";
 import { Link } from "react-router-dom";
+import { IoLogOutOutline } from "react-icons/io5";
+import { BiUser } from "react-icons/bi";
+import Header from "./Header";
 
 const Games = ({ game }) => (
-  <div>
-    <p className="player name">
-      {game.name}
-      <Link to={game.link}>
-        <Button className="game rejoin">Rejoin</Button>
-      </Link>
-    </p>
+  <div className="game halted-container">
+    <p className="game name">{game.name}</p>
+    <Link to={game.link}>
+      <Button className="game rejoin">Rejoin</Button>
+    </Link>
   </div>
 );
 
@@ -83,7 +85,7 @@ const Game = () => {
 
   const createLink = () => {
     //needs to be implemented
-    setCreated(true);
+
     const link = "www.bg.com/game/" + gameName;
     setGameLink(link);
   };
@@ -91,6 +93,18 @@ const Game = () => {
   const copyLink = (text) => {
     navigator.clipboard.writeText(text);
     setCopied(true);
+  };
+
+  const user = () => {
+    try {
+      history.push("/profile");
+    } catch (error) {
+      alert(
+        `Something went wrong while redirecting to Profile Page: \n${handleError(
+          error
+        )}`
+      );
+    }
   };
 
   // useEffect(() => {
@@ -151,31 +165,22 @@ const Game = () => {
     </BaseContainer>
   );
 
-  if (created) {
-    content = (
-      <BaseContainer className="create container">
-        <p className="welcome container-text">Game Link Created !</p>
-        <p>Share your Link with your Friends !</p>
-        <FormFiled value={gameLink} disabled={created} />
-        <Button className="login button" onClick={() => copyLink(gameLink)}>
-          {copied ? "Copied!" : "Copy"}
-        </Button>
-        <Button className="login button">Join</Button>
-      </BaseContainer>
-    );
-  }
-
   return (
     <div>
-      <BaseContainer className="game container">
-        <p className="welcome container-text">Halted Games</p>
-        <p className="game test">
-          {games.map((game) => (
-            <Games game={game} key={game.name} />
-          ))}
-        </p>
-      </BaseContainer>
-      {content}
+      <Header height="40px" />
+      <BiUser className="game icons" onClick={() => user()} />
+      <IoLogOutOutline className="game icons-2" onClick={() => doLogout()} />
+      <div className="top">
+        <BaseContainer className="game container">
+          <p className="welcome container-text">Halted Games</p>
+          <p className="game test">
+            {games.map((game) => (
+              <Games game={game} key={game.name} />
+            ))}
+          </p>
+        </BaseContainer>
+        {content}
+      </div>
     </div>
   );
 };

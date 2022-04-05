@@ -10,17 +10,15 @@
 .game {
   &.container {
     background: $container;
-    min-width: 500px;
-    width: 30%;
-    height: 85%;
-    min-height: 700px;
+    margin-left: 2%;
+    width: 35%;
+    height: 100%;
+    min-height: 500px;
     border-radius: $borderRadius;
     display: flex;
-    flex-direction: column;
-    // align-items: center;
-    position: absolute;
-    left: 2%;
+    align-items: center;
     justify-content: top;
+    flex-direction: column;
   }
   &.user-list {
     font-size: 18px;
@@ -47,23 +45,53 @@
     width: 100px;
     height: 35px;
     font-size: 18px;
+    justify-content: center;
   }
+  &.icons{
+    font-size: 25px;
+    cursor: pointer;
+    position: absolute;
+    left: 92%;
+    top: 5%;
+    margin-right: 10px;
+  }
+  &.icons-2{
+    font-size: 25px;
+    cursor: pointer;
+    position: absolute;
+    left: 94%;
+    top: 5%;
+    margin-left: 10px;
+  }
+  &.halted-container{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+  }
+  &.name {
+    font-weight: 300;
+    font-size: 18px;
+    align-items: flex-start;
+    margin-right: 20px;
+  }
+
 }
 
 .create {
   &.container{
     background: $container;
-    min-width: 800px;
-    width: 60%;
-    height: 400px;
+    margin-right: 3%;
+    width: 50%;
+    height: 60%;
     border-radius: $borderRadius;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    position: absolute;
-    right: 2%;
-    top: 25%;
     justify-content: top;
+    flex-direction: column;
 
   }
 }
@@ -78,10 +106,7 @@
     align-items: center;
     background: lighten($container, 5);
   }
-  &.name {
-    font-weight: 300;
-    font-size: 18px;
-  }
+  
   &.username {
     font-weight: 300;
     font-size: 18px;

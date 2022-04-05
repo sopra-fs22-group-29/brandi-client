@@ -29,20 +29,22 @@ const Welcome = () => {
     }
   };
   return (
-    <div>
+    <div className="top">
       <div className="welcome container-title">
         <p className="welcome title">Welcome to Brändi Dog !</p>
       </div>
       <BaseContainer className="welcome container">
         <p className="welcome container-text">Start playing !</p>
-        <BaseContainer className="welcome button-container">
+        {/* <BaseContainer className="welcome button-container"> */}
+        <div className="welcome button-container">
           <Button className="welcome button" onClick={() => login()}>
             Login
           </Button>
           <Button className="welcome button" onClick={() => register()}>
             Register
           </Button>
-        </BaseContainer>
+        </div>
+        {/* </BaseContainer> */}
       </BaseContainer>
     </div>
   );

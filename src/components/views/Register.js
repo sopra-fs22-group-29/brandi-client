@@ -92,7 +92,7 @@ const Register = (props) => {
   };
 
   return (
-    <div>
+    <div className="top">
       <div className="welcome container-title">
         <p className="welcome title">Welcome to Brändi Dog !</p>
       </div>
@@ -112,7 +112,8 @@ const Register = (props) => {
             onChange={(pw) => setPassword(pw)}
             buttonDescription={description ? <BsEyeSlash /> : <BsEye />}
           />
-
+        </div>
+        <div className="login button-container">
           <Button
             className="login button"
             disabled={!username || !password}
