@@ -85,7 +85,7 @@ const Game = () => {
 
   const createLink = () => {
     //needs to be implemented
-
+    setCreated(true);
     const link = "www.bg.com/game/" + gameName;
     setGameLink(link);
   };
@@ -164,6 +164,21 @@ const Game = () => {
       </Button>
     </BaseContainer>
   );
+  if (created) {
+    content = (
+      <BaseContainer className="create container">
+        <p className="welcome container-text">Game Link Created !</p>
+        <p>Share your Link with your Friends !</p>
+        <FormFiled value={gameLink} disabled={created} />
+        <div className="game button-container">
+          <Button className="login button" onClick={() => copyLink(gameLink)}>
+            {copied ? "Copied !" : "Copy"}
+          </Button>
+          <Button className="login button">Join</Button>
+        </div>
+      </BaseContainer>
+    );
+  }
 
   return (
     <div>
