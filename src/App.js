@@ -9,7 +9,7 @@ import Header from "components/views/Header";
 const App = () => {
   return (
     <div style={{ height: "100vh" }}>
-      <Header height="100" />
+      {/* <Header height="100" /> */}
       <AppRouter />
     </div>
   );

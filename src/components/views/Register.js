@@ -1,7 +1,7 @@
 import BaseContainer from "components/ui/BaseContainer";
 import { Button } from "components/ui/Button";
 import { handleError } from "helpers/api";
-import { login } from "helpers/authentification";
+import { register } from "helpers/authentification";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -52,24 +52,25 @@ FormFieldPassword.propTypes = {
   onChange: PropTypes.func,
   passwordShown: PropTypes.bool,
   togglePassword: PropTypes.func,
-  buttonDescription: PropTypes.string,
 };
 
-const Login = (props) => {
+const Register = (props) => {
   const history = useHistory();
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [passwordShown, setPasswordShown] = useState(false);
   const [description, setDescription] = useState(true);
 
-  const doLogin = async () => {
+  const doRegistration = async () => {
     try {
       // Login successfull --> navigate to the route /game in the GameRouter
-      await login(username, password, () => {
+      await register(username, password, () => {
         history.push("/game");
       });
     } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+      alert(
+        `Something went wrong during the registration: \n${handleError(error)}`
+      );
     }
   };
 
@@ -96,7 +97,7 @@ const Login = (props) => {
         <p className="welcome title">Welcome to Brändi Dog !</p>
       </div>
       <BaseContainer className="login container">
-        <p className="welcome container-text">Login</p>
+        <p className="welcome container-text">Registration</p>
         <div className="login container-fields">
           <FormField
             label="Username"
@@ -116,9 +117,9 @@ const Login = (props) => {
           <Button
             className="login button"
             disabled={!username || !password}
-            onClick={() => doLogin()}
+            onClick={() => doRegistration()}
           >
-            Login
+            Register
           </Button>
           <Button className="login button back" onClick={() => goBack()}>
             Back
@@ -133,4 +134,4 @@ const Login = (props) => {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default Login;
+export default Register;

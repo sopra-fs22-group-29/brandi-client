@@ -2,12 +2,19 @@
 
 .header {
   &.container {
-    @include center;
+    margin: 25px;
   }
 
   &.title {
-    font-weight: bold;
-    color: $background;
-    text-align: center;
+    color: $textColor;
+    text-align: left;
+    font-size: 30px;
+    padding-right: 250px;   
+  }
+  &.icons{
+    text-align: right;
+    font-size: 25px;
+    position: absolute;
+    right: 8px;
   }
 }

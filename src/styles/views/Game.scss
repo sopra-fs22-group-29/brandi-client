@@ -9,17 +9,24 @@
 
 .game {
   &.container {
-    background: $background;
-    padding: 1.5em;
+    background: $container;
+    margin-left: 2%;
+    width: 35%;
+    height: 100%;
+    min-height: 500px;
     border-radius: $borderRadius;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    box-shadow: $dropShadow;
+    justify-content: top;
+    flex-direction: column;
   }
   &.user-list {
-    list-style: none;
-    padding-left: 0;
+    font-size: 18px;
+    flex-direction: column;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+
   }
   &.user-item {
     display: flex;
@@ -29,6 +36,63 @@
   }
   & p,h2 {
     margin: 0.5em 0;
+  }
+  &.test{
+    align-self: center;
+    
+  }
+  &.rejoin{
+    width: 100px;
+    height: 35px;
+    font-size: 18px;
+    justify-content: center;
+  }
+  &.icons{
+    font-size: 25px;
+    cursor: pointer;
+    position: absolute;
+    left: 92%;
+    top: 5%;
+    margin-right: 10px;
+  }
+  &.icons-2{
+    font-size: 25px;
+    cursor: pointer;
+    position: absolute;
+    left: 94%;
+    top: 5%;
+    margin-left: 10px;
+  }
+  &.halted-container{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+  }
+  &.name {
+    font-weight: 300;
+    font-size: 18px;
+    align-items: flex-start;
+    margin-right: 20px;
+  }
+
+}
+
+.create {
+  &.container{
+    background: $container;
+    margin-right: 3%;
+    width: 50%;
+    height: 60%;
+    border-radius: $borderRadius;
+    display: flex;
+    align-items: center;
+    justify-content: top;
+    flex-direction: column;
+
   }
 }
 
@@ -40,15 +104,12 @@
     border-radius: $borderRadius;
     display: flex;
     align-items: center;
-    background: lighten($background, 5);
+    background: lighten($container, 5);
   }
-  &.name {
-    font-weight: 300;
-    margin-left: 5px;
-  }
+  
   &.username {
-    font-weight: 500;
-    color: $accent;
+    font-weight: 300;
+    font-size: 18px;
   }
   &.id {
     margin-left: auto;

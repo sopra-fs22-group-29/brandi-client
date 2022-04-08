@@ -4,6 +4,8 @@ import GameRouter from "components/routing/routers/GameRouter";
 import Login from "components/views/Login";
 import Test from "components/views/Test";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import Welcome from "components/views/Welcome";
+import Register from "components/views/Register";
 
 /**
  * Main router of your application.
@@ -23,9 +25,19 @@ const AppRouter = () => {
             <GameRouter base="/game" />
           </GameGuard>
         </Route>
+        <Route exact path="/welcome">
+          <LoginGuard>
+            <Welcome />
+          </LoginGuard>
+        </Route>
         <Route exact path="/login">
           <LoginGuard>
             <Login />
+          </LoginGuard>
+        </Route>
+        <Route exact path="/register">
+          <LoginGuard>
+            <Register />
           </LoginGuard>
         </Route>
         <Route exact path="/">
