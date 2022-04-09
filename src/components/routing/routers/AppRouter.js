@@ -2,7 +2,7 @@ import { GameGuard } from "components/routing/routeProtectors/GameGuard";
 import { LoginGuard } from "components/routing/routeProtectors/LoginGuard";
 import GameRouter from "components/routing/routers/GameRouter";
 import Login from "components/views/Login";
-import Test from "components/views/Test";
+import Test from "components/views/BasicBoard";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Welcome from "components/views/Welcome";
 import Register from "components/views/Register";
