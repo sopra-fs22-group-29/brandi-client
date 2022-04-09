@@ -2,7 +2,7 @@ import { GameGuard } from "components/routing/routeProtectors/GameGuard";
 import { LoginGuard } from "components/routing/routeProtectors/LoginGuard";
 import GameRouter from "components/routing/routers/GameRouter";
 import Login from "components/views/Login";
-import Test from "components/views/BasicBoard";
+import BasicBoard from "components/views/BasicBoard";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Welcome from "components/views/Welcome";
 import Register from "components/views/Register";
@@ -43,8 +43,8 @@ const AppRouter = () => {
         <Route exact path="/">
           <Redirect to="/game" />
         </Route>
-        <Route exact path="/test">
-          <Test />
+        <Route exact path="/board">
+          <BasicBoard />
         </Route>
       </Switch>
     </BrowserRouter>
