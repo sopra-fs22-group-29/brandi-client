@@ -1,4 +1,4 @@
-import { isProduction } from 'helpers/isProduction';
+import { isProduction } from "helpers/isProduction";
 
 /**
  * This helper function returns the current domain of the API.
@@ -7,8 +7,17 @@ import { isProduction } from 'helpers/isProduction';
  * @returns {string}
  */
 export const getDomain = () => {
-  const prodUrl = 'https://sopra-fs22-group-29-server.herokuapp.com/'; // TODO: insert your groups heroku prod url for server (once deployed)
-  const devUrl = 'http://localhost:8080';
+  const prodUrl = "https://sopra-fs22-group-29-server.herokuapp.com/"; // TODO: insert your groups heroku prod url for server (once deployed)
+  const devUrl = "http://localhost:8080";
+
+  return isProduction() ? prodUrl : devUrl;
+};
+
+export const getAuthenticatedDomain = () => {
+  const credentials = atob(JSON.parse(localStorage.getItem("user")).authData);
+
+  const prodUrl = `ws://${credentials}@sopra-fs22-group-29-server.herokuapp.com/`;
+  const devUrl = `ws://${credentials}@localhost:8080`;
 
   return isProduction() ? prodUrl : devUrl;
 };
