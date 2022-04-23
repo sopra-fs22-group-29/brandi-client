@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei";
 
 export const MarbleGreen = (props) => {
   const group = useRef();
-  const { nodes, materials } = useGLTF("gltf/marble_green.gltf");
+  const { nodes, materials } = useGLTF("gltf/marbles/marble_green.gltf");
   return (
     <group ref={group} {...props} dispose={null}>
       <mesh
@@ -15,4 +15,4 @@ export const MarbleGreen = (props) => {
   );
 };
 
-useGLTF.preload("/gltfKugel_Grün.gltf");
+useGLTF.preload("gltf/marbles/marble_green.gltf");

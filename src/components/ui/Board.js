@@ -346,4 +346,4 @@ export const Board = (props) => {
   );
 };
 
-useGLTF.preload("gltf/blender_dog_everything.gltf");
+useGLTF.preload("gltf/blender_dog_v0.1.gltf");

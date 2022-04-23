@@ -2,10 +2,16 @@ import { Canvas } from "@react-three/fiber";
 import Box from "components/ui/Box";
 import { Board } from "components/ui/Board";
 import { Suspense } from "react";
-import { MarbleBlue } from "components/ui/MarbleBlue";
-import { MarbleYellow } from "components/ui/MarbleYellow";
-import { MarbleGreen } from "components/ui/MarbleGreen";
-import { MarbleRed } from "components/ui/MarbleRed";
+import { MarbleBlue } from "components/ui/marbles/MarbleBlue";
+import { MarbleYellow } from "components/ui/marbles/MarbleYellow";
+import { MarbleGreen } from "components/ui/marbles/MarbleGreen";
+import { MarbleRed } from "components/ui/marbles/MarbleRed";
+import { KH } from "components/ui/cards/KH";
+import { QH } from "components/ui/cards/QH";
+import { JH } from "components/ui/cards/JH";
+import { AH } from "components/ui/cards/AH";
+import { TenH } from "components/ui/cards/TenH";
+import { NineH } from "components/ui/cards/NineH";
 
 // drop .gltf file at https://gltf.pmnd.rs/, to be able to access every single component
 const BasicBoard = (props) => {
@@ -54,6 +60,13 @@ const BasicBoard = (props) => {
         <MarbleRed position={[0.07, 0.01, -0.52]} />
         {/* 4. red */}
         <MarbleRed position={[0.001, 0.01, -0.52]} />
+
+        <KH position={[0.3, -0.02, 0.9]} />
+        <QH position={[0.4, -0.04, 0.75]} />
+        <JH position={[0.5, -0.06, 0.6]} />
+        <AH position={[0.6, -0.08, 0.45]} />
+        <TenH position={[0.7, -0.1, 0.3]} />
+        <NineH position={[0.8, -0.12, 0.15]} />
       </Suspense>
     </Canvas>
   );
