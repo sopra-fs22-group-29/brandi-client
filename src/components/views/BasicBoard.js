@@ -1,5 +1,4 @@
 import { Canvas } from "@react-three/fiber";
-import Box from "components/ui/Box";
 import { Board } from "components/ui/Board";
 import { Suspense } from "react";
 import { MarbleBlue } from "components/ui/marbles/MarbleBlue";
@@ -12,9 +11,12 @@ import { JH } from "components/ui/cards/JH";
 import { AH } from "components/ui/cards/AH";
 import { TenH } from "components/ui/cards/TenH";
 import { NineH } from "components/ui/cards/NineH";
+import { connect, executeExampleMove } from "helpers/webSocket";
+
 
 // drop .gltf file at https://gltf.pmnd.rs/, to be able to access every single component
 const BasicBoard = (props) => {
+  connect();
   return (
     // Box example
     // <Canvas camera={{ position: [0, 0, 7], near: 1, far: 100, fov: 45 }}>
@@ -25,6 +27,20 @@ const BasicBoard = (props) => {
     // </Canvas>
 
     // Loading our brändy dog board
+     <div style={{ height: "100%", width: "100%" }}>
+      <button
+        onClick={() => executeExampleMove()}
+        style={{
+          zIndex: "10",
+          position: "absolute",
+          left: "50%",
+          top: "10%",
+          height: "50px",
+          width: "100px",
+        }}
+      >
+        Click to Move
+      </button>
     <Canvas>
       <Suspense fallback={null}>
         <Board />
@@ -69,6 +85,7 @@ const BasicBoard = (props) => {
         <NineH position={[0.8, -0.12, 0.15]} />
       </Suspense>
     </Canvas>
+</div>
   );
 };
 
