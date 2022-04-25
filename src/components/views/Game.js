@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import { IoLogOutOutline } from "react-icons/io5";
 import { BiUser } from "react-icons/bi";
 import Header from "./Header";
+import { createLobby, joinLobby } from "helpers/allLobby";
+import { connect, joinRoom } from "helpers/webSocket";
 
 const Games = ({ game }) => (
   <div className="game halted-container">
@@ -31,7 +33,7 @@ const FormFiled = (props) => {
     <div className="login field">
       <input
         className="login input"
-        placeholder="Game name"
+        placeholder="Code..."
         disabled={props.disabled}
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
@@ -68,10 +70,14 @@ const Game = () => {
   const history = useHistory();
 
   const [games, setGames] = useState(mockData);
-  const [gameName, setGameName] = useState(null);
-  const [gameLink, setGameLink] = useState(null);
+  const [enterCode, setEnterCode] = useState(null);
+  const [createCode, setCreateCode] = useState(null);
   const [created, setCreated] = useState(false);
   const [copied, setCopied] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  console.log("enterCode", enterCode);
+  console.log("createCode", createCode);
 
   const doLogout = async () => {
     try {
@@ -83,11 +89,17 @@ const Game = () => {
     }
   };
 
-  const createLink = () => {
-    //needs to be implemented
-    setCreated(true);
-    const link = "www.bg.com/game/" + gameName;
-    setGameLink(link);
+  const doLobby = async () => {
+    try {
+      const response = await createLobby(user.id);
+      setCreated(true);
+      const data = response.data;
+      setCreateCode(data.lobbyUuid);
+    } catch (error) {
+      alert(
+        `Something went wrong while creating a lobby: \n${handleError(error)}`
+      );
+    }
   };
 
   const copyLink = (text) => {
@@ -95,7 +107,31 @@ const Game = () => {
     setCopied(true);
   };
 
-  const user = () => {
+  const enterLobby = async (lobbyId) => {
+    try {
+      await joinLobby(lobbyId, user.id, () => {
+        history.push("/board/" + lobbyId);
+      });
+    } catch (error) {
+      alert(
+        `Something went wrong while joining the lobby: \n${handleError(error)}`
+      );
+    }
+  };
+
+  const connectToWebsocket = async (lobbyId) => {
+    try {
+      await connect(lobbyId);
+    } catch (error) {
+      alert(
+        `Something went wrong while connection to the lobby-websocket: \n${handleError(
+          error
+        )}`
+      );
+    }
+  };
+
+  const userProfile = () => {
     try {
       history.push("/profile");
     } catch (error) {
@@ -107,75 +143,69 @@ const Game = () => {
     }
   };
 
-  // useEffect(() => {
-  // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
-  //   async function fetchData() {
-  //     try {
-  //       const response = await api.get("/users");
-
-  //       // delays continuous execution of an async operation for 1 second.
-  //       // This is just a fake async call, so that the spinner can be displayed
-  //       // feel free to remove it :)
-  //       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  //       // Get the returned users and update the state.
-  //       setUsers(response.data);
-
-  //       // This is just some data for you to see what is available.
-  //       // Feel free to remove it.
-  //       console.log("request to:", response.request.responseURL);
-  //       console.log("status code:", response.status);
-  //       console.log("status text:", response.statusText);
-  //       console.log("requested data:", response.data);
-
-  //       // See here to get more data.
-  //       console.log(response);
-  //     } catch (error) {
-  //       console.error(
-  //         `Something went wrong while fetching the users: \n${handleError(
-  //           error
-  //         )}`
-  //       );
-  //       console.error("Details:", error);
-  //       alert(
-  //         "Something went wrong while fetching the users! See the console for details."
-  //       );
-  //     }
-  //   }
-
-  //   fetchData();
-  // }, []);
-
   let content = (
     <BaseContainer className="create container">
-      <p className="welcome container-text">Create a new Game Link</p>
-      <p>Enter a game name to create a link !</p>
+      <p className="welcome container-text">Create a new Game Code</p>
+      <p>Click the button to get a game code !</p>
+      <Button className="login button" onClick={() => doLobby()}>
+        Get Code !
+      </Button>
+      <p className="welcome container-text">Join a Game</p>
+      <p>Enter a game code !</p>
       <FormFiled
-        value={gameName}
-        onChange={(gn) => setGameName(gn)}
+        value={enterCode}
+        onChange={(gn) => setEnterCode(gn)}
         disabled={created}
       />
       <Button
         className="login button"
-        disabled={!gameName}
-        onClick={() => createLink()}
+        disabled={!enterCode}
+        onClick={() => {
+          connectToWebsocket(enterCode);
+          enterLobby(enterCode);
+        }}
       >
-        Create
+        Join
       </Button>
     </BaseContainer>
   );
   if (created) {
     content = (
       <BaseContainer className="create container">
-        <p className="welcome container-text">Game Link Created !</p>
-        <p>Share your Link with your Friends !</p>
-        <FormFiled value={gameLink} disabled={created} />
+        <p className="welcome container-text">Game Code Created !</p>
+        <p>Share your Code with your Friends !</p>
+        <FormFiled value={createCode} disabled={created} />
         <div className="game button-container">
-          <Button className="login button" onClick={() => copyLink(gameLink)}>
+          <Button className="login button" onClick={() => copyLink(createCode)}>
             {copied ? "Copied !" : "Copy"}
           </Button>
-          <Button className="login button">Join</Button>
+          <Button
+            className="login button"
+            onClick={() => {
+              connectToWebsocket(createCode);
+              enterLobby(createCode);
+            }}
+          >
+            Join
+          </Button>
         </div>
+        <p className="welcome container-text">Join a Game</p>
+        <p>Enter a game code !</p>
+        <FormFiled
+          value={enterCode}
+          onChange={(gn) => setEnterCode(gn)}
+          disabled={false}
+        />
+        <Button
+          className="login button"
+          disabled={!enterCode}
+          onClick={() => {
+            connectToWebsocket(enterCode);
+            enterLobby(enterCode);
+          }}
+        >
+          Join
+        </Button>
       </BaseContainer>
     );
   }
@@ -183,7 +213,7 @@ const Game = () => {
   return (
     <div>
       <Header height="40px" />
-      <BiUser className="game icons" onClick={() => user()} />
+      <BiUser className="game icons" onClick={() => userProfile()} />
       <IoLogOutOutline className="game icons-2" onClick={() => doLogout()} />
       <div className="top">
         <BaseContainer className="game container">
@@ -198,7 +228,6 @@ const Game = () => {
       </div>
     </div>
   );
-
 };
 
 export default Game;

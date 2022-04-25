@@ -27,7 +27,7 @@ const BasicBoard = (props) => {
 
     // Loading our brändy dog board
     <div style={{ height: "100%", width: "100%" }}>
-      <button
+      {/* <button
         onClick={() => executeExampleMove()}
         style={{
           zIndex: "10",
@@ -39,7 +39,7 @@ const BasicBoard = (props) => {
         }}
       >
         Click to Move
-      </button>
+      </button> */}
       <Canvas>
         <Suspense fallback={null}>
           <Board />
