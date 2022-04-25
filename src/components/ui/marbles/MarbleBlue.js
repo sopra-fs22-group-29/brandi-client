@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei";
 
 export const MarbleBlue = (props) => {
   const group = useRef();
-  const { nodes, materials } = useGLTF("gltf/marble_blue.gltf");
+  const { nodes, materials } = useGLTF("gltf/marbles/marble_blue.gltf");
   return (
     <group ref={group} {...props} dispose={null}>
       {/* <group position={[0, 8.16, 0]}>
@@ -18,4 +18,4 @@ export const MarbleBlue = (props) => {
   );
 };
 
-useGLTF.preload("gltf/Kugel_Blau.gltf");
+useGLTF.preload("gltf/marbles/marble_blue.gltf");
