@@ -1,5 +1,4 @@
 import AppRouter from "components/routing/routers/AppRouter";
-import Header from "components/views/Header";
 
 /**
  * Happy coding!

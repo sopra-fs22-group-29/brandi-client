@@ -1,21 +1,29 @@
 import { Canvas } from "@react-three/fiber";
 import { Board } from "components/ui/Board";
-import { Suspense } from "react";
+import { AH } from "components/ui/cards/AH";
+import { JH } from "components/ui/cards/JH";
+import { KH } from "components/ui/cards/KH";
+import { NineH } from "components/ui/cards/NineH";
+import { QH } from "components/ui/cards/QH";
+import { TenH } from "components/ui/cards/TenH";
 import { MarbleBlue } from "components/ui/marbles/MarbleBlue";
-import { MarbleYellow } from "components/ui/marbles/MarbleYellow";
 import { MarbleGreen } from "components/ui/marbles/MarbleGreen";
 import { MarbleRed } from "components/ui/marbles/MarbleRed";
-import { KH } from "components/ui/cards/KH";
-import { QH } from "components/ui/cards/QH";
-import { JH } from "components/ui/cards/JH";
-import { AH } from "components/ui/cards/AH";
-import { TenH } from "components/ui/cards/TenH";
-import { NineH } from "components/ui/cards/NineH";
-import { connect, executeExampleMove } from "helpers/webSocket";
+import { MarbleYellow } from "components/ui/marbles/MarbleYellow";
+import { connect } from "helpers/webSocket";
+import { Suspense, useState } from "react";
+import DatGui, { DatBoolean, DatFolder, DatNumber } from "react-dat-gui";
 
 // drop .gltf file at https://gltf.pmnd.rs/, to be able to access every single component
 const BasicBoard = (props) => {
   connect();
+  const [datGuiState, setDatGuiState] = useState({
+    showMarble: false,
+    posX: 0,
+    posY: 0.01,
+    posZ: 0,
+  });
+
   return (
     // Box example
     // <Canvas camera={{ position: [0, 0, 7], near: 1, far: 100, fov: 45 }}>
@@ -43,6 +51,12 @@ const BasicBoard = (props) => {
       <Canvas>
         <Suspense fallback={null}>
           <Board />
+          {/* marble to test with dat gui */}
+          {datGuiState.showMarble && (
+            <MarbleBlue
+              position={[datGuiState.posX, datGuiState.posY, datGuiState.posZ]}
+            />
+          )}
           {/* 1. blue */}
           <MarbleBlue position={[0, 0.01, 0.521]} />
           {/* 2. blue */}
@@ -84,6 +98,14 @@ const BasicBoard = (props) => {
           <NineH position={[0.8, -0.12, 0.15]} />
         </Suspense>
       </Canvas>
+      <DatGui data={datGuiState} onUpdate={setDatGuiState}>
+        <DatFolder title="test marble" closed={false}>
+          <DatBoolean path="showMarble" />
+          <DatNumber path="posX" min={-0.7} max={0.7} step={0.001} />
+          <DatNumber path="posY" min={-0.4} max={0.4} step={0.001} />
+          <DatNumber path="posZ" min={-0.7} max={0.7} step={0.001} />
+        </DatFolder>
+      </DatGui>
     </div>
   );
 };
