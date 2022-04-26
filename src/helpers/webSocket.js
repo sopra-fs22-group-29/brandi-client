@@ -47,7 +47,7 @@ export const disconnect = () => {
 };
 
 export const joinRoom = (roomId) => {
-  connect();
+  connect(roomId);
   console.log("-----I went here-------");
   stompClient.subscribe("/room/" + roomId, function (greeting) {
     alert("Yey something happened !", greeting);
