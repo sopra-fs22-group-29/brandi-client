@@ -6,6 +6,7 @@ import BasicBoard from "components/views/BasicBoard";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Welcome from "components/views/Welcome";
 import Register from "components/views/Register";
+import GameInitial from "components/views/GameInitial";
 
 /**
  * Main router of your application.
@@ -43,8 +44,8 @@ const AppRouter = () => {
         <Route exact path="/">
           <Redirect to="/game" />
         </Route>
-        <Route exact path="/board">
-          <BasicBoard />
+        <Route exact path="/board/:lobbyUuid">
+          <GameInitial />
         </Route>
       </Switch>
     </BrowserRouter>
