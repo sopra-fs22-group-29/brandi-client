@@ -1,4 +1,5 @@
-@import 'styles/theme';
+@import "styles/theme";
+@import "styles/ui/DatGui.scss";
 
 /* The '&' is a shorthand for the containing element,
   so for example a '&.user-list' inside .game will compile to
@@ -26,7 +27,6 @@
     display: flex;
     align-items: left;
     justify-content: left;
-
   }
   &.user-item {
     display: flex;
@@ -34,20 +34,20 @@
     align-items: center;
     justify-content: center;
   }
-  & p,h2 {
+  & p,
+  h2 {
     margin: 0.5em 0;
   }
-  &.test{
+  &.test {
     align-self: center;
-    
   }
-  &.rejoin{
+  &.rejoin {
     width: 100px;
     height: 35px;
     font-size: 18px;
     justify-content: center;
   }
-  &.icons{
+  &.icons {
     font-size: 25px;
     cursor: pointer;
     position: absolute;
@@ -55,7 +55,7 @@
     top: 5%;
     margin-right: 10px;
   }
-  &.icons-2{
+  &.icons-2 {
     font-size: 25px;
     cursor: pointer;
     position: absolute;
@@ -63,14 +63,13 @@
     top: 5%;
     margin-left: 10px;
   }
-  &.halted-container{
+  &.halted-container {
     display: flex;
     flex-direction: row;
     margin-top: 20px;
     width: 100%;
     justify-content: space-between;
     align-items: center;
-
   }
   &.name {
     font-weight: 300;
@@ -78,11 +77,10 @@
     align-items: flex-start;
     margin-right: 20px;
   }
-
 }
 
 .create {
-  &.container{
+  &.container {
     background: $container;
     margin-right: 3%;
     width: 50%;
@@ -92,7 +90,6 @@
     align-items: center;
     justify-content: top;
     flex-direction: column;
-
   }
 }
 
@@ -106,7 +103,7 @@
     align-items: center;
     background: lighten($container, 5);
   }
-  
+
   &.username {
     font-weight: 300;
     font-size: 18px;
