@@ -11,18 +11,24 @@ import { MarbleGreen } from "components/ui/marbles/MarbleGreen";
 import { MarbleRed } from "components/ui/marbles/MarbleRed";
 import { MarbleYellow } from "components/ui/marbles/MarbleYellow";
 import { connect } from "helpers/webSocket";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import DatGui, { DatBoolean, DatFolder, DatNumber } from "react-dat-gui";
+import { useParams } from "react-router-dom";
 
 // drop .gltf file at https://gltf.pmnd.rs/, to be able to access every single component
 const BasicBoard = (props) => {
-  connect();
+  const { uuid } = useParams();
+
   const [datGuiState, setDatGuiState] = useState({
     showMarble: false,
     posX: 0,
     posY: 0.01,
     posZ: 0,
   });
+
+  useEffect(() => {
+    connect(uuid);
+  }, []);
 
   return (
     // Box example

@@ -4,9 +4,10 @@ import { userAuthData } from "./authentification";
 import { getDomain } from "./getDomain";
 
 var stompClient = null;
+var sessionId = "";
 
 export const connect = async (gameLink) => {
-  const url = getDomain() + "/connected";
+  const url = getDomain() + "/game";
   var socket = new SockJS(url);
   stompClient = over(socket);
   const authData = userAuthData();
@@ -17,6 +18,7 @@ export const connect = async (gameLink) => {
     },
     function (frame) {
       console.log("WebSocket Connected " + frame);
+      setSessionIdFromURL(stompClient.ws._transport.url);
 
       // subscribe to all the routes that we want te be notified from
       // (we could use /client/COLOR in order to notify only one player)
@@ -27,15 +29,30 @@ export const connect = async (gameLink) => {
         console.log("player connected: " + messageOutput);
       });
       stompClient.subscribe(
+        "/client/test" + "-user" + sessionId,
+        function (messageOutput) {
+          console.log("test: " + messageOutput);
+        }
+      );
+      stompClient.subscribe(
+        "/client/connected/{room}",
+        function (messageOutput) {
+          console.log("{room}: " + messageOutput);
+        }
+      );
+      stompClient.subscribe(
         "/client/connected/" + gameLink,
         function (messageOutput) {
-          console.log("player connected to room: " + messageOutput);
+          console.log(
+            "***************player connected to room: " + messageOutput
+          );
         }
       );
 
       // send initial message to notify everyone that we have successfully connected
       notifyConnected();
       greet(gameLink);
+      test(gameLink);
     }
   );
 };
@@ -57,16 +74,20 @@ export const joinRoom = (roomId) => {
 // below are functions to send information to the websocket server
 
 export const greet = (roomId) => {
-  stompClient.send("/client/connected/" + roomId);
+  stompClient.send("/app/game/" + roomId + "/connect");
+};
+
+export const test = (roomId) => {
+  stompClient.send("/app/game/" + roomId + "/test");
 };
 
 export const notifyConnected = () => {
-  stompClient.send("/app/connected", {}, null);
+  stompClient.send("/app/game/connected", {}, null);
 };
 
 export const executeExampleMove = () => {
   stompClient.send(
-    "/app/move",
+    "/app/game/move",
     {},
     JSON.stringify({
       ballId: 1,
@@ -78,4 +99,16 @@ export const executeExampleMove = () => {
       },
     })
   );
+};
+
+const setSessionIdFromURL = (url) => {
+  url = url.replace("ws://localhost:8080/game/", "");
+  url = url.replace(
+    "ws://https://sopra-fs22-group-29-server.herokuapp.com/connected/",
+    ""
+  );
+  url = url.replace("/websocket", "");
+  url = url.replace(/^[0-9]+\//, "");
+  console.log("Your current session is: " + url);
+  sessionId = url;
 };
