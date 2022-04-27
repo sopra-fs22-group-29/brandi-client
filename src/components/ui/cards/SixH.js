@@ -7,8 +7,8 @@ export const SixH = (props) => {
   return (
     <group ref={group} {...props} dispose={null}>
       <group
-        rotation={[Math.PI / 3, Math.PI / 6, -Math.PI / 4]}
-        scale={[0.064, 0.1, 0.089]}
+        rotation={[Math.PI / 3.1, Math.PI / 5.8, -Math.PI / 8]}
+        scale={[0.055, 0.1, 0.08]}
       >
         <mesh
           castShadow

@@ -11,7 +11,7 @@ export const Board = (props) => {
       <group position={[0, 8.16, 0]}>
         <pointLight intensity={1} decay={2} rotation={[-Math.PI / 2, 0, 0]} />
       </group>
-      <group position={[1.83, 1.15, 1.72]} rotation={[1.24, 0.33, -0.76]}>
+      {/* <group position={[1.83, 1.15, 1.72]} rotation={[1.24, 0.33, -0.76]}>
         <PerspectiveCamera
           makeDefault={true}
           far={100}
@@ -19,7 +19,26 @@ export const Board = (props) => {
           fov={22.9}
           rotation={[-Math.PI / 2, 0, 0]}
         />
+      </group> */}
+      <group position={[1.46, 2.38, 1.38]} rotation={[0.86, 0.6, -0.59]}>
+        <PerspectiveCamera
+          makeDefault={false}
+          far={100}
+          near={0.1}
+          fov={22.9}
+          rotation={[-Math.PI / 2, 0, 0]}
+        />
       </group>
+      {/* <group position={[0, 3.63, 0]} rotation={[0, 0.81, 0]}>
+        <PerspectiveCamera
+          makeDefault={false}
+          far={100}
+          near={0.1}
+          fov={22.9}
+          rotation={[-Math.PI / 2, 0, 0]}
+        />
+      </group> */}
+
       <mesh
         castShadow
         receiveShadow
@@ -64,7 +83,7 @@ export const Board = (props) => {
         receiveShadow
         geometry={nodes.Circle004.geometry}
         material={nodes.Circle004.material}
-        position={[-0.33, 0.01, 0.525]}
+        position={[-0.332, 0.01, 0.525]}
         scale={[0.03, 1, 0.03]}
       />
       <mesh
@@ -221,7 +240,7 @@ export const Board = (props) => {
         receiveShadow
         geometry={nodes.Circle022.geometry}
         material={nodes.Circle022.material}
-        position={[0.335, 0.008, -0.52]}
+        position={[0.3345, 0.008, -0.525]}
         rotation={[-Math.PI, 0, -Math.PI]}
         scale={[0.03, 1, 0.03]}
       />
@@ -257,7 +276,7 @@ export const Board = (props) => {
         receiveShadow
         geometry={nodes.Circle026.geometry}
         material={nodes.Circle026.material}
-        position={[0.26, 0.011, -0.25]}
+        position={[0.256, 0.012, -0.253]}
         rotation={[-Math.PI, 0, -Math.PI]}
         scale={[0.03, 1, 0.03]}
       />
@@ -311,7 +330,7 @@ export const Board = (props) => {
         receiveShadow
         geometry={nodes.Circle032.geometry}
         material={nodes.Circle032.material}
-        position={[0.418, 0.01, 0.349]}
+        position={[0.418, 0.01, 0.347]}
         rotation={[0, 1.55, 0]}
         scale={[0.03, 1, 0.03]}
       />
