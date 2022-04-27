@@ -3,10 +3,12 @@ import { over } from "stompjs";
 import { userAuthData } from "./authentification";
 import { getDomain } from "./getDomain";
 
-var stompClient = null;
-var sessionId = "";
+export var stompClient = null;
+export var sessionId = "";
+export var gameUuid = "";
 
 export const connect = async (gameLink) => {
+  if (gameLink === gameUuid) return; // make sure not to connect twice
   const url = getDomain() + "/websocket";
   var socket = new SockJS(url);
   stompClient = over(socket);
@@ -61,6 +63,13 @@ export const disconnect = () => {
   if (stompClient !== null) {
     stompClient.disconnect();
   }
+};
+
+// this will close the connection and unsubscribe all subscriptions
+// (this is sadly not called when someone presses the back button in the browser)
+window.onbeforeunload = function () {
+  console.log("disconnecting websocket...");
+  disconnect();
 };
 
 // export const joinRoom = (roomId) => {

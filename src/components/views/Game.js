@@ -68,8 +68,8 @@ const Game = () => {
   const history = useHistory();
 
   const [games, setGames] = useState(mockData);
-  const [enterCode, setEnterCode] = useState(null);
-  const [createCode, setCreateCode] = useState(null);
+  const [enterCode, setEnterCode] = useState("");
+  const [createCode, setCreateCode] = useState("");
   const [created, setCreated] = useState(false);
   const [copied, setCopied] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
@@ -216,11 +216,11 @@ const Game = () => {
       <div className="top">
         <BaseContainer className="game container">
           <p className="welcome container-text">Halted Games</p>
-          <p className="game test">
+          <div className="game test">
             {games.map((game) => (
               <Games game={game} key={game.name} />
             ))}
-          </p>
+          </div>
         </BaseContainer>
         {content}
       </div>
