@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
-import { api, handleError } from "helpers/api";
-import { Spinner } from "components/ui/Spinner";
-import { Button } from "components/ui/Button";
-import { useHistory } from "react-router-dom";
 import BaseContainer from "components/ui/BaseContainer";
+import { Button } from "components/ui/Button";
+import { createLobby, joinLobby } from "helpers/allLobby";
+import { handleError } from "helpers/api";
+import { logout } from "helpers/authentification";
+import { connect } from "helpers/webSocket";
 import PropTypes from "prop-types";
+import { useState } from "react";
+import { BiUser } from "react-icons/bi";
+import { IoLogOutOutline } from "react-icons/io5";
+import { Link, useHistory } from "react-router-dom";
 import "styles/views/Game.scss";
 import "styles/views/Welcome.scss";
-import { logout } from "helpers/authentification";
-import { Link } from "react-router-dom";
-import { IoLogOutOutline } from "react-icons/io5";
-import { BiUser } from "react-icons/bi";
 import Header from "./Header";
-import { createLobby, joinLobby } from "helpers/allLobby";
-import { connect, joinRoom } from "helpers/webSocket";
 
 const Games = ({ game }) => (
   <div className="game halted-container">
@@ -94,7 +92,7 @@ const Game = () => {
       const response = await createLobby(user.id);
       setCreated(true);
       const data = response.data;
-      setCreateCode(data.lobbyUuid);
+      setCreateCode(data);
     } catch (error) {
       alert(
         `Something went wrong while creating a lobby: \n${handleError(error)}`

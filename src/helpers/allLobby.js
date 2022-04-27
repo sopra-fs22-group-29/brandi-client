@@ -1,10 +1,10 @@
 import { api, handleError } from "./api";
 import { userAuthData } from "./authentification";
 
-export async function createLobby(lobbyLeaderId) {
+export async function createLobby(uuid) {
   try {
-    const requestBody = JSON.stringify({ lobbyLeaderId });
-    const response = await api.post("/lobby", requestBody, {
+    const requestBody = JSON.stringify({ id: uuid });
+    const response = await api.post("/game", requestBody, {
       headers: { Authorization: `Basic ${userAuthData()}` },
     });
     return response;
@@ -18,8 +18,8 @@ export async function createLobby(lobbyLeaderId) {
 
 export async function joinLobby(uuid, lobbyLeaderId, redirect) {
   try {
-    const requestBody = JSON.stringify({ lobbyLeaderId });
-    await api.put("/lobby/" + uuid, requestBody, {
+    const requestBody = JSON.stringify({ id: uuid });
+    await api.put("/game/" + uuid, requestBody, {
       headers: { Authorization: `Basic ${userAuthData()}` },
     });
     redirect();

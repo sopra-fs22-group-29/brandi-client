@@ -11,7 +11,7 @@ export const Board = (props) => {
       <group position={[0, 8.16, 0]}>
         <pointLight intensity={1} decay={2} rotation={[-Math.PI / 2, 0, 0]} />
       </group>
-      {/* <group position={[1.83, 1.15, 1.72]} rotation={[1.24, 0.33, -0.76]}>
+      <group position={[1.83, 1.15, 1.72]} rotation={[1.24, 0.33, -0.76]}>
         <PerspectiveCamera
           makeDefault={true}
           far={100}
@@ -19,8 +19,8 @@ export const Board = (props) => {
           fov={22.9}
           rotation={[-Math.PI / 2, 0, 0]}
         />
-      </group> */}
-      <group position={[1.46, 2.38, 1.38]} rotation={[0.86, 0.6, -0.59]}>
+      </group>
+      {/* <group position={[1.46, 2.38, 1.38]} rotation={[0.86, 0.6, -0.59]}>
         <PerspectiveCamera
           makeDefault={false}
           far={100}
@@ -28,7 +28,7 @@ export const Board = (props) => {
           fov={22.9}
           rotation={[-Math.PI / 2, 0, 0]}
         />
-      </group>
+      </group> */}
       {/* <group position={[0, 3.63, 0]} rotation={[0, 0.81, 0]}>
         <PerspectiveCamera
           makeDefault={false}
