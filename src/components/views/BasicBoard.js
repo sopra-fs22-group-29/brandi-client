@@ -74,13 +74,13 @@ const BasicBoard = (props) => {
           {/* 4. yellow */}
           <MarbleYellow position={[-0.52, 0.01, 0]} />
           {/* 1. green */}
-          <MarbleGreen position={[0.517, 0.01, 0.201]} />
+          <MarbleGreen position={[0.52, 0.01, 0.205]} />
           {/* 2. green */}
-          <MarbleGreen position={[0.517, 0.01, 0.13]} />
+          <MarbleGreen position={[0.52, 0.01, 0.134]} />
           {/* 3. green */}
-          <MarbleGreen position={[0.517, 0.01, 0.065]} />
+          <MarbleGreen position={[0.52, 0.01, 0.069]} />
           {/* 4. green */}
-          <MarbleGreen position={[0.517, 0.01, -0.005]} />
+          <MarbleGreen position={[0.52, 0.01, -0.001]} />
           {/* 1. red */}
           <MarbleRed position={[0.21, 0.01, -0.52]} />
           {/* 2. red */}
@@ -90,12 +90,12 @@ const BasicBoard = (props) => {
           {/* 4. red */}
           <MarbleRed position={[0.001, 0.01, -0.52]} />
 
-          <KH position={[0.3, -0.02, 0.9]} />
-          <QH position={[0.4, -0.04, 0.75]} />
-          <JH position={[0.5, -0.06, 0.6]} />
-          <AH position={[0.6, -0.08, 0.45]} />
-          <TenH position={[0.7, -0.1, 0.3]} />
-          <NineH position={[0.8, -0.12, 0.15]} />
+          <KH position={[0.74, 1, 0]} />
+          <QH position={[0.85, 1.03, -0.07]} />
+          <JH position={[0.79, 0.79, 0]} />
+          <AH position={[0.9, 0.793, -0.105]} />
+          <TenH position={[0.85, 0.58, 0.01]} />
+          <NineH position={[0.95, 0.55, -0.13]} />
         </Suspense>
       </Canvas>
       <DatGui data={datGuiState} onUpdate={setDatGuiState}>
