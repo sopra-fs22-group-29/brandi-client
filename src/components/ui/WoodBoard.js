@@ -2,7 +2,7 @@ import { PerspectiveCamera, useGLTF } from "@react-three/drei";
 import { useRef } from "react";
 import "styles/views/Game.scss";
 
-export const Board = (props) => {
+export const WoodBoard = (props) => {
   const group = useRef();
   const { nodes, materials } = useGLTF("gltf/blender_dog_v0.1.gltf");
 

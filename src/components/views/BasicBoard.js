@@ -1,14 +1,15 @@
 import { Canvas } from "@react-three/fiber";
-import { Board } from "components/ui/Board";
 import { AH, JH, KH, NineH, QH, TenH } from "components/ui/cards/Cards";
 import { MarbleBlue } from "components/ui/marbles/MarbleBlue";
 import { MarbleGreen } from "components/ui/marbles/MarbleGreen";
 import { MarbleRed } from "components/ui/marbles/MarbleRed";
 import { MarbleYellow } from "components/ui/marbles/MarbleYellow";
+import { WoodBoard } from "components/ui/WoodBoard";
 import { connect } from "helpers/webSocket";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import DatGui, { DatBoolean, DatFolder, DatNumber } from "react-dat-gui";
 import { useParams } from "react-router-dom";
+import { Animate } from "./Animate";
 
 // drop .gltf file at https://gltf.pmnd.rs/, to be able to access every single component
 const BasicBoard = (props) => {
@@ -23,6 +24,30 @@ const BasicBoard = (props) => {
   useEffect(() => {
     connect(uuid);
   }, []);
+
+  const blueOne = useRef();
+  const blueTwo = useRef();
+  const blueThree = useRef();
+  const blueFour = useRef();
+
+  const redOne = useRef();
+  const redTwo = useRef();
+  const redThree = useRef();
+  const redFour = useRef();
+
+  const greenOne = useRef();
+  const greenTwo = useRef();
+  const greenThree = useRef();
+  const greenFour = useRef();
+
+  const YellowOne = useRef();
+  const YellowTwo = useRef();
+  const YellowThree = useRef();
+  const YellowFour = useRef();
+
+  const allRefs = {
+    blue: [blueOne, blueTwo, blueThree, blueFour],
+  };
 
   return (
     // Box example
@@ -50,7 +75,8 @@ const BasicBoard = (props) => {
       </button> */}
       <Canvas>
         <Suspense fallback={null}>
-          <Board />
+          <Animate ref={allRefs} />
+          <WoodBoard />
           {/* marble to test with dat gui */}
           {datGuiState.showMarble && (
             <MarbleBlue
@@ -58,13 +84,13 @@ const BasicBoard = (props) => {
             />
           )}
           {/* 1. blue */}
-          <MarbleBlue position={[0, 0.01, 0.521]} />
+          <MarbleBlue position={[0, 0.01, 0.521]} ref={blueOne} />
           {/* 2. blue */}
-          <MarbleBlue position={[-0.07, 0.01, 0.521]} />
+          <MarbleBlue position={[-0.07, 0.01, 0.521]} ref={blueTwo} />
           {/* 3. blue */}
-          <MarbleBlue position={[-0.14, 0.01, 0.521]} />
+          <MarbleBlue position={[-0.14, 0.01, 0.521]} ref={blueThree} />
           {/* 4. blue */}
-          <MarbleBlue position={[-0.21, 0.01, 0.519]} />
+          <MarbleBlue position={[-0.21, 0.01, 0.519]} ref={blueFour} />
           {/* 1. yellow */}
           <MarbleYellow position={[-0.52, 0.01, -0.205]} />
           {/* 2. yellow */}
@@ -96,7 +122,6 @@ const BasicBoard = (props) => {
           <AH position={[0.9, 0.793, -0.105]} />
           <TenH position={[0.85, 0.58, 0.01]} />
           <NineH position={[0.95, 0.55, -0.13]} />
-          {/* <Card url="gltf/cards/9H.gltf" position={[0.95, 0.55, -0.13]} /> */}
         </Suspense>
       </Canvas>
       <DatGui data={datGuiState} onUpdate={setDatGuiState}>
