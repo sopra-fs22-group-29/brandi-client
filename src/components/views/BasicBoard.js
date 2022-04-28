@@ -5,13 +5,20 @@ import { MarbleBlue } from "components/ui/marbles/MarbleBlue";
 import { MarbleGreen } from "components/ui/marbles/MarbleGreen";
 import { MarbleRed } from "components/ui/marbles/MarbleRed";
 import { MarbleYellow } from "components/ui/marbles/MarbleYellow";
-import { connect } from "helpers/webSocket";
+import { connect, disconnect } from "helpers/webSocket";
 import { Suspense, useEffect, useState } from "react";
 import DatGui, { DatBoolean, DatFolder, DatNumber } from "react-dat-gui";
 import { useParams } from "react-router-dom";
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import Modal from "react-modal/lib/components/Modal";
+import { Button } from "components/ui/Button";
+import "styles/ui/Modal.scss";
+import { useHistory } from "react-router-dom";
 
 // drop .gltf file at https://gltf.pmnd.rs/, to be able to access every single component
 const BasicBoard = (props) => {
+  const history = useHistory();
+  const [showModal, setShowModal] = useState(false);
   const { uuid } = useParams();
   const [datGuiState, setDatGuiState] = useState({
     showMarble: false,
@@ -24,6 +31,12 @@ const BasicBoard = (props) => {
     connect(uuid);
   }, []);
 
+  const endGame = () => {
+    disconnect();
+    history.push("/game");
+    // setShowModal(false);
+  };
+
   return (
     // Box example
     // <Canvas camera={{ position: [0, 0, 7], near: 1, far: 100, fov: 45 }}>
@@ -35,6 +48,39 @@ const BasicBoard = (props) => {
 
     // Loading our brändy dog board
     <div style={{ height: "100%", width: "100%" }}>
+      <AiOutlineMenu
+        style={{
+          fontSize: "25px",
+          marginLeft: "97%",
+          marginTop: "5px",
+          cursor: "pointer",
+        }}
+        onClick={() => setShowModal(true)}
+      />
+      <Modal
+        isOpen={showModal}
+        onRequestClose={() => setShowModal(false)}
+        className="modal mymodal"
+        overlayClassName="modal myoverlay"
+        ariaHideApp={false}
+      >
+        <div>
+          <AiOutlineClose onClick={() => setShowModal(false)} />
+        </div>
+        <div>
+          <p className="welcome container-text" style={{ marginLeft: "7%" }}>
+            Game Menu
+          </p>
+        </div>
+        <div>
+          <Button className="login button">Pause Game</Button>
+        </div>
+        <div>
+          <Button className="login button" onClick={() => endGame()}>
+            End Game
+          </Button>
+        </div>
+      </Modal>
       {/* <button
         onClick={() => executeExampleMove()}
         style={{
@@ -90,12 +136,12 @@ const BasicBoard = (props) => {
           {/* 4. red */}
           <MarbleRed position={[0.001, 0.01, -0.52]} />
 
-          <KH position={[0.74, 1, 0]} />
+          {/* <KH position={[0.74, 1, 0]} />
           <QH position={[0.85, 1.03, -0.07]} />
           <JH position={[0.79, 0.79, 0]} />
           <AH position={[0.9, 0.793, -0.105]} />
           <TenH position={[0.85, 0.58, 0.01]} />
-          <NineH position={[0.95, 0.55, -0.13]} />
+          <NineH position={[0.95, 0.55, -0.13]} /> */}
           {/* <Card url="gltf/cards/9H.gltf" position={[0.95, 0.55, -0.13]} /> */}
         </Suspense>
       </Canvas>
