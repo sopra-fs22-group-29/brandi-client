@@ -1,11 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { Board } from "components/ui/Board";
-import { AH } from "components/ui/cards/AH";
-import { JH } from "components/ui/cards/JH";
-import { KH } from "components/ui/cards/KH";
-import { NineH } from "components/ui/cards/NineH";
-import { QH } from "components/ui/cards/QH";
-import { TenH } from "components/ui/cards/TenH";
+import { AH, JH, KH, NineH, QH, TenH } from "components/ui/cards/Cards";
 import { MarbleBlue } from "components/ui/marbles/MarbleBlue";
 import { MarbleGreen } from "components/ui/marbles/MarbleGreen";
 import { MarbleRed } from "components/ui/marbles/MarbleRed";
@@ -101,6 +96,7 @@ const BasicBoard = (props) => {
           <AH position={[0.9, 0.793, -0.105]} />
           <TenH position={[0.85, 0.58, 0.01]} />
           <NineH position={[0.95, 0.55, -0.13]} />
+          {/* <Card url="gltf/cards/9H.gltf" position={[0.95, 0.55, -0.13]} /> */}
         </Suspense>
       </Canvas>
       <DatGui data={datGuiState} onUpdate={setDatGuiState}>

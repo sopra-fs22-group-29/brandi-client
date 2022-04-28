@@ -4,10 +4,10 @@ import { handleError } from "helpers/api";
 import { register } from "helpers/authentification";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
 import "styles/views/Login.scss";
 import "styles/views/Welcome.scss";
-import { BsEyeSlash, BsEye } from "react-icons/bs";
 
 const FormField = (props) => {
   return (
@@ -56,8 +56,8 @@ FormFieldPassword.propTypes = {
 
 const Register = (props) => {
   const history = useHistory();
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
   const [description, setDescription] = useState(true);
 

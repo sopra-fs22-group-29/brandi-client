@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
+import PropTypes from "prop-types";
+import React, { useRef } from "react";
 
-export const SixH = (props) => {
+export const Card = (props) => {
   const group = useRef();
-  const { nodes, materials } = useGLTF("gltf/cards/6H.gltf");
+  const { nodes, materials } = useGLTF(props.url);
   return (
     <group ref={group} {...props} dispose={null}>
       <group
@@ -27,4 +28,6 @@ export const SixH = (props) => {
   );
 };
 
-useGLTF.preload("gltf/cards/6H.gltf");
+Card.propTypes = {
+  url: PropTypes.string,
+};
