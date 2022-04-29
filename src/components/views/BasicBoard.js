@@ -96,13 +96,13 @@ const BasicBoard = (props) => {
       </button> */}
       <Canvas>
         <Suspense fallback={null}>
-          <Board />
+          <Board playerColor="" />
           {/* marble to test with dat gui */}
-          {datGuiState.showMarble && (
+          {/* {datGuiState.showMarble && (
             <MarbleBlue
               position={[datGuiState.posX, datGuiState.posY, datGuiState.posZ]}
             />
-          )}
+          )} */}
           {/* 1. blue */}
           <MarbleBlue position={[0, 0.01, 0.521]} />
           {/* 2. blue */}
@@ -145,14 +145,14 @@ const BasicBoard = (props) => {
           {/* <Card url="gltf/cards/9H.gltf" position={[0.95, 0.55, -0.13]} /> */}
         </Suspense>
       </Canvas>
-      <DatGui data={datGuiState} onUpdate={setDatGuiState}>
+      {/* <DatGui data={datGuiState} onUpdate={setDatGuiState}>
         <DatFolder title="test marble" closed={false}>
           <DatBoolean path="showMarble" />
           <DatNumber path="posX" min={-0.7} max={0.7} step={0.001} />
           <DatNumber path="posY" min={-0.4} max={0.4} step={0.001} />
           <DatNumber path="posZ" min={-0.7} max={0.7} step={0.001} />
         </DatFolder>
-      </DatGui>
+      </DatGui> */}
     </div>
   );
 };
