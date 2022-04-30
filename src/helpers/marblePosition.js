@@ -192,6 +192,8 @@ export const marblePosition = (fieldNumber) => {
     position = [-0.07, 0.01, 0.521];
   } else if (fieldNumber === 95) {
     position = [0, 0.01, 0.521];
+  } else if (fieldNumber === 1000) {
+    position = [100, 100, 100];
   }
 
   return position;

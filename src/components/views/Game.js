@@ -74,9 +74,6 @@ const Game = () => {
   const [copied, setCopied] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
 
-  console.log("enterCode", enterCode);
-  console.log("createCode", createCode);
-
   const doLogout = async () => {
     try {
       await logout(() => {

@@ -2,66 +2,60 @@ import { PerspectiveCamera, useGLTF } from "@react-three/drei";
 import { useRef } from "react";
 import "styles/views/Game.scss";
 
+const getIndex = (color) => {
+  switch (color) {
+    case "GREEN":
+      return 0;
+    case "BLUE":
+      return 1;
+    case "YELLOW":
+      return 2;
+    case "RED":
+      return 3;
+  }
+};
+
+const cameraPositions = [
+  {
+    position: [1.83, 1.15, 1.72],
+    rotation: [1.24, 0.33, -0.76],
+  },
+  {
+    position: [-1.83, 1.15, 1.72],
+    rotation: [1.24, -0.33, 0.76],
+  },
+  {
+    position: [-1.7, 1.1, -1.7],
+    rotation: [1.92, -0.33, 2.41],
+  },
+  {
+    position: [1.7, 1.1, -1.7],
+    rotation: [1.92, 0.33, -2.41],
+  },
+];
+
 export const Board = (props) => {
   const group = useRef();
   const { nodes, materials } = useGLTF("gltf/blender_dog_v0.1.gltf");
-  const playerColor = props.playerColor;
-
-  let camera = (
-    <group position={[1.83, 1.15, 1.72]} rotation={[1.24, 0.33, -0.76]}>
-      <PerspectiveCamera
-        makeDefault={true}
-        far={100}
-        near={0.1}
-        fov={22.9}
-        rotation={[-Math.PI / 2, 0, 0]}
-      />
-    </group>
-  );
-  if (playerColor === "BLUE") {
-    camera = (
-      <group position={[-1.83, 1.15, 1.72]} rotation={[1.24, -0.33, 0.76]}>
-        <PerspectiveCamera
-          makeDefault={false}
-          far={100}
-          near={0.1}
-          fov={22.9}
-          rotation={[-Math.PI / 2, 0, 0]}
-        />
-      </group>
-    );
-  } else if (playerColor === "YELLOW") {
-    camera = (
-      <group position={[-1.7, 1.1, -1.7]} rotation={[1.92, -0.33, 2.41]}>
-        <PerspectiveCamera
-          makeDefault={false}
-          far={100}
-          near={0.1}
-          fov={22.9}
-          rotation={[-Math.PI / 2, 0, 0]}
-        />
-      </group>
-    );
-  } else if (playerColor === "RED") {
-    camera = (
-      <group position={[1.7, 1.1, -1.7]} rotation={[1.92, 0.33, -2.41]}>
-        <PerspectiveCamera
-          makeDefault={false}
-          far={100}
-          near={0.1}
-          fov={22.9}
-          rotation={[-Math.PI / 2, 0, 0]}
-        />
-      </group>
-    );
-  }
 
   return (
     <group ref={group} {...props} dispose={null}>
       <group position={[0, 8.16, 0]}>
         <pointLight intensity={1} decay={2} rotation={[-Math.PI / 2, 0, 0]} />
       </group>
-      {camera}
+
+      <group
+        position={cameraPositions[getIndex(props.playerColor)].position}
+        rotation={cameraPositions[getIndex(props.playerColor)].rotation}
+      >
+        <PerspectiveCamera
+          makeDefault={true}
+          far={100}
+          near={0.1}
+          fov={22.9}
+          rotation={[-Math.PI / 2, 0, 0]}
+        />
+      </group>
 
       <mesh
         castShadow

@@ -1,4 +1,19 @@
-import { KH } from "components/ui/cards/Cards";
+export const positionCard = (playerColor, position) => {
+  switch (position) {
+    case 1:
+      return positionCard1(playerColor);
+    case 2:
+      return positionCard2(playerColor);
+    case 3:
+      return positionCard3(playerColor);
+    case 4:
+      return positionCard4(playerColor);
+    case 5:
+      return positionCard5(playerColor);
+    case 6:
+      return positionCard6(playerColor);
+  }
+};
 
 export const positionCard1 = (playerColor) => {
   let positionCard1 = [0.3, -0.02, 0.9];
@@ -72,7 +87,7 @@ export const positionCard6 = (playerColor) => {
 };
 
 export const getCard = (rank, suit) => {
-  let card;
+  let card = "gltf/cards/2C.gltf";
   if ((rank === "TWO") & (suit === "CLUB")) {
     card = "gltf/cards/2C.gltf";
   } else if (rank === "TWO" && suit === "DIAMOND") {

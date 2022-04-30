@@ -1,68 +1,90 @@
 import { Canvas } from "@react-three/fiber";
 import { Board } from "components/ui/Board";
-import { AH, JH, KH, NineH, QH, TenH } from "components/ui/cards/Cards";
-import { MarbleBlue } from "components/ui/marbles/MarbleBlue";
-import { MarbleGreen } from "components/ui/marbles/MarbleGreen";
-import { MarbleRed } from "components/ui/marbles/MarbleRed";
-import { MarbleYellow } from "components/ui/marbles/MarbleYellow";
+import { Button } from "components/ui/Button";
+import { Card } from "components/ui/cards/Card";
+import { MarbleGeneral } from "components/ui/marbles/MarbleGeneral";
+import { getCard, positionCard } from "helpers/allCards";
+import { marblePosition } from "helpers/marblePosition";
 import { connect, disconnect } from "helpers/webSocket";
 import { Suspense, useEffect, useState } from "react";
-import DatGui, { DatBoolean, DatFolder, DatNumber } from "react-dat-gui";
-import { useParams } from "react-router-dom";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Modal from "react-modal/lib/components/Modal";
-import { Button } from "components/ui/Button";
+import { useHistory, useParams } from "react-router-dom";
 import "styles/ui/Modal.scss";
-import { useHistory } from "react-router-dom";
-import {
-  getCard,
-  positionCard1,
-  positionCard2,
-  positionCard3,
-  positionCard4,
-  positionCard5,
-  positionCard6,
-} from "helpers/allCards";
-import { getGameByUuid } from "helpers/allGame";
-import { handleError } from "helpers/api";
-import { marblePosition } from "helpers/marblePosition";
-import { Card } from "components/ui/cards/Card";
+
+const defaultBall = {
+  id: null,
+  position: 1000,
+  coordinates: marblePosition(1000),
+  color: "GREEN",
+  isHighlighted: false,
+};
+
+const defaultPlayer = {
+  color: "GREEN",
+  username: "",
+  id: 0,
+  status: null,
+};
+
+const defaultCard = {
+  rank: "",
+  suit: "",
+  isDealt: false,
+};
 
 // drop .gltf file at https://gltf.pmnd.rs/, to be able to access every single component
 const BasicBoard = (props) => {
   const history = useHistory();
   const [showModal, setShowModal] = useState(false);
   const { uuid } = useParams();
-  const [datGuiState, setDatGuiState] = useState({
-    showMarble: false,
-    posX: 0,
-    posY: 0.01,
-    posZ: 0,
+  // const [datGuiState, setDatGuiState] = useState({
+  //   showMarble: false,
+  //   posX: 0,
+  //   posY: 0.01,
+  //   posZ: 0,
+  // });
+  const [state, setState] = useState({
+    playerIndex: 0,
+    players: [
+      { ...defaultPlayer },
+      { ...defaultPlayer },
+      { ...defaultPlayer },
+      { ...defaultPlayer },
+    ],
+    cards: [
+      { ...defaultCard },
+      { ...defaultCard },
+      { ...defaultCard },
+      { ...defaultCard },
+      { ...defaultCard },
+      { ...defaultCard },
+    ],
+    balls: [
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+    ],
   });
-  const [players, setPlayers] = useState({});
-  const [gameState, setGameState] = useState({});
-  const [ballPositions, setBallPositions] = useState({});
-  const playerColor = "";
-  const [playerHand, setPlayerHand] = useState({});
-  const currentUser = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    connect(uuid);
-    async function fetchGameByUuid() {
-      try {
-        const response = await getGameByUuid(uuid);
-        setPlayers(response.data.playerStates);
-        setBallPositions(response.data.boardstate.balls);
-        setGameState(response.data);
-      } catch (error) {
-        alert(
-          `Something went wrong while fetching the game: \n${handleError(
-            error
-          )}`
-        );
-      }
-    }
-    fetchGameByUuid();
+    connect(uuid, state, setState);
   }, []);
 
   const endGame = () => {
@@ -128,119 +150,48 @@ const BasicBoard = (props) => {
       >
         Click to Move
       </button> */}
-      <div>{players[0]?.player.username}</div>
-      <div>{players[1]?.player.username}</div>
-      <div>{players[2]?.player.username}</div>
-      <div>{players[3]?.player.username}</div>
+      <div>{state.players[0].username}</div>
+      <div>{state.players[1].username}</div>
+      <div>{state.players[2].username}</div>
+      <div>{state.players[3].username}</div>
       <Canvas>
         <Suspense fallback={null}>
-          <Board playerColor={playerColor} />
+          <Board playerColor={state.players[state.playerIndex].color} />
           {/* marble to test with dat gui */}
           {/* {datGuiState.showMarble && (
             <MarbleBlue
               position={[datGuiState.posX, datGuiState.posY, datGuiState.posZ]}
             />
           )} */}
-          {/* 1. blue */}
-          <MarbleBlue position={marblePosition(ballPositions[4]?.position)} />
-          {/* 2. blue */}
-          <MarbleBlue position={marblePosition(ballPositions[5]?.position)} />
-          {/* 3. blue */}
-          <MarbleBlue position={marblePosition(ballPositions[6]?.position)} />
-          {/* 4. blue */}
-          <MarbleBlue position={marblePosition(ballPositions[7]?.position)} />
-          {/* 1. yellow */}
-          <MarbleYellow
-            position={marblePosition(ballPositions[12]?.position)}
-          />
-          {/* 2. yellow */}
-          <MarbleYellow
-            position={marblePosition(ballPositions[13]?.position)}
-          />
-          {/* 3. yellow */}
-          <MarbleYellow
-            position={marblePosition(ballPositions[14]?.position)}
-          />
-          {/* 4. yellow */}
-          <MarbleYellow
-            position={marblePosition(ballPositions[15]?.position)}
-          />
-          {/* 1. green */}
-          <MarbleGreen position={marblePosition(ballPositions[0]?.position)} />
-          {/* 2. green */}
-          <MarbleGreen position={marblePosition(ballPositions[1]?.position)} />
-          {/* 3. green */}
-          <MarbleGreen position={marblePosition(ballPositions[2]?.position)} />
-          {/* 4. green */}
-          <MarbleGreen position={marblePosition(ballPositions[3]?.position)} />
-          {/* 1. red */}
-          <MarbleRed position={marblePosition(ballPositions[8]?.position)} />
-          {/* 2. red */}
-          <MarbleRed position={marblePosition(ballPositions[9]?.position)} />
-          {/* 3. red */}
-          <MarbleRed position={marblePosition(ballPositions[10]?.position)} />
-          {/* 4. red */}
-          <MarbleRed position={marblePosition(ballPositions[11]?.position)} />
-          {/* <KH playerColor={playerColor} position={positionCard1(playerColor)} />
-          <QH playerColor={playerColor} position={positionCard2(playerColor)} />
-          <JH playerColor={playerColor} position={positionCard3(playerColor)} />
-          <AH playerColor={playerColor} position={positionCard4(playerColor)} />
-          <TenH
-            playerColor={playerColor}
-            position={positionCard5(playerColor)}
-          />
-          <NineH
-            playerColor={playerColor}
-            position={positionCard6(playerColor)}
-          /> */}
-          <Card
-            url={getCard(
-              players[0]?.playerHand.activeCards[0]?.rank,
-              players[0]?.playerHand.activeCards[0]?.suit
-            )}
-            playerColor={playerColor}
-            position={positionCard1(playerColor)}
-          />
-          <Card
-            url={getCard(
-              players[0]?.playerHand.activeCards[1]?.rank,
-              players[0]?.playerHand.activeCards[1]?.suit
-            )}
-            playerColor={playerColor}
-            position={positionCard2(playerColor)}
-          />
-          <Card
-            url={getCard(
-              players[0]?.playerHand.activeCards[2]?.rank,
-              players[0]?.playerHand.activeCards[2]?.suit
-            )}
-            playerColor={playerColor}
-            position={positionCard3(playerColor)}
-          />
-          <Card
-            url={getCard(
-              players[0]?.playerHand.activeCards[3]?.rank,
-              players[0]?.playerHand.activeCards[3]?.suit
-            )}
-            playerColor={playerColor}
-            position={positionCard4(playerColor)}
-          />
-          <Card
-            url={getCard(
-              players[0]?.playerHand.activeCards[4]?.rank,
-              players[0]?.playerHand.activeCards[4]?.suit
-            )}
-            playerColor={playerColor}
-            position={positionCard5(playerColor)}
-          />
-          <Card
-            url={getCard(
-              players[0]?.playerHand.activeCards[5]?.rank,
-              players[0]?.playerHand.activeCards[5]?.suit
-            )}
-            playerColor={playerColor}
-            position={positionCard6(playerColor)}
-          />
+          {Array(16)
+            .fill(null)
+            .map((_, i) => {
+              return (
+                <MarbleGeneral
+                  key={i}
+                  color={state.balls[i].color}
+                  position={state.balls[i].coordinates}
+                />
+              );
+            })}
+
+          {Array(6)
+            .fill(null)
+            .map((_, i) => {
+              return (
+                state.cards[i].isDealt && (
+                  <Card
+                    key={i}
+                    url={getCard(state.cards[i].rank, state.cards[i].suit)}
+                    playerColor={state.players[state.playerIndex].color}
+                    position={positionCard(
+                      state.players[state.playerIndex].color,
+                      i + 1
+                    )}
+                  />
+                )
+              );
+            })}
         </Suspense>
       </Canvas>
       {/* <DatGui data={datGuiState} onUpdate={setDatGuiState}>
