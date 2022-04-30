@@ -5,12 +5,19 @@ import React, { useRef } from "react";
 export const Card = (props) => {
   const group = useRef();
   const { nodes, materials } = useGLTF(props.url);
+  const playerColor = props.playerColor;
+
+  let rotation = [Math.PI / 3, Math.PI / 6, -Math.PI / 4];
+  if (playerColor === "red") {
+    rotation = [-Math.PI / 3.2, -Math.PI / 6.2, -Math.PI / 5];
+  } else if (playerColor === "blue") {
+    rotation = [Math.PI / 3.2, -Math.PI / 6, Math.PI / 5];
+  } else if (playerColor === "yellow") {
+    rotation = [-Math.PI / 3.2, Math.PI / 6, Math.PI / 5];
+  }
   return (
     <group ref={group} {...props} dispose={null}>
-      <group
-        rotation={[Math.PI / 3.1, Math.PI / 5.8, -Math.PI / 8]}
-        scale={[0.055, 0.1, 0.08]}
-      >
+      <group rotation={rotation} scale={[0.055, 0.1, 0.08]}>
         <mesh
           castShadow
           receiveShadow

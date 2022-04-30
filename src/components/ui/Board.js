@@ -32,7 +32,7 @@ export const Board = (props) => {
     );
   } else if (playerColor === "yellow") {
     camera = (
-      <group position={[-1.7, 1.1, -1.7]} rotation={[1.91, -0.33, 2.41]}>
+      <group position={[-1.7, 1.1, -1.7]} rotation={[1.92, -0.33, 2.41]}>
         <PerspectiveCamera
           makeDefault={false}
           far={100}
@@ -44,7 +44,7 @@ export const Board = (props) => {
     );
   } else if (playerColor === "red") {
     camera = (
-      <group position={[1.7, 1.1, -1.7]} rotation={[1.91, 0.33, -2.41]}>
+      <group position={[1.7, 1.1, -1.7]} rotation={[1.92, 0.33, -2.41]}>
         <PerspectiveCamera
           makeDefault={false}
           far={100}
