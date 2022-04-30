@@ -1,43 +1,90 @@
 import { Canvas } from "@react-three/fiber";
 import { Board } from "components/ui/Board";
-import { AH, JH, KH, NineH, QH, TenH } from "components/ui/cards/Cards";
-import { MarbleBlue } from "components/ui/marbles/MarbleBlue";
-import { MarbleGreen } from "components/ui/marbles/MarbleGreen";
-import { MarbleRed } from "components/ui/marbles/MarbleRed";
-import { MarbleYellow } from "components/ui/marbles/MarbleYellow";
+import { Button } from "components/ui/Button";
+import { Card } from "components/ui/cards/Card";
+import { MarbleGeneral } from "components/ui/marbles/MarbleGeneral";
+import { getCard, positionCard } from "helpers/allCards";
+import { marblePosition } from "helpers/marblePosition";
 import { connect, disconnect } from "helpers/webSocket";
 import { Suspense, useEffect, useState } from "react";
-import DatGui, { DatBoolean, DatFolder, DatNumber } from "react-dat-gui";
-import { useParams } from "react-router-dom";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Modal from "react-modal/lib/components/Modal";
-import { Button } from "components/ui/Button";
+import { useHistory, useParams } from "react-router-dom";
 import "styles/ui/Modal.scss";
-import { useHistory } from "react-router-dom";
-import {
-  positionCard1,
-  positionCard2,
-  positionCard3,
-  positionCard4,
-  positionCard5,
-  positionCard6,
-} from "helpers/cardPosition";
+
+const defaultBall = {
+  id: null,
+  position: 1000,
+  coordinates: marblePosition(1000),
+  color: "GREEN",
+  isHighlighted: false,
+};
+
+const defaultPlayer = {
+  color: "GREEN",
+  username: "",
+  id: 0,
+  status: null,
+};
+
+const defaultCard = {
+  rank: "",
+  suit: "",
+  isDealt: false,
+};
 
 // drop .gltf file at https://gltf.pmnd.rs/, to be able to access every single component
 const BasicBoard = (props) => {
   const history = useHistory();
   const [showModal, setShowModal] = useState(false);
   const { uuid } = useParams();
-  const [datGuiState, setDatGuiState] = useState({
-    showMarble: false,
-    posX: 0,
-    posY: 0.01,
-    posZ: 0,
+  // const [datGuiState, setDatGuiState] = useState({
+  //   showMarble: false,
+  //   posX: 0,
+  //   posY: 0.01,
+  //   posZ: 0,
+  // });
+  const [state, setState] = useState({
+    playerIndex: 0,
+    players: [
+      { ...defaultPlayer },
+      { ...defaultPlayer },
+      { ...defaultPlayer },
+      { ...defaultPlayer },
+    ],
+    cards: [
+      { ...defaultCard },
+      { ...defaultCard },
+      { ...defaultCard },
+      { ...defaultCard },
+      { ...defaultCard },
+      { ...defaultCard },
+    ],
+    balls: [
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+      { ...defaultBall },
+    ],
   });
-  const playerColor = "yellow";
 
   useEffect(() => {
-    connect(uuid);
+    connect(uuid, state, setState);
   }, []);
 
   const endGame = () => {
@@ -103,63 +150,48 @@ const BasicBoard = (props) => {
       >
         Click to Move
       </button> */}
+      <div>{state.players[0].username}</div>
+      <div>{state.players[1].username}</div>
+      <div>{state.players[2].username}</div>
+      <div>{state.players[3].username}</div>
       <Canvas>
         <Suspense fallback={null}>
-          <Board playerColor={playerColor} />
+          <Board playerColor={state.players[state.playerIndex].color} />
           {/* marble to test with dat gui */}
           {/* {datGuiState.showMarble && (
             <MarbleBlue
               position={[datGuiState.posX, datGuiState.posY, datGuiState.posZ]}
             />
           )} */}
-          {/* 1. blue */}
-          <MarbleBlue position={[0, 0.01, 0.521]} />
-          {/* 2. blue */}
-          <MarbleBlue position={[-0.07, 0.01, 0.521]} />
-          {/* 3. blue */}
-          <MarbleBlue position={[-0.14, 0.01, 0.521]} />
-          {/* 4. blue */}
-          <MarbleBlue position={[-0.21, 0.01, 0.519]} />
-          {/* 1. yellow */}
-          <MarbleYellow position={[-0.52, 0.01, -0.205]} />
-          {/* 2. yellow */}
-          <MarbleYellow position={[-0.52, 0.01, -0.14]} />
-          {/* 3. yellow */}
-          <MarbleYellow position={[-0.52, 0.01, -0.07]} />
-          {/* 4. yellow */}
-          <MarbleYellow position={[-0.52, 0.01, 0]} />
-          {/* 1. green */}
-          <MarbleGreen position={[0.52, 0.01, 0.205]} />
-          {/* 2. green */}
-          <MarbleGreen position={[0.52, 0.01, 0.134]} />
-          {/* 3. green */}
-          <MarbleGreen position={[0.52, 0.01, 0.069]} />
-          {/* 4. green */}
-          <MarbleGreen position={[0.52, 0.01, -0.001]} />
-          {/* 1. red */}
-          <MarbleRed position={[0.21, 0.01, -0.52]} />
-          {/* 2. red */}
-          <MarbleRed position={[0.14, 0.01, -0.52]} />
-          {/* 3. red */}
-          <MarbleRed position={[0.07, 0.01, -0.52]} />
-          {/* 4. red */}
-          <MarbleRed position={[0.001, 0.01, -0.52]} />
+          {Array(16)
+            .fill(null)
+            .map((_, i) => {
+              return (
+                <MarbleGeneral
+                  key={i}
+                  color={state.balls[i].color}
+                  position={state.balls[i].coordinates}
+                />
+              );
+            })}
 
-          {/* POSITIONS GREEN */}
-          <KH playerColor={playerColor} position={positionCard1(playerColor)} />
-          <QH playerColor={playerColor} position={positionCard2(playerColor)} />
-          <JH playerColor={playerColor} position={positionCard3(playerColor)} />
-          <AH playerColor={playerColor} position={positionCard4(playerColor)} />
-          <TenH
-            playerColor={playerColor}
-            position={positionCard5(playerColor)}
-          />
-          <NineH
-            playerColor={playerColor}
-            position={positionCard6(playerColor)}
-          />
-
-          {/* <Card url="gltf/cards/9H.gltf" position={[0.95, 0.55, -0.13]} /> */}
+          {Array(6)
+            .fill(null)
+            .map((_, i) => {
+              return (
+                state.cards[i].isDealt && (
+                  <Card
+                    key={i}
+                    url={getCard(state.cards[i].rank, state.cards[i].suit)}
+                    playerColor={state.players[state.playerIndex].color}
+                    position={positionCard(
+                      state.players[state.playerIndex].color,
+                      i + 1
+                    )}
+                  />
+                )
+              );
+            })}
         </Suspense>
       </Canvas>
       {/* <DatGui data={datGuiState} onUpdate={setDatGuiState}>

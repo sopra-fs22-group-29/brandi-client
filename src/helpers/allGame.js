@@ -30,3 +30,17 @@ export async function joinLobby(uuid, lobbyLeaderId, redirect) {
     return null;
   }
 }
+
+export async function getGameByUuid(uuid) {
+  try {
+    const response = await api.get("/game/" + uuid, {
+      headers: { Authorization: `Basic ${userAuthData()}` },
+    });
+    return response;
+  } catch (error) {
+    alert(
+      `Something went wrong while getting the game: \n${handleError(error)}`
+    );
+    return null;
+  }
+}

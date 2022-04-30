@@ -2,59 +2,84 @@ import * as SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { userAuthData } from "./authentification";
 import { getDomain } from "./getDomain";
+import { marblePosition } from "./marblePosition";
 
 export var stompClient = null;
 export var sessionId = "";
 export var gameUuid = "";
+var currentUser = "";
 
-export const connect = async (gameLink) => {
+export const connect = async (gameLink, state, setState) => {
   if (gameLink === gameUuid) return; // make sure not to connect twice
+
+  currentUser = JSON.parse(localStorage.getItem("user"));
   const url = getDomain() + "/websocket";
   var socket = new SockJS(url);
   stompClient = over(socket);
   const authData = userAuthData();
-  console.log("gameLink------------", gameLink);
   await stompClient.connect(
     {
       Authorization: `Basic ${authData}`,
     },
     function (frame) {
-      console.log("WebSocket Connected " + frame);
       setSessionIdFromURL(stompClient.ws._transport.url);
 
-      // subscribe to all the routes that we want te be notified from
-      // // (we could use /client/COLOR in order to notify only one player)
-      // stompClient.subscribe("/client/move", function (messageOutput) {
-      //   console.log("player moved:" + messageOutput.body);
-      // });
-      // stompClient.subscribe("/client/connected", function (messageOutput) {
-      //   console.log("player connected: " + messageOutput);
-      // });
+      // stompClient.subscribe(
+      //   "/client/test" + "-user" + sessionId,
+      //   function (messageOutput) {
+      //     console.log("test: " + messageOutput);
+      //   }
+      // );
       stompClient.subscribe(
-        "/client/test" + "-user" + sessionId,
-        function (messageOutput) {
-          console.log("test: " + messageOutput);
+        "/client/state" + "-user" + sessionId,
+        function (response) {
+          const data = JSON.parse(response.body);
+
+          for (let i = 0; i < data.playerStates.length; i++) {
+            if (data.playerStates[i].player.id === currentUser.id) {
+              state.playerIndex = i;
+            }
+            state.players[i].color = data.playerStates[i].color;
+            state.players[i].id = data.playerStates[i].player.id;
+            state.players[i].username = data.playerStates[i].player.username;
+            state.players[i].username = data.playerStates[i].player.username;
+            state.players[i].status = data.playerStates[i].status;
+          }
+
+          for (let i = 0; i < data.boardstate.balls.length; i++) {
+            state.balls[i].id = data.boardstate.balls[i].id;
+            state.balls[i].color = data.boardstate.balls[i].color;
+            state.balls[i].position = data.boardstate.balls[i].position;
+            state.balls[i].coordinates = marblePosition(
+              state.balls[i].position
+            );
+          }
+
+          setState({ ...state });
         }
       );
-      // stompClient.subscribe(
-      //   "/client/connected/{room}",
-      //   function (messageOutput) {
-      //     console.log("{room}: " + messageOutput);
-      //   }
-      // );
-      // stompClient.subscribe(
-      //   "/client/connected/" + gameLink,
-      //   function (messageOutput) {
-      //     console.log(
-      //       "***************player connected to room: " + messageOutput
-      //     );
-      //   }
-      // );
+      stompClient.subscribe(
+        "/client/cards" + "-user" + sessionId,
+        function (response) {
+          const data = JSON.parse(response.body);
+          for (let i = 0; i < data.activeCards.length; i++) {
+            state.cards[i].rank = data.activeCards[i].rank;
+            state.cards[i].suit = data.activeCards[i].suit;
+            state.cards[i].isDealt = true;
+          }
+
+          setState({ ...state });
+        }
+      );
+      stompClient.subscribe(
+        "/client/player/joined" + "-user" + sessionId,
+        function (messageOutput) {
+          // update the correct player
+        }
+      );
 
       // send initial message to notify everyone that we have successfully connected
-      // notifyConnected();
-      // greet(gameLink);
-      test(gameLink);
+      join(gameLink);
     }
   );
 };
@@ -72,26 +97,8 @@ window.onbeforeunload = function () {
   disconnect();
 };
 
-// export const joinRoom = (roomId) => {
-//   connect(roomId);
-//   console.log("-----I went here-------");
-//   stompClient.subscribe("/room/" + roomId, function (greeting) {
-//     alert("Yey something happened !", greeting);
-//   });
-// };
-
-// below are functions to send information to the websocket server
-
-// export const greet = (roomId) => {
-//   stompClient.send("/app/websocket/" + roomId + "/connect");
-// };
-
-// export const notifyConnected = () => {
-//   stompClient.send("/app/websocket/connected", {}, null);
-// };
-
-export const test = (roomId) => {
-  stompClient.send("/app/websocket/" + roomId + "/test");
+export const join = (roomId) => {
+  stompClient.send("/app/websocket/" + roomId + "/join");
 };
 
 // export const executeExampleMove = () => {
@@ -118,6 +125,5 @@ const setSessionIdFromURL = (url) => {
   );
   url = url.replace("/websocket", "");
   url = url.replace(/^[0-9]+\//, "");
-  console.log("Your current session is: " + url);
   sessionId = url;
 };
