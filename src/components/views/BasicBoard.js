@@ -15,13 +15,18 @@ import { Button } from "components/ui/Button";
 import "styles/ui/Modal.scss";
 import { useHistory } from "react-router-dom";
 import {
+  getCard,
   positionCard1,
   positionCard2,
   positionCard3,
   positionCard4,
   positionCard5,
   positionCard6,
-} from "helpers/cardPosition";
+} from "helpers/allCards";
+import { getGameByUuid } from "helpers/allGame";
+import { handleError } from "helpers/api";
+import { marblePosition } from "helpers/marblePosition";
+import { Card } from "components/ui/cards/Card";
 
 // drop .gltf file at https://gltf.pmnd.rs/, to be able to access every single component
 const BasicBoard = (props) => {
@@ -34,10 +39,30 @@ const BasicBoard = (props) => {
     posY: 0.01,
     posZ: 0,
   });
-  const playerColor = "yellow";
+  const [players, setPlayers] = useState({});
+  const [gameState, setGameState] = useState({});
+  const [ballPositions, setBallPositions] = useState({});
+  const playerColor = "";
+  const [playerHand, setPlayerHand] = useState({});
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     connect(uuid);
+    async function fetchGameByUuid() {
+      try {
+        const response = await getGameByUuid(uuid);
+        setPlayers(response.data.playerStates);
+        setBallPositions(response.data.boardstate.balls);
+        setGameState(response.data);
+      } catch (error) {
+        alert(
+          `Something went wrong while fetching the game: \n${handleError(
+            error
+          )}`
+        );
+      }
+    }
+    fetchGameByUuid();
   }, []);
 
   const endGame = () => {
@@ -103,6 +128,10 @@ const BasicBoard = (props) => {
       >
         Click to Move
       </button> */}
+      <div>{players[0]?.player.username}</div>
+      <div>{players[1]?.player.username}</div>
+      <div>{players[2]?.player.username}</div>
+      <div>{players[3]?.player.username}</div>
       <Canvas>
         <Suspense fallback={null}>
           <Board playerColor={playerColor} />
@@ -113,40 +142,46 @@ const BasicBoard = (props) => {
             />
           )} */}
           {/* 1. blue */}
-          <MarbleBlue position={[0, 0.01, 0.521]} />
+          <MarbleBlue position={marblePosition(ballPositions[4]?.position)} />
           {/* 2. blue */}
-          <MarbleBlue position={[-0.07, 0.01, 0.521]} />
+          <MarbleBlue position={marblePosition(ballPositions[5]?.position)} />
           {/* 3. blue */}
-          <MarbleBlue position={[-0.14, 0.01, 0.521]} />
+          <MarbleBlue position={marblePosition(ballPositions[6]?.position)} />
           {/* 4. blue */}
-          <MarbleBlue position={[-0.21, 0.01, 0.519]} />
+          <MarbleBlue position={marblePosition(ballPositions[7]?.position)} />
           {/* 1. yellow */}
-          <MarbleYellow position={[-0.52, 0.01, -0.205]} />
+          <MarbleYellow
+            position={marblePosition(ballPositions[12]?.position)}
+          />
           {/* 2. yellow */}
-          <MarbleYellow position={[-0.52, 0.01, -0.14]} />
+          <MarbleYellow
+            position={marblePosition(ballPositions[13]?.position)}
+          />
           {/* 3. yellow */}
-          <MarbleYellow position={[-0.52, 0.01, -0.07]} />
+          <MarbleYellow
+            position={marblePosition(ballPositions[14]?.position)}
+          />
           {/* 4. yellow */}
-          <MarbleYellow position={[-0.52, 0.01, 0]} />
+          <MarbleYellow
+            position={marblePosition(ballPositions[15]?.position)}
+          />
           {/* 1. green */}
-          <MarbleGreen position={[0.52, 0.01, 0.205]} />
+          <MarbleGreen position={marblePosition(ballPositions[0]?.position)} />
           {/* 2. green */}
-          <MarbleGreen position={[0.52, 0.01, 0.134]} />
+          <MarbleGreen position={marblePosition(ballPositions[1]?.position)} />
           {/* 3. green */}
-          <MarbleGreen position={[0.52, 0.01, 0.069]} />
+          <MarbleGreen position={marblePosition(ballPositions[2]?.position)} />
           {/* 4. green */}
-          <MarbleGreen position={[0.52, 0.01, -0.001]} />
+          <MarbleGreen position={marblePosition(ballPositions[3]?.position)} />
           {/* 1. red */}
-          <MarbleRed position={[0.21, 0.01, -0.52]} />
+          <MarbleRed position={marblePosition(ballPositions[8]?.position)} />
           {/* 2. red */}
-          <MarbleRed position={[0.14, 0.01, -0.52]} />
+          <MarbleRed position={marblePosition(ballPositions[9]?.position)} />
           {/* 3. red */}
-          <MarbleRed position={[0.07, 0.01, -0.52]} />
+          <MarbleRed position={marblePosition(ballPositions[10]?.position)} />
           {/* 4. red */}
-          <MarbleRed position={[0.001, 0.01, -0.52]} />
-
-          {/* POSITIONS GREEN */}
-          <KH playerColor={playerColor} position={positionCard1(playerColor)} />
+          <MarbleRed position={marblePosition(ballPositions[11]?.position)} />
+          {/* <KH playerColor={playerColor} position={positionCard1(playerColor)} />
           <QH playerColor={playerColor} position={positionCard2(playerColor)} />
           <JH playerColor={playerColor} position={positionCard3(playerColor)} />
           <AH playerColor={playerColor} position={positionCard4(playerColor)} />
@@ -157,9 +192,55 @@ const BasicBoard = (props) => {
           <NineH
             playerColor={playerColor}
             position={positionCard6(playerColor)}
+          /> */}
+          <Card
+            url={getCard(
+              players[0]?.playerHand.activeCards[0]?.rank,
+              players[0]?.playerHand.activeCards[0]?.suit
+            )}
+            playerColor={playerColor}
+            position={positionCard1(playerColor)}
           />
-
-          {/* <Card url="gltf/cards/9H.gltf" position={[0.95, 0.55, -0.13]} /> */}
+          <Card
+            url={getCard(
+              players[0]?.playerHand.activeCards[1]?.rank,
+              players[0]?.playerHand.activeCards[1]?.suit
+            )}
+            playerColor={playerColor}
+            position={positionCard2(playerColor)}
+          />
+          <Card
+            url={getCard(
+              players[0]?.playerHand.activeCards[2]?.rank,
+              players[0]?.playerHand.activeCards[2]?.suit
+            )}
+            playerColor={playerColor}
+            position={positionCard3(playerColor)}
+          />
+          <Card
+            url={getCard(
+              players[0]?.playerHand.activeCards[3]?.rank,
+              players[0]?.playerHand.activeCards[3]?.suit
+            )}
+            playerColor={playerColor}
+            position={positionCard4(playerColor)}
+          />
+          <Card
+            url={getCard(
+              players[0]?.playerHand.activeCards[4]?.rank,
+              players[0]?.playerHand.activeCards[4]?.suit
+            )}
+            playerColor={playerColor}
+            position={positionCard5(playerColor)}
+          />
+          <Card
+            url={getCard(
+              players[0]?.playerHand.activeCards[5]?.rank,
+              players[0]?.playerHand.activeCards[5]?.suit
+            )}
+            playerColor={playerColor}
+            position={positionCard6(playerColor)}
+          />
         </Suspense>
       </Canvas>
       {/* <DatGui data={datGuiState} onUpdate={setDatGuiState}>

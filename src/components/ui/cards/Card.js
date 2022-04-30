@@ -8,11 +8,11 @@ export const Card = (props) => {
   const playerColor = props.playerColor;
 
   let rotation = [Math.PI / 3, Math.PI / 6, -Math.PI / 4];
-  if (playerColor === "red") {
+  if (playerColor === "RED") {
     rotation = [-Math.PI / 3.2, -Math.PI / 6.2, -Math.PI / 5];
-  } else if (playerColor === "blue") {
+  } else if (playerColor === "BLUE") {
     rotation = [Math.PI / 3.2, -Math.PI / 6, Math.PI / 5];
-  } else if (playerColor === "yellow") {
+  } else if (playerColor === "YELLOW") {
     rotation = [-Math.PI / 3.2, Math.PI / 6, Math.PI / 5];
   }
   return (

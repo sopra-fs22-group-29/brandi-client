@@ -1,6 +1,6 @@
 import BaseContainer from "components/ui/BaseContainer";
 import { Button } from "components/ui/Button";
-import { createLobby, joinLobby } from "helpers/allLobby";
+import { createLobby, joinLobby } from "helpers/allGame";
 import { handleError } from "helpers/api";
 import { logout } from "helpers/authentification";
 import { connect } from "helpers/webSocket";
