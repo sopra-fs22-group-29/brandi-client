@@ -2,6 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { Board } from "components/ui/Board";
 import { Button } from "components/ui/Button";
 import { Card } from "components/ui/cards/Card";
+import { CircleToClick } from "components/ui/CircleToClick";
 import { MarbleGeneral } from "components/ui/marbles/MarbleGeneral";
 import { getCard, positionCard } from "helpers/allCards";
 import { marblePosition } from "helpers/marblePosition";
@@ -157,6 +158,7 @@ const BasicBoard = (props) => {
       <Canvas>
         <Suspense fallback={null}>
           <Board playerColor={state.players[state.playerIndex].color} />
+          <CircleToClick position={[0.067, 0.011, 0.35]} />
           {/* marble to test with dat gui */}
           {/* {datGuiState.showMarble && (
             <MarbleBlue
