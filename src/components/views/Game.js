@@ -159,8 +159,8 @@ const Game = () => {
         className="login button"
         disabled={!enterCode}
         onClick={() => {
-          connectToWebsocket(enterCode);
           enterLobby(enterCode);
+          connectToWebsocket(enterCode);
         }}
       >
         Join
@@ -180,8 +180,8 @@ const Game = () => {
           <Button
             className="login button"
             onClick={() => {
-              connectToWebsocket(createCode);
               enterLobby(createCode);
+              connectToWebsocket(createCode);
             }}
           >
             Join
@@ -198,8 +198,8 @@ const Game = () => {
           className="login button"
           disabled={!enterCode}
           onClick={() => {
-            connectToWebsocket(enterCode);
             enterLobby(enterCode);
+            connectToWebsocket(enterCode);
           }}
         >
           Join

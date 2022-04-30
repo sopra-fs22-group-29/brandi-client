@@ -24,9 +24,9 @@ export const connect = async (gameLink) => {
 
       // subscribe to all the routes that we want te be notified from
       // // (we could use /client/COLOR in order to notify only one player)
-      // stompClient.subscribe("/client/move", function (messageOutput) {
-      //   console.log("player moved:" + messageOutput.body);
-      // });
+      stompClient.subscribe("/client/move-user" + sessionId, function (messageOutput) {
+        console.log("player moved:" + messageOutput.body);
+      });
       // stompClient.subscribe("/client/connected", function (messageOutput) {
       //   console.log("player connected: " + messageOutput);
       // });
@@ -94,21 +94,21 @@ export const test = (roomId) => {
   stompClient.send("/app/websocket/" + roomId + "/test");
 };
 
-// export const executeExampleMove = () => {
-//   stompClient.send(
-//     "/app/websocket/move",
-//     {},
-//     JSON.stringify({
-//       ballId: 1,
-//       destinationTile: 22,
-//       card: {
-//         id: 333,
-//         rank: "SEVEN",
-//         suit: "DIAMOND",
-//       },
-//     })
-//   );
-// };
+export const executeExampleMove = (uuid) => {
+  stompClient.send(
+    "/app/websocket/" + uuid + "/move",
+    {},
+    JSON.stringify({
+      ballId: 1,
+      destinationTile: 22,
+      card: {
+        id: 333,
+        rank: "SEVEN",
+        suit: "DIAMOND",
+      },
+    })
+  );
+};
 
 const setSessionIdFromURL = (url) => {
   url = url.replace("ws://localhost:8080/websocket/", "");

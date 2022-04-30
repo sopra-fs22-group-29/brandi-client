@@ -5,7 +5,7 @@ import { MarbleBlue } from "components/ui/marbles/MarbleBlue";
 import { MarbleGreen } from "components/ui/marbles/MarbleGreen";
 import { MarbleRed } from "components/ui/marbles/MarbleRed";
 import { MarbleYellow } from "components/ui/marbles/MarbleYellow";
-import { connect } from "helpers/webSocket";
+import { connect, executeExampleMove } from "helpers/webSocket";
 import { Suspense, useEffect, useState } from "react";
 import DatGui, { DatBoolean, DatFolder, DatNumber } from "react-dat-gui";
 import { useParams } from "react-router-dom";
@@ -35,8 +35,8 @@ const BasicBoard = (props) => {
 
     // Loading our brändy dog board
     <div style={{ height: "100%", width: "100%" }}>
-      {/* <button
-        onClick={() => executeExampleMove()}
+      {<button
+        onClick={() => executeExampleMove(uuid)}
         style={{
           zIndex: "10",
           position: "absolute",
@@ -47,7 +47,7 @@ const BasicBoard = (props) => {
         }}
       >
         Click to Move
-      </button> */}
+      </button>}
       <Canvas>
         <Suspense fallback={null}>
           <Board />
