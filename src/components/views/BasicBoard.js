@@ -14,6 +14,14 @@ import Modal from "react-modal/lib/components/Modal";
 import { Button } from "components/ui/Button";
 import "styles/ui/Modal.scss";
 import { useHistory } from "react-router-dom";
+import {
+  positionCard1,
+  positionCard2,
+  positionCard3,
+  positionCard4,
+  positionCard5,
+  positionCard6,
+} from "helpers/cardPosition";
 
 // drop .gltf file at https://gltf.pmnd.rs/, to be able to access every single component
 const BasicBoard = (props) => {
@@ -26,6 +34,7 @@ const BasicBoard = (props) => {
     posY: 0.01,
     posZ: 0,
   });
+  const playerColor = "yellow";
 
   useEffect(() => {
     connect(uuid);
@@ -96,7 +105,7 @@ const BasicBoard = (props) => {
       </button> */}
       <Canvas>
         <Suspense fallback={null}>
-          <Board playerColor="" />
+          <Board playerColor={playerColor} />
           {/* marble to test with dat gui */}
           {/* {datGuiState.showMarble && (
             <MarbleBlue
@@ -136,12 +145,20 @@ const BasicBoard = (props) => {
           {/* 4. red */}
           <MarbleRed position={[0.001, 0.01, -0.52]} />
 
-          {/* <KH position={[0.74, 1, 0]} />
-          <QH position={[0.85, 1.03, -0.07]} />
-          <JH position={[0.79, 0.79, 0]} />
-          <AH position={[0.9, 0.793, -0.105]} />
-          <TenH position={[0.85, 0.58, 0.01]} />
-          <NineH position={[0.95, 0.55, -0.13]} /> */}
+          {/* POSITIONS GREEN */}
+          <KH playerColor={playerColor} position={positionCard1(playerColor)} />
+          <QH playerColor={playerColor} position={positionCard2(playerColor)} />
+          <JH playerColor={playerColor} position={positionCard3(playerColor)} />
+          <AH playerColor={playerColor} position={positionCard4(playerColor)} />
+          <TenH
+            playerColor={playerColor}
+            position={positionCard5(playerColor)}
+          />
+          <NineH
+            playerColor={playerColor}
+            position={positionCard6(playerColor)}
+          />
+
           {/* <Card url="gltf/cards/9H.gltf" position={[0.95, 0.55, -0.13]} /> */}
         </Suspense>
       </Canvas>
