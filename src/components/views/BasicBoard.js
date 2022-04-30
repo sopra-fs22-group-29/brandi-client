@@ -46,6 +46,7 @@ const BasicBoard = (props) => {
   //   posZ: 0,
   // });
   const [state, setState] = useState({
+    selectState: "card",
     playerIndex: 0,
     players: [
       { ...defaultPlayer },
@@ -111,6 +112,8 @@ const BasicBoard = (props) => {
           marginLeft: "97%",
           marginTop: "5px",
           cursor: "pointer",
+          position: "absolute",
+          zIndex: 2,
         }}
         onClick={() => setShowModal(true)}
       />
@@ -151,10 +154,12 @@ const BasicBoard = (props) => {
       >
         Click to Move
       </button> */}
-      <div>{state.players[0].username}</div>
-      <div>{state.players[1].username}</div>
-      <div>{state.players[2].username}</div>
-      <div>{state.players[3].username}</div>
+      <div style={{ position: "absolute" }}>
+        <div>{state.players[0].username}</div>
+        <div>{state.players[1].username}</div>
+        <div>{state.players[2].username}</div>
+        <div>{state.players[3].username}</div>
+      </div>
       <Canvas>
         <Suspense fallback={null}>
           <Board playerColor={state.players[state.playerIndex].color} />
