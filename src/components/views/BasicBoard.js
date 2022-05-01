@@ -23,7 +23,7 @@ const defaultBall = {
 };
 
 const defaultPlayer = {
-  color: "GREEN",
+  color: "RED",
   username: "",
   id: 0,
   status: null,
@@ -167,7 +167,6 @@ const BasicBoard = (props) => {
         {Array(4)
           .fill(null)
           .map((_, i) => {
-            console.log(state.players[i].playerStatus);
             return (
               <div style={{ display: "flex" }} key={i}>
                 <BiUserCircle
@@ -177,11 +176,11 @@ const BasicBoard = (props) => {
                     marginRight: "10px",
                   }}
                 />
-                {state.players[i].playerStatus === true
-                  ? state.playerIndex === i
-                    ? "You: " + `${state.players[i].username}`
-                    : state.players[i].username
-                  : ""}
+                {`${state.playerIndex === i ? "You: " : ""}${
+                  state.players[i].username ?? ""
+                }${
+                  state.players[i].playerStatus === true ? "" : " (offline) "
+                }${state.players[i].isPlaying === true ? " -> playing" : ""}`}
               </div>
             );
           })}
