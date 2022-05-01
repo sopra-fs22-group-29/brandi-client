@@ -65,12 +65,49 @@ export const connect = async (gameLink, state, setState) => {
         "/client/cards" + "-user" + sessionId,
         function (response) {
           const data = JSON.parse(response.body);
-          for (let i = 0; i < data.activeCards.length; i++) {
-            state.cards[i].id = data.activeCards[i].id;
-            state.cards[i].rank = data.activeCards[i].rank;
-            state.cards[i].suit = data.activeCards[i].suit;
-            state.cards[i].isDealt = true;
+
+          // remove cards that can not be found in the response/update
+          for (let i = 0; i < 6; i++) {
+            let found = false;
+            for (let j = 0; j < data.activeCards.length; j++) {
+              if (state.cards[i].id === data.activeCards[j].id) {
+                found = true;
+                break;
+              }
+            }
+            if (!found) {
+              state.cards[i].id = null;
+              state.cards[i].rank = "";
+              state.cards[i].suit = "";
+              state.cards[i].isDealt = false;
+            }
           }
+
+          // add cards that we don't have in our hand yet
+          for (let j = 0; j < data.activeCards.length; j++) {
+            let found = false;
+            for (let i = 0; i < 6; i++) {
+              if (state.cards[i].id === data.activeCards[j].id) {
+                found = true;
+                break;
+              }
+            }
+            if (!found) {
+              for (let i = 0; i < 6; i++) {
+                if (state.cards[i].id === null) {
+                  found = true;
+                  // update or initialize the card
+                  state.cards[i].id = data.activeCards[j].id;
+                  state.cards[i].rank = data.activeCards[j].rank;
+                  state.cards[i].suit = data.activeCards[j].suit;
+                  state.cards[i].isDealt = true;
+                  break;
+                }
+              }
+            }
+          }
+
+          console.log(state.cards);
 
           setState({ ...state });
         }
@@ -127,16 +164,6 @@ export const connect = async (gameLink, state, setState) => {
             }
           }
 
-          // discard the played card
-          for (let i = 0; i < 6; i++) {
-            if (state.cards[i].id === cardId) {
-              state.cards[i].id = null;
-              state.cards[i].rank = "";
-              state.cards[i].suit = "";
-              state.cards[i].isDealt = false;
-            }
-          }
-
           state.selectState = "card";
           state.circlesToDisplay = [];
           state.selectedBallId = null;
@@ -155,6 +182,7 @@ export const connect = async (gameLink, state, setState) => {
               state.players[i].id === 0 ||
               state.players[i].id === data.player.id
             ) {
+              state.players[i].id = data.player.id;
               state.players[i].color = data.color;
               state.players[i].username = data.player.username;
               state.players[i].playerStatus = data.playerStatus;
@@ -177,6 +205,21 @@ export const connect = async (gameLink, state, setState) => {
               state.players[i].username = data.player.username;
               state.players[i].playerStatus = data.playerStatus;
               state.players[i].isPlaying = data.isPlaying;
+              break;
+            }
+          }
+          setState({ ...state });
+        }
+      );
+      stompClient.subscribe(
+        "/client/nextPlayer" + "-user" + sessionId,
+        function (response) {
+          const data = JSON.parse(response.body);
+          // update or add the right user
+          for (let i = 0; i < state.players.length; i++) {
+            state.players[i].isPlaying = false;
+            if (state.players[i].id === data.id) {
+              state.players[i].isPlaying = true;
               break;
             }
           }
