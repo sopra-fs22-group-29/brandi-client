@@ -29,6 +29,7 @@ const defaultPlayer = {
 };
 
 const defaultCard = {
+  id: null,
   rank: "",
   suit: "",
   isDealt: false,
@@ -46,8 +47,11 @@ const BasicBoard = (props) => {
   //   posZ: 0,
   // });
   const [state, setState] = useState({
-    selectState: "card",
     playerIndex: 0,
+    selectState: "card",
+    selectedCardIndex: null,
+    selectedBallId: null,
+    circlesToDisplay: [],
     players: [
       { ...defaultPlayer },
       { ...defaultPlayer },
@@ -86,6 +90,7 @@ const BasicBoard = (props) => {
   });
 
   useEffect(() => {
+    console.log("basic board rendering");
     connect(uuid, state, setState);
   }, []);
 
@@ -163,13 +168,33 @@ const BasicBoard = (props) => {
       <Canvas>
         <Suspense fallback={null}>
           <Board playerColor={state.players[state.playerIndex].color} />
-          <CircleToClick position={[0.067, 0.011, 0.35]} />
           {/* marble to test with dat gui */}
           {/* {datGuiState.showMarble && (
             <MarbleBlue
               position={[datGuiState.posX, datGuiState.posY, datGuiState.posZ]}
             />
           )} */}
+          {/* circlesToDisplay */}
+          {state.circlesToDisplay.map((position, i) => {
+            return (
+              <CircleToClick
+                key={i}
+                position={[
+                  marblePosition(position)[0],
+                  0.011,
+                  marblePosition(position)[2],
+                ]}
+                destinationTile={position}
+                selectedBallId={state.selectedBallId}
+                card={{
+                  id: state.cards[state.selectedCardIndex].id,
+                  rank: state.cards[state.selectedCardIndex].rank,
+                  suit: state.cards[state.selectedCardIndex].suit,
+                }}
+              />
+            );
+          })}
+
           {Array(16)
             .fill(null)
             .map((_, i) => {
@@ -178,6 +203,33 @@ const BasicBoard = (props) => {
                   key={i}
                   color={state.balls[i].color}
                   position={state.balls[i].coordinates}
+                  ballId={state.balls[i].id}
+                  isHighlighted={state.balls[i].isHighlighted}
+                  selectState={state.selectState}
+                  selectedCardIndex={state.selectedCardIndex}
+                  rank={
+                    state.selectedCardIndex
+                      ? state.cards[state.selectedCardIndex].rank
+                      : undefined
+                  }
+                  suit={
+                    state.selectedCardIndex
+                      ? state.cards[state.selectedCardIndex].suit
+                      : undefined
+                  }
+                  selectedBallId={state.selectedBallId}
+                  onChangeSelectedBallId={(selected) => {
+                    state.selectedBallId = selected;
+                    setState({ ...state });
+                  }}
+                  onChangeSelectState={(select) => {
+                    state.selectState = select;
+                    setState({ ...state });
+                  }}
+                  onChangeCirclesToDisplay={(select) => {
+                    state.circlesToDisplay = select;
+                    setState({ ...state });
+                  }}
                 />
               );
             })}
@@ -189,7 +241,13 @@ const BasicBoard = (props) => {
                 state.cards[i].isDealt && (
                   <Card
                     key={i}
+                    cardIndex={i}
+                    selectedIndex={state.selectedCardIndex}
+                    state={state}
+                    setState={setState}
                     url={getCard(state.cards[i].rank, state.cards[i].suit)}
+                    rank={state.cards[i].rank}
+                    suit={state.cards[i].suit}
                     playerColor={state.players[state.playerIndex].color}
                     position={positionCard(
                       state.players[state.playerIndex].color,

@@ -2,7 +2,7 @@ import * as SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { userAuthData } from "./authentification";
 import { getDomain } from "./getDomain";
-import { marblePosition } from "./marblePosition";
+import { findMarbleIndex, marblePosition } from "./marblePosition";
 
 export var stompClient = null;
 export var sessionId = "";
@@ -11,6 +11,7 @@ var currentUser = "";
 
 export const connect = async (gameLink, state, setState) => {
   if (gameLink === gameUuid) return; // make sure not to connect twice
+  gameUuid = gameLink;
 
   currentUser = JSON.parse(localStorage.getItem("user"));
   const url = getDomain() + "/websocket";
@@ -63,6 +64,7 @@ export const connect = async (gameLink, state, setState) => {
         function (response) {
           const data = JSON.parse(response.body);
           for (let i = 0; i < data.activeCards.length; i++) {
+            state.cards[i].id = data.activeCards[i].id;
             state.cards[i].rank = data.activeCards[i].rank;
             state.cards[i].suit = data.activeCards[i].suit;
             state.cards[i].isDealt = true;
@@ -72,9 +74,72 @@ export const connect = async (gameLink, state, setState) => {
         }
       );
       stompClient.subscribe(
+        "/client/highlight/marbles" + "-user" + sessionId,
+        function (response) {
+          const data = JSON.parse(response.body);
+          for (let i = 0; i < 16; i++) {
+            state.balls[i].isHighlighted = false;
+          }
+          for (let i = 0; i < data.marbles.length; i++) {
+            const ind = findMarbleIndex(state, data.marbles[i]);
+            if (ind != null) {
+              state.balls[ind].isHighlighted = true;
+            }
+          }
+          state.selectedCardIndex = data.index;
+          state.selectState = "ball";
+          state.circlesToDisplay = [];
+          state.selectedBallId = null;
+          setState({ ...state });
+        }
+      );
+      stompClient.subscribe(
+        "/client/highlight/holes" + "-user" + sessionId,
+        function (response) {
+          const data = JSON.parse(response.body);
+          state.selectedBallId = data.marbleId;
+          state.circlesToDisplay = data.highlightHoles;
+          setState({ ...state });
+        }
+      );
+      stompClient.subscribe(
+        "/client/move" + "-user" + sessionId,
+        function (response) {
+          const data = JSON.parse(response.body);
+          const id = data.ballId;
+          const destination = data.destinationTile;
+          const cardId = data.cardId;
+
+          // find ball with the ballId and move it
+          for (let i = 0; i < 16; i++) {
+            if (state.balls[i].id === id) {
+              state.balls[i].position = destination;
+              state.balls[i].coordinates = marblePosition(
+                state.balls[i].position
+              );
+              break;
+            }
+          }
+
+          // discard the played card
+          for (let i = 0; i < 6; i++) {
+            if (state.cards[i].id === cardId) {
+              state.cards[i].id = null;
+              state.cards[i].rank = "";
+              state.cards[i].suit = "";
+              state.cards[i].isDealt = false;
+            }
+          }
+
+          state.selectedBallId = null;
+
+          setState({ ...state });
+        }
+      );
+      stompClient.subscribe(
         "/client/player/joined" + "-user" + sessionId,
-        function (messageOutput) {
-          // update the correct player
+        function (response) {
+          // add the right user
         }
       );
 
@@ -99,6 +164,43 @@ window.onbeforeunload = function () {
 
 export const join = (roomId) => {
   stompClient.send("/app/websocket/" + roomId + "/join");
+};
+
+export const selectCard = (index, rank, suit) => {
+  stompClient.send(
+    "/app/websocket/" + gameUuid + "/select/card",
+    {},
+    JSON.stringify({
+      index: index,
+      rank: rank,
+      suit: suit,
+    })
+  );
+};
+
+export const selectMarble = (cardIndex, rank, suit, marbleId) => {
+  stompClient.send(
+    "/app/websocket/" + gameUuid + "/select/marble",
+    {},
+    JSON.stringify({
+      cardIndex: cardIndex,
+      rank: rank,
+      suit: suit,
+      marbleId: marbleId,
+    })
+  );
+};
+
+export const moveMarble = (card, ballId, destinationTile) => {
+  stompClient.send(
+    "/app/websocket/" + gameUuid + "/move",
+    {},
+    JSON.stringify({
+      playedCard: card,
+      ballId: ballId,
+      destinationTile: destinationTile,
+    })
+  );
 };
 
 // export const executeExampleMove = () => {

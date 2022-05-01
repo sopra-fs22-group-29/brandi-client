@@ -198,3 +198,10 @@ export const marblePosition = (fieldNumber) => {
 
   return position;
 };
+
+export const findMarbleIndex = (state, pos) => {
+  for (let i = 0; i < 16; i++) {
+    if (state.balls[i].position === pos) return i;
+  }
+  return null;
+};
