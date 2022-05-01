@@ -1,5 +1,6 @@
 import { animated, useSpring } from "@react-spring/three";
 import { useGLTF } from "@react-three/drei";
+import { selectCard } from "helpers/webSocket";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -8,14 +9,14 @@ export const Card = (props) => {
   const { nodes, materials } = useGLTF(props.url);
   const playerColor = props.playerColor;
   const [hover, setHover] = useState(false);
-  const [active, setActive] = useState(false);
 
   const { scale } = useSpring({
-    scale: active
-      ? [0.08, 0.4, 0.1]
-      : hover
-      ? [0.06, 0.3, 0.085]
-      : [0.055, 0.1, 0.08],
+    scale:
+      props.cardIndex == props.selectedIndex
+        ? [0.0653125, 0.4, 0.095]
+        : hover
+        ? [0.0570625, 0.3, 0.083]
+        : [0.055, 0.1, 0.08],
     config: { duration: 100 },
   });
 
@@ -32,14 +33,24 @@ export const Card = (props) => {
     rotation = [-Math.PI / 3.2, Math.PI / 6, Math.PI / 5];
   }
   return (
-    <group ref={group} {...props} dispose={null}>
-      <animated.group
-        onClick={(event) => setActive(!active)}
-        onPointerOver={(event) => setHover(true)}
-        onPointerOut={(event) => setHover(false)}
-        rotation={rotation}
-        scale={scale}
-      >
+    <animated.group
+      onClick={(event) => {
+        event.stopPropagation();
+        if (props.cardIndex !== props.selectedIndex) {
+          selectCard(props.cardIndex, props.rank, props.suit);
+        }
+      }}
+      onPointerOver={(event) => {
+        setHover(true);
+      }}
+      onPointerOut={(event) => setHover(false)}
+      rotation={rotation}
+      scale={scale}
+      ref={group}
+      {...props}
+      dispose={null}
+    >
+      <group>
         <mesh
           castShadow
           receiveShadow
@@ -52,8 +63,8 @@ export const Card = (props) => {
           geometry={nodes.Plane_2.geometry}
           material={materials.BackFace}
         />
-      </animated.group>
-    </group>
+      </group>
+    </animated.group>
   );
 };
 

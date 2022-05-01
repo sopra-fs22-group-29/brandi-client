@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
 import { useGLTF } from "@react-three/drei";
+import { moveMarble } from "helpers/webSocket";
+import React, { useEffect, useRef, useState } from "react";
 
 export const CircleToClick = (props) => {
   const group = useRef();
@@ -19,6 +20,9 @@ export const CircleToClick = (props) => {
       dispose={null}
       onPointerOver={(event) => setHover(true)}
       onPointerOut={(event) => setHover(false)}
+      onClick={(event) => {
+        moveMarble(props.card, props.selectedBallId, props.destinationTile);
+      }}
     >
       <mesh
         castShadow
