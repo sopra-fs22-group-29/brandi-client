@@ -253,12 +253,12 @@ const BasicBoard = (props) => {
                   selectState={state.selectState}
                   selectedCardIndex={state.selectedCardIndex}
                   rank={
-                    state.selectedCardIndex
+                    state.selectedCardIndex !== null
                       ? state.cards[state.selectedCardIndex].rank
                       : undefined
                   }
                   suit={
-                    state.selectedCardIndex
+                    state.selectedCardIndex !== null
                       ? state.cards[state.selectedCardIndex].suit
                       : undefined
                   }
