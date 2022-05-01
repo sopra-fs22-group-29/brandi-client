@@ -220,7 +220,6 @@ export const connect = async (gameLink, state, setState) => {
             state.players[i].isPlaying = false;
             if (state.players[i].id === data.id) {
               state.players[i].isPlaying = true;
-              break;
             }
           }
           setState({ ...state });
