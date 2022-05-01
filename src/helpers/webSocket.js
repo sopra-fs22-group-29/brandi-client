@@ -146,18 +146,34 @@ export const connect = async (gameLink, state, setState) => {
         "/client/player/joined" + "-user" + sessionId,
         function (response) {
           const data = JSON.parse(response.body);
-          console.log("data---------", data);
-          // add the right user
-          const found = state.players.some(
-            (user) => user.id === data.player.id
-          );
-          if (!found) {
-            for (let i = 0; i < state.players.length; i++) {
-              if (state.players[i].id === 0) {
-                state.players[i].color = data.color;
-                state.players[i].username = data.player.username;
-                break;
-              }
+          // update or add the right user
+          for (let i = 0; i < state.players.length; i++) {
+            if (
+              state.players[i].id === 0 ||
+              state.players[i].id === data.player.id
+            ) {
+              state.players[i].color = data.color;
+              state.players[i].username = data.player.username;
+              state.players[i].playerStatus = data.player.playerStatus;
+              state.players[i].isPlaying = data.player.isPlaying;
+              break;
+            }
+          }
+          setState({ ...state });
+        }
+      );
+      stompClient.subscribe(
+        "/client/player/left" + "-user" + sessionId,
+        function (response) {
+          const data = JSON.parse(response.body);
+          // update or add the right user
+          for (let i = 0; i < state.players.length; i++) {
+            if (state.players[i].id === data.player.id) {
+              state.players[i].color = data.color;
+              state.players[i].username = data.player.username;
+              state.players[i].playerStatus = data.player.playerStatus;
+              state.players[i].isPlaying = data.player.isPlaying;
+              break;
             }
           }
           setState({ ...state });
@@ -171,6 +187,7 @@ export const connect = async (gameLink, state, setState) => {
 };
 
 export const disconnect = () => {
+  leave();
   if (stompClient !== null) {
     stompClient.disconnect();
   }
@@ -185,6 +202,10 @@ window.onbeforeunload = function () {
 
 export const join = (roomId) => {
   stompClient.send("/app/websocket/" + roomId + "/join");
+};
+
+export const leave = () => {
+  stompClient.send("/app/websocket/" + gameUuid + "/leave");
 };
 
 export const selectCard = (index, rank, suit) => {
