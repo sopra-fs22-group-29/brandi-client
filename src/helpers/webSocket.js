@@ -112,12 +112,16 @@ export const connect = async (gameLink, state, setState) => {
 
           // find ball with the ballId and move it
           for (let i = 0; i < 16; i++) {
+            state.balls[i].isHighlighted = false;
             if (state.balls[i].id === id) {
               state.balls[i].position = destination;
               state.balls[i].coordinates = marblePosition(
                 state.balls[i].position
               );
-              break;
+            }
+
+            for (let i = 0; i < 16; i++) {
+              state.balls[i].isHighlighted = false;
             }
           }
 
@@ -131,6 +135,8 @@ export const connect = async (gameLink, state, setState) => {
             }
           }
 
+          state.selectState = "card";
+          state.circlesToDisplay = [];
           state.selectedBallId = null;
 
           setState({ ...state });
