@@ -162,56 +162,31 @@ const BasicBoard = (props) => {
       >
         Click to Move
       </button> */}
+
       <div style={{ position: "absolute", margin: "20px" }}>
-        <div style={{ display: "flex" }}>
-          <BiUserCircle
-            style={{
-              fontSize: "25px",
-              color: `${state.players[0].color}`,
-              marginRight: "10px",
-            }}
-          />
-          {state.playerIndex === 0
-            ? "You: " + `${state.players[0].username}`
-            : state.players[0].username}{" "}
-        </div>
-        <div style={{ display: "flex" }}>
-          <BiUserCircle
-            style={{
-              fontSize: "25px",
-              color: `${state.players[1].color}`,
-              marginRight: "10px",
-            }}
-          />
-          {state.playerIndex === 1
-            ? "You: " + `${state.players[1].username}`
-            : state.players[1].username}{" "}
-        </div>
-        <div style={{ display: "flex" }}>
-          <BiUserCircle
-            style={{
-              fontSize: "25px",
-              color: `${state.players[2].color}`,
-              marginRight: "10px",
-            }}
-          />
-          {state.playerIndex === 2
-            ? "You: " + `${state.players[2].username}`
-            : state.players[2].username}{" "}
-        </div>
-        <div style={{ display: "flex" }}>
-          <BiUserCircle
-            style={{
-              fontSize: "25px",
-              color: `${state.players[3].color}`,
-              marginRight: "10px",
-            }}
-          />
-          {state.playerIndex === 3
-            ? "You: " + `${state.players[3].username}`
-            : state.players[3].username}{" "}
-        </div>
+        {Array(4)
+          .fill(null)
+          .map((_, i) => {
+            console.log(state.players[i].playerStatus);
+            return (
+              <div style={{ display: "flex" }} key={i}>
+                <BiUserCircle
+                  style={{
+                    fontSize: "25px",
+                    color: `${state.players[i].color}`,
+                    marginRight: "10px",
+                  }}
+                />
+                {state.players[i].playerStatus === true
+                  ? state.playerIndex === i
+                    ? "You: " + `${state.players[i].username}`
+                    : state.players[i].username
+                  : ""}
+              </div>
+            );
+          })}
       </div>
+
       <Canvas>
         <Suspense fallback={null}>
           <Board playerColor={state.players[state.playerIndex].color} />
