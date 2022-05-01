@@ -89,9 +89,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        onClick={() => {
-          alert("click");
-        }}
         castShadow
         receiveShadow
         geometry={nodes.Circle003.geometry}
@@ -293,9 +290,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        onClick={() => {
-          alert("click 26");
-        }}
         castShadow
         receiveShadow
         geometry={nodes.Circle026.geometry}
