@@ -27,6 +27,8 @@ const defaultPlayer = {
   username: "",
   id: 0,
   status: null,
+  isPlaying: false,
+  playerStatus: false,
 };
 
 const defaultCard = {
