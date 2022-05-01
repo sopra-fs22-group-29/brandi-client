@@ -175,10 +175,10 @@ const BasicBoard = (props) => {
             />
           )} */}
           {/* circlesToDisplay */}
-          {state.circlesToDisplay.map((position, i) => {
+          {state.circlesToDisplay.map((position) => {
             return (
               <CircleToClick
-                key={i}
+                key={position}
                 position={[
                   marblePosition(position)[0],
                   0.011,
