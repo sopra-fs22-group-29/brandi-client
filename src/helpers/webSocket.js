@@ -45,6 +45,8 @@ export const connect = async (gameLink, state, setState) => {
             state.players[i].username = data.playerStates[i].player.username;
             state.players[i].username = data.playerStates[i].player.username;
             state.players[i].status = data.playerStates[i].status;
+            state.players[i].playerStatus = data.playerStates[i].playerStatus;
+            state.players[i].isPlaying = data.playerStates[i].isPlaying;
           }
 
           for (let i = 0; i < data.boardstate.balls.length; i++) {
@@ -146,6 +148,7 @@ export const connect = async (gameLink, state, setState) => {
         "/client/player/joined" + "-user" + sessionId,
         function (response) {
           const data = JSON.parse(response.body);
+
           // update or add the right user
           for (let i = 0; i < state.players.length; i++) {
             if (
@@ -154,11 +157,12 @@ export const connect = async (gameLink, state, setState) => {
             ) {
               state.players[i].color = data.color;
               state.players[i].username = data.player.username;
-              state.players[i].playerStatus = data.player.playerStatus;
-              state.players[i].isPlaying = data.player.isPlaying;
+              state.players[i].playerStatus = data.playerStatus;
+              state.players[i].isPlaying = data.isPlaying;
               break;
             }
           }
+
           setState({ ...state });
         }
       );
@@ -171,8 +175,8 @@ export const connect = async (gameLink, state, setState) => {
             if (state.players[i].id === data.player.id) {
               state.players[i].color = data.color;
               state.players[i].username = data.player.username;
-              state.players[i].playerStatus = data.player.playerStatus;
-              state.players[i].isPlaying = data.player.isPlaying;
+              state.players[i].playerStatus = data.playerStatus;
+              state.players[i].isPlaying = data.isPlaying;
               break;
             }
           }
