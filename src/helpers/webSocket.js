@@ -147,7 +147,6 @@ export const connect = async (gameLink, state, setState) => {
       stompClient.subscribe(
         "/client/player/joined" + "-user" + sessionId,
         function (response) {
-          console.log("response---------", response.body);
           const data = JSON.parse(response.body);
 
           // update or add the right user
