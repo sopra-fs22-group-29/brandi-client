@@ -87,105 +87,66 @@ export const positionCard6 = (playerColor) => {
 };
 
 export const getCard = (rank, suit) => {
-  let card = "gltf/cards/2C.gltf";
-  if ((rank === "TWO") & (suit === "CLUB")) {
-    card = "gltf/cards/2C.gltf";
-  } else if (rank === "TWO" && suit === "DIAMOND") {
-    card = "gltf/cards/2D.gltf";
-  } else if (rank === "TWO" && suit === "HEART") {
-    card = "gltf/cards/2H.gltf";
-  } else if (rank === "TWO" && suit === "SPADE") {
-    card = "gltf/cards/2S.gltf";
-  } else if (rank === "THREE" && suit === "CLUB") {
-    card = "gltf/cards/3C.gltf";
-  } else if (rank === "THREE" && suit === "DIAMOND") {
-    card = "gltf/cards/3D.gltf";
-  } else if (rank === "THREE" && suit === "HEART") {
-    card = "gltf/cards/3H.gltf";
-  } else if (rank === "THREE" && suit === "SPADE") {
-    card = "gltf/cards/3S.gltf";
-  } else if (rank === "FOUR" && suit === "CLUB") {
-    card = "gltf/cards/4C.gltf";
-  } else if (rank === "FOUR" && suit === "DIAMOND") {
-    card = "gltf/cards/4D.gltf";
-  } else if (rank === "FOUR" && suit === "HEART") {
-    card = "gltf/cards/4H.gltf";
-  } else if (rank === "FOUR" && suit === "SPADE") {
-    card = "gltf/cards/4S.gltf";
-  } else if (rank === "FIVE" && suit === "CLUB") {
-    card = "gltf/cards/5C.gltf";
-  } else if (rank === "FIVE" && suit === "DIAMOND") {
-    card = "gltf/cards/5D.gltf";
-  } else if (rank === "FIVE" && suit === "HEART") {
-    card = "gltf/cards/5H.gltf";
-  } else if (rank === "FIVE" && suit === "SPADE") {
-    card = "gltf/cards/5S.gltf";
-  } else if (rank === "SIX" && suit === "CLUB") {
-    card = "gltf/cards/6C.gltf";
-  } else if (rank === "SIX" && suit === "DIAMOND") {
-    card = "gltf/cards/6D.gltf";
-  } else if (rank === "SIX" && suit === "HEART") {
-    card = "gltf/cards/6H.gltf";
-  } else if (rank === "SIX" && suit === "SPADE") {
-    card = "gltf/cards/6S.gltf";
-  } else if (rank === "SEVEN" && suit === "CLUB") {
-    card = "gltf/cards/7C.gltf";
-  } else if (rank === "SEVEN" && suit === "DIAMOND") {
-    card = "gltf/cards/7D.gltf";
-  } else if (rank === "SEVEN" && suit === "HEART") {
-    card = "gltf/cards/7H.gltf";
-  } else if (rank === "SEVEN" && suit === "SPADE") {
-    card = "gltf/cards/7S.gltf";
-  } else if (rank === "EIGHT" && suit === "CLUB") {
-    card = "gltf/cards/8C.gltf";
-  } else if (rank === "EIGHT" && suit === "DIAMOND") {
-    card = "gltf/cards/8D.gltf";
-  } else if (rank === "EIGHT" && suit === "HEART") {
-    card = "gltf/cards/8H.gltf";
-  } else if (rank === "EIGHT" && suit === "SPADE") {
-    card = "gltf/cards/8S.gltf";
-  } else if (rank === "NINE" && suit === "CLUB") {
-    card = "gltf/cards/9C.gltf";
-  } else if (rank === "NINE" && suit === "DIAMOND") {
-    card = "gltf/cards/9D.gltf";
-  } else if (rank === "NINE" && suit === "HEART") {
-    card = "gltf/cards/9H.gltf";
-  } else if (rank === "NINE" && suit === "SPADE") {
-    card = "gltf/cards/9S.gltf";
-  } else if (rank === "TEN" && suit === "CLUB") {
-    card = "gltf/cards/0C.gltf";
-  } else if (rank === "TEN" && suit === "DIAMOND") {
-    card = "gltf/cards/0D.gltf";
-  } else if (rank === "TEN" && suit === "HEART") {
-    card = "gltf/cards/0H.gltf";
-  } else if (rank === "TEN" && suit === "SPADE") {
-    card = "gltf/cards/0S.gltf";
-  } else if (rank === "JACK" && suit === "CLUB") {
-    card = "gltf/cards/JC.gltf";
-  } else if (rank === "JACK" && suit === "DIAMOND") {
-    card = "gltf/cards/JD.gltf";
-  } else if (rank === "JACK" && suit === "HEART") {
-    card = "gltf/cards/JH.gltf";
-  } else if (rank === "JACK" && suit === "SPADE") {
-    card = "gltf/cards/JS.gltf";
-  } else if (rank === "QUEEN" && suit === "CLUB") {
-    card = "gltf/cards/QC.gltf";
-  } else if (rank === "QUEEN" && suit === "DIAMOND") {
-    card = "gltf/cards/QD.gltf";
-  } else if (rank === "QUEEN" && suit === "HEART") {
-    card = "gltf/cards/QH.gltf";
-  } else if (rank === "QUEEN" && suit === "SPADE") {
-    card = "gltf/cards/QS.gltf";
-  } else if (rank === "KING" && suit === "CLUB") {
-    card = "gltf/cards/KC.gltf";
-  } else if (rank === "KING" && suit === "DIAMOND") {
-    card = "gltf/cards/KD.gltf";
-  } else if (rank === "KING" && suit === "HEART") {
-    card = "gltf/cards/KH.gltf";
-  } else if (rank === "KING" && suit === "SPADE") {
-    card = "gltf/cards/KS.gltf";
-  } else if (rank === "JOKER" && suit === "SPADE") {
-    card = "gltf/cards/X1.gltf";
+  let card = "gltf/cards/";
+
+  switch (rank) {
+    case "TWO":
+      card += "2";
+      break;
+    case "THREE":
+      card += "3";
+      break;
+    case "FOUR":
+      card += "4";
+      break;
+    case "FIVE":
+      card += "5";
+      break;
+    case "SIX":
+      card += "6";
+      break;
+    case "SEVEN":
+      card += "7";
+      break;
+    case "EIGHT":
+      card += "8";
+      break;
+    case "NINE":
+      card += "9";
+      break;
+    case "TEN":
+      card += "0";
+      break;
+    case "JACK":
+      card += "J";
+      break;
+    case "QUEEN":
+      card += "Q";
+      break;
+    case "KING":
+      card += "K";
+      break;
+    case "JOKER":
+      return card + "X1.gltf";
+    case "ACE":
+      card += "A";
+      break;
   }
-  return card;
+
+  switch (suit) {
+    case "CLUB":
+      card += "C";
+      break;
+    case "DIAMOND":
+      card += "D";
+      break;
+    case "HEART":
+      card += "H";
+      break;
+    case "SPADE":
+      card += "S";
+      break;
+  }
+
+  return card + ".gltf";
 };
