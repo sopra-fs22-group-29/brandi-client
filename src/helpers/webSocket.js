@@ -145,7 +145,22 @@ export const connect = async (gameLink, state, setState) => {
       stompClient.subscribe(
         "/client/player/joined" + "-user" + sessionId,
         function (response) {
+          const data = JSON.parse(response.body);
+          console.log("data---------", data);
           // add the right user
+          const found = state.players.some(
+            (user) => user.id === data.player.id
+          );
+          if (!found) {
+            for (let i = 0; i < state.players.length; i++) {
+              if (state.players[i].id === 0) {
+                state.players[i].color = data.color;
+                state.players[i].username = data.player.username;
+                break;
+              }
+            }
+          }
+          setState({ ...state });
         }
       );
 

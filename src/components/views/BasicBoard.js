@@ -9,6 +9,7 @@ import { marblePosition } from "helpers/marblePosition";
 import { connect, disconnect } from "helpers/webSocket";
 import { Suspense, useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { BiUserCircle } from "react-icons/bi";
 import Modal from "react-modal/lib/components/Modal";
 import { useHistory, useParams } from "react-router-dom";
 import "styles/ui/Modal.scss";
@@ -159,11 +160,55 @@ const BasicBoard = (props) => {
       >
         Click to Move
       </button> */}
-      <div style={{ position: "absolute" }}>
-        <div>{state.players[0].username}</div>
-        <div>{state.players[1].username}</div>
-        <div>{state.players[2].username}</div>
-        <div>{state.players[3].username}</div>
+      <div style={{ position: "absolute", margin: "20px" }}>
+        <div style={{ display: "flex" }}>
+          <BiUserCircle
+            style={{
+              fontSize: "25px",
+              color: `${state.players[0].color}`,
+              marginRight: "10px",
+            }}
+          />
+          {state.playerIndex === 0
+            ? "You: " + `${state.players[0].username}`
+            : state.players[0].username}{" "}
+        </div>
+        <div style={{ display: "flex" }}>
+          <BiUserCircle
+            style={{
+              fontSize: "25px",
+              color: `${state.players[1].color}`,
+              marginRight: "10px",
+            }}
+          />
+          {state.playerIndex === 1
+            ? "You: " + `${state.players[1].username}`
+            : state.players[1].username}{" "}
+        </div>
+        <div style={{ display: "flex" }}>
+          <BiUserCircle
+            style={{
+              fontSize: "25px",
+              color: `${state.players[2].color}`,
+              marginRight: "10px",
+            }}
+          />
+          {state.playerIndex === 2
+            ? "You: " + `${state.players[2].username}`
+            : state.players[2].username}{" "}
+        </div>
+        <div style={{ display: "flex" }}>
+          <BiUserCircle
+            style={{
+              fontSize: "25px",
+              color: `${state.players[3].color}`,
+              marginRight: "10px",
+            }}
+          />
+          {state.playerIndex === 3
+            ? "You: " + `${state.players[3].username}`
+            : state.players[3].username}{" "}
+        </div>
       </div>
       <Canvas>
         <Suspense fallback={null}>
