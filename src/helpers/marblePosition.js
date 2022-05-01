@@ -33,7 +33,7 @@ export const marblePosition = (fieldNumber) => {
   } else if (fieldNumber === 15) {
     position = [0.389, 0.01, -0.488];
   } else if (fieldNumber === 16) {
-    position = [0.284, 0.01, -0.476];
+    position = [0.335, 0.01, -0.525];
   } else if (fieldNumber === 17) {
     position = [0.284, 0.01, -0.476];
   } else if (fieldNumber === 18) {
