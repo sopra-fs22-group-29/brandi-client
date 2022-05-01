@@ -220,9 +220,10 @@ export const moveMarble = (card, ballId, destinationTile) => {
 // };
 
 const setSessionIdFromURL = (url) => {
+  console.log(url);
   url = url.replace("ws://localhost:8080/websocket/", "");
   url = url.replace(
-    "ws://https://sopra-fs22-group-29-server.herokuapp.com/connected/",
+    "ws://https://sopra-fs22-group-29-server.herokuapp.com/websocket/",
     ""
   );
   url = url.replace("/websocket", "");
