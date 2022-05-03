@@ -15,9 +15,8 @@ export const getDomain = () => {
 
 export const getAuthenticatedDomain = () => {
   const credentials = atob(JSON.parse(localStorage.getItem("user")).authData);
-
-  const prodUrl = `ws://${credentials}@sopra-fs22-group-29-server.herokuapp.com/`;
-  const devUrl = `ws://${credentials}@localhost:8080`;
+  const prodUrl = `https://${credentials}@sopra-fs22-group-29-server.herokuapp.com`;
+  const devUrl = `http://${credentials}@localhost:8080`;
 
   return isProduction() ? prodUrl : devUrl;
 };

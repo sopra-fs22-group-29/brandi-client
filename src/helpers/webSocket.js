@@ -1,20 +1,23 @@
 import * as SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { userAuthData } from "./authentification";
-import { getDomain } from "./getDomain";
+import { getAuthenticatedDomain } from "./getDomain";
 import { findMarbleIndex, marblePosition } from "./marblePosition";
 
 export var stompClient = null;
 export var sessionId = "";
 export var gameUuid = "";
+export var connected = false;
 var currentUser = "";
 
 export const connect = async (gameLink, state, setState) => {
-  if (gameLink === gameUuid) return; // make sure not to connect twice
+  if (connected === true) {
+    disconnect();
+  }
   gameUuid = gameLink;
 
   currentUser = JSON.parse(localStorage.getItem("user"));
-  const url = getDomain() + "/websocket";
+  const url = getAuthenticatedDomain() + "/websocket";
   var socket = new SockJS(url);
   stompClient = over(socket);
   const authData = userAuthData();
@@ -226,6 +229,8 @@ export const connect = async (gameLink, state, setState) => {
         }
       );
 
+      connected = true;
+      // currentUser = loggedInUsername;
       // send initial message to notify everyone that we have successfully connected
       join(gameLink);
     }
@@ -237,6 +242,7 @@ export const disconnect = () => {
   if (stompClient !== null) {
     stompClient.disconnect();
   }
+  connected = false;
 };
 
 // this will close the connection and unsubscribe all subscriptions
@@ -314,7 +320,15 @@ const setSessionIdFromURL = (url) => {
     "wss://sopra-fs22-group-29-server.herokuapp.com/websocket/",
     ""
   );
+
+  const credentials = atob(JSON.parse(localStorage.getItem("user")).authData);
+  url = url.replace(`ws://${credentials}@localhost:8080/websocket/`, "");
+  url = url.replace(
+    `wss://${credentials}@sopra-fs22-group-29-server.herokuapp.com/websocket/`,
+    ""
+  );
   url = url.replace("/websocket", "");
   url = url.replace(/^[0-9]+\//, "");
+  console.log(url);
   sessionId = url;
 };
