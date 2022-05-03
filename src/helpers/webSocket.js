@@ -27,7 +27,11 @@ export const connect = async (gameLink, state, setState) => {
     },
     function (frame) {
       setSessionIdFromURL(stompClient.ws._transport.url);
-
+      if (stompClient.ws._transport.url.startsWith("http")) {
+        disconnect();
+        connect(gameLink, state, setState);
+        return;
+      }
       // stompClient.subscribe(
       //   "/client/test" + "-user" + sessionId,
       //   function (messageOutput) {
@@ -314,7 +318,6 @@ export const moveMarble = (card, ballId, destinationTile) => {
 // };
 
 const setSessionIdFromURL = (url) => {
-  console.log(url);
   url = url.replace("ws://localhost:8080/websocket/", "");
   url = url.replace(
     "wss://sopra-fs22-group-29-server.herokuapp.com/websocket/",
