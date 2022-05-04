@@ -1,7 +1,7 @@
 import * as SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { userAuthData } from "./authentification";
-import { getAuthenticatedDomain } from "./getDomain";
+import { getDomain } from "./getDomain";
 import { findMarbleIndex, marblePosition } from "./marblePosition";
 
 export var stompClient = null;
@@ -17,7 +17,7 @@ export const connect = async (gameLink, state, setState) => {
   gameUuid = gameLink;
 
   currentUser = JSON.parse(localStorage.getItem("user"));
-  const url = getAuthenticatedDomain() + "/websocket";
+  const url = getDomain() + "/websocket";
   var socket = new SockJS(url);
   stompClient = over(socket);
   const authData = userAuthData();

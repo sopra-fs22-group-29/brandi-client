@@ -1,3 +1,4 @@
+import { Html, Loader } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Board } from "components/ui/Board";
 import { Button } from "components/ui/Button";
@@ -187,7 +188,13 @@ const BasicBoard = (props) => {
       </div>
 
       <Canvas>
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <Html>
+              <Loader />
+            </Html>
+          }
+        >
           <Board playerColor={state.players[state.playerIndex].color} />
           {/* marble to test with dat gui */}
           {/* {datGuiState.showMarble && (
