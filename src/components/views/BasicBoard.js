@@ -45,6 +45,7 @@ const defaultCard = {
 const BasicBoard = (props) => {
   const history = useHistory();
   const [showModal, setShowModal] = useState(false);
+  const [endGameModal, setEndGameModal] = useState(false);
   const { uuid } = useParams();
   // const [datGuiState, setDatGuiState] = useState({
   //   showMarble: false,
@@ -140,11 +141,55 @@ const BasicBoard = (props) => {
           <Button className="login button">Pause Game</Button>
         </div>
         <div>
-          <Button className="login button" onClick={() => endGame()}>
+          <Button
+            className="login button"
+            onClick={() => setEndGameModal(true)}
+          >
             End Game
           </Button>
         </div>
       </Modal>
+      <Modal
+        isOpen={endGameModal}
+        onRequestClose={() => setEndGameModal(false)}
+        className="modal mymodal"
+        overlayClassName="modal myoverlay"
+        ariaHideApp={false}
+      >
+        <div style={{ margin: "15px" }}>
+          <p className="welcome container-text" style={{ marginTop: "0" }}>
+            End the game?
+          </p>
+          <p>
+            The game will be ended for everyone. <br /> You will be redirected
+            to the home screen
+          </p>
+          <Button
+            className="board button"
+            style={{ marginRight: "70px" }}
+            onClick={() => setEndGameModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button className="board button" onClick={() => endGame()}>
+            Yes
+          </Button>
+        </div>
+      </Modal>
+
+      {/* <button
+        onClick={() => executeExampleMove()}
+        style={{
+          zIndex: "10",
+          position: "absolute",
+          left: "50%",
+          top: "10%",
+          height: "50px",
+          width: "100px",
+        }}
+      >
+        Click to Move
+      </button> */}
 
       <div style={{ position: "absolute", margin: "20px" }}>
         {Array(4)
