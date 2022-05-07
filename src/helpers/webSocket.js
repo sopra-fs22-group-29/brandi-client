@@ -212,6 +212,7 @@ export const connect = async (gameLink, state, setState) => {
               state.players[i].username = data.player.username;
               state.players[i].playerStatus = data.playerStatus;
               state.players[i].isPlaying = data.isPlaying;
+              state.gameEnded = true;
               break;
             }
           }
