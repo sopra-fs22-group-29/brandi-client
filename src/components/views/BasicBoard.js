@@ -200,20 +200,6 @@ const BasicBoard = (props) => {
         </div>
       </Modal>
 
-      {/* <button
-        onClick={() => executeExampleMove()}
-        style={{
-          zIndex: "10",
-          position: "absolute",
-          left: "50%",
-          top: "10%",
-          height: "50px",
-          width: "100px",
-        }}
-      >
-        Click to Move
-      </button> */}
-
       <div style={{ position: "absolute", margin: "20px" }}>
         {Array(4)
           .fill(null)
