@@ -59,6 +59,7 @@ const BasicBoard = (props) => {
     selectedCardIndex: null,
     selectedBallId: null,
     circlesToDisplay: [],
+    gameEnded: false,
     players: [
       { ...defaultPlayer },
       { ...defaultPlayer },
@@ -173,6 +174,28 @@ const BasicBoard = (props) => {
           </Button>
           <Button className="board button" onClick={() => endGame()}>
             Yes
+          </Button>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={state.gameEnded}
+        className="modal mymodal"
+        overlayClassName="modal myoverlay"
+        ariaHideApp={false}
+      >
+        <div>
+          <p className="welcome container-text" style={{ marginTop: "0" }}>
+            Someone Ended the Game!
+          </p>
+          <p style={{ marginLeft: "95px" }}>
+            You will be redirected to your home screen.
+          </p>
+          <Button
+            className="board button"
+            style={{ marginLeft: "210px" }}
+            onClick={() => endGame(false)}
+          >
+            OK !
           </Button>
         </div>
       </Modal>
