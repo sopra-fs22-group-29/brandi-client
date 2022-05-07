@@ -1,5 +1,6 @@
 import { Html, Loader } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import BaseContainer from "components/ui/BaseContainer";
 import { Board } from "components/ui/Board";
 import { Button } from "components/ui/Button";
 import { Card } from "components/ui/cards/Card";
@@ -14,6 +15,7 @@ import { BiUserCircle } from "react-icons/bi";
 import Modal from "react-modal/lib/components/Modal";
 import { useHistory, useParams } from "react-router-dom";
 import "styles/ui/Modal.scss";
+import "styles/views/Board.scss";
 
 const defaultBall = {
   id: null,
@@ -103,16 +105,9 @@ const BasicBoard = (props) => {
     history.push("/game");
     // setShowModal(false);
   };
+  console.log(state.players.every((player) => player.playerStatus));
 
   return (
-    // Box example
-    // <Canvas camera={{ position: [0, 0, 7], near: 1, far: 100, fov: 45 }}>
-    //   <ambientLight />
-    //   <pointLight position={[10, 10, 10]} />
-    //   <Box position={[-1.2, 0, 0]} />
-    //   <Box position={[1.2, 0, 0]} />
-    // </Canvas>
-
     // Loading our brändy dog board
     <div style={{ height: "100%", width: "100%" }}>
       <AiOutlineMenu
@@ -150,19 +145,6 @@ const BasicBoard = (props) => {
           </Button>
         </div>
       </Modal>
-      {/* <button
-        onClick={() => executeExampleMove()}
-        style={{
-          zIndex: "10",
-          position: "absolute",
-          left: "50%",
-          top: "10%",
-          height: "50px",
-          width: "100px",
-        }}
-      >
-        Click to Move
-      </button> */}
 
       <div style={{ position: "absolute", margin: "20px" }}>
         {Array(4)
@@ -181,10 +163,31 @@ const BasicBoard = (props) => {
                   state.players[i].username ?? ""
                 }${
                   state.players[i].playerStatus === true ? "" : " (offline) "
-                }${state.players[i].isPlaying === true ? " -> playing" : ""}`}
+                }`}
               </div>
             );
           })}
+      </div>
+      <div>
+        <BaseContainer className="board container">
+          {state.players.every((player) => player.playerStatus)
+            ? state.players[state.playerIndex].isPlaying === true
+              ? "Your turn!"
+              : `Waiting for ${
+                  state.players.find((player) => player.isPlaying === true)
+                    ?.username
+                } to play...`
+            : "Waiting for players to join..."}
+
+          {/* {state.players[state.playerIndex].isPlaying === true &&
+          state.players.every((player) => player.playerStatus === true)
+            ? "Your turn!"
+            : `Waiting...
+            ${
+              state.players.find((player) => player.isPlaying === true)
+                ?.username
+            } is playing`} */}
+        </BaseContainer>
       </div>
 
       <Canvas>
