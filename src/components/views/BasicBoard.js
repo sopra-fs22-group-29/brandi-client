@@ -178,15 +178,6 @@ const BasicBoard = (props) => {
                     ?.username
                 } to play...`
             : "Waiting for players to join..."}
-
-          {/* {state.players[state.playerIndex].isPlaying === true &&
-          state.players.every((player) => player.playerStatus === true)
-            ? "Your turn!"
-            : `Waiting...
-            ${
-              state.players.find((player) => player.isPlaying === true)
-                ?.username
-            } is playing`} */}
         </BaseContainer>
       </div>
 
