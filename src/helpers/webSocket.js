@@ -1,5 +1,6 @@
 import * as SockJS from "sockjs-client";
 import { over } from "stompjs";
+import { marbleJump, waitForAnimationToFinish } from "./animations";
 import { userAuthData } from "./authentification";
 import { getDomain } from "./getDomain";
 import { findMarbleIndex, marblePosition } from "./marblePosition";
@@ -65,7 +66,7 @@ export const connect = async (gameLink, state, setState) => {
             );
           }
 
-          setState({ ...state });
+          setStateAfterWaitForAnimation(state, setState);
         }
       );
       stompClient.subscribe(
@@ -100,6 +101,11 @@ export const connect = async (gameLink, state, setState) => {
               }
             }
             if (!found) {
+              // when new cards are added, we need to make sure to have no card selected
+              state.selectState = "card";
+              state.selectedCardIndex = null;
+              state.selectedBallId = null;
+              state.circlesToDisplay = [];
               for (let i = 0; i < 6; i++) {
                 if (state.cards[i].id === null) {
                   found = true;
@@ -114,15 +120,14 @@ export const connect = async (gameLink, state, setState) => {
             }
           }
 
-          console.log(state.cards);
-
-          setState({ ...state });
+          setStateAfterWaitForAnimation(state, setState);
         }
       );
       stompClient.subscribe(
         "/client/highlight/marbles" + "-user" + sessionId,
-        function (response) {
+        async function (response) {
           const data = JSON.parse(response.body);
+          await waitForAnimationToFinish();
           for (let i = 0; i < 16; i++) {
             state.balls[i].isHighlighted = false;
           }
@@ -136,7 +141,8 @@ export const connect = async (gameLink, state, setState) => {
           state.selectState = "ball";
           state.circlesToDisplay = [];
           state.selectedBallId = null;
-          setState({ ...state });
+
+          setStateAfterWaitForAnimation(state, setState);
         }
       );
       stompClient.subscribe(
@@ -145,37 +151,45 @@ export const connect = async (gameLink, state, setState) => {
           const data = JSON.parse(response.body);
           state.selectedBallId = data.marbleId;
           state.circlesToDisplay = data.highlightHoles;
-          setState({ ...state });
+
+          setStateAfterWaitForAnimation(state, setState);
         }
       );
       stompClient.subscribe(
         "/client/move" + "-user" + sessionId,
-        function (response) {
+        async function (response) {
           const data = JSON.parse(response.body);
           const id = data.ballId;
           const destination = data.destinationTile;
-          const cardId = data.cardId;
 
-          // find ball with the ballId and move it
           for (let i = 0; i < 16; i++) {
             state.balls[i].isHighlighted = false;
-            if (state.balls[i].id === id) {
-              state.balls[i].position = destination;
-              state.balls[i].coordinates = marblePosition(
-                state.balls[i].position
-              );
-            }
-
-            for (let i = 0; i < 16; i++) {
-              state.balls[i].isHighlighted = false;
-            }
           }
 
           state.selectState = "card";
           state.circlesToDisplay = [];
           state.selectedBallId = null;
 
-          setState({ ...state });
+          // find ball with the ballId and move it
+          for (let i = 0; i < 16; i++) {
+            state.balls[i].isHighlighted = false;
+            if (state.balls[i].id === id) {
+              // const prevCoords = state.balls[i].coordinates;
+              const prevCoords = [
+                state.balls[i].coordinates[0],
+                state.balls[i].coordinates[1],
+                state.balls[i].coordinates[2],
+              ];
+              state.balls[i].position = destination;
+
+              await marbleJump(state.balls[i].ballRef, prevCoords, destination);
+              state.balls[i].coordinates = marblePosition(
+                state.balls[i].position
+              );
+            }
+          }
+
+          setStateAfterWaitForAnimation(state, setState);
         }
       );
       stompClient.subscribe(
@@ -198,7 +212,7 @@ export const connect = async (gameLink, state, setState) => {
             }
           }
 
-          setState({ ...state });
+          setStateAfterWaitForAnimation(state, setState);
         }
       );
       stompClient.subscribe(
@@ -216,7 +230,8 @@ export const connect = async (gameLink, state, setState) => {
               break;
             }
           }
-          setState({ ...state });
+
+          setStateAfterWaitForAnimation(state, setState);
         }
       );
       stompClient.subscribe(
@@ -230,7 +245,8 @@ export const connect = async (gameLink, state, setState) => {
               state.players[i].isPlaying = true;
             }
           }
-          setState({ ...state });
+
+          setStateAfterWaitForAnimation(state, setState);
         }
       );
 
@@ -317,6 +333,17 @@ export const moveMarble = (card, ballId, destinationTile) => {
 //     })
 //   );
 // };
+
+var settingStateAfterWait = false;
+const setStateAfterWaitForAnimation = async (state, setState) => {
+  if (settingStateAfterWait) {
+    return;
+  }
+  settingStateAfterWait = true;
+  await waitForAnimationToFinish();
+  setState({ ...state });
+  settingStateAfterWait = false;
+};
 
 const setSessionIdFromURL = (url) => {
   url = url.replace("ws://localhost:8080/websocket/", "");

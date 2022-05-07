@@ -9,7 +9,7 @@ import { MarbleGeneral } from "components/ui/marbles/MarbleGeneral";
 import { getCard, positionCard } from "helpers/allCards";
 import { marblePosition } from "helpers/marblePosition";
 import { connect, disconnect } from "helpers/webSocket";
-import { Suspense, useEffect, useState } from "react";
+import { createRef, Suspense, useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
 import Modal from "react-modal/lib/components/Modal";
@@ -23,6 +23,7 @@ const defaultBall = {
   coordinates: marblePosition(1000),
   color: "GREEN",
   isHighlighted: false,
+  ballRef: null,
 };
 
 const defaultPlayer = {
@@ -75,31 +76,40 @@ const BasicBoard = (props) => {
       { ...defaultCard },
     ],
     balls: [
-      { ...defaultBall },
-      { ...defaultBall },
-      { ...defaultBall },
-      { ...defaultBall },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
 
-      { ...defaultBall },
-      { ...defaultBall },
-      { ...defaultBall },
-      { ...defaultBall },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
 
-      { ...defaultBall },
-      { ...defaultBall },
-      { ...defaultBall },
-      { ...defaultBall },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
 
-      { ...defaultBall },
-      { ...defaultBall },
-      { ...defaultBall },
-      { ...defaultBall },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
+      { ...defaultBall, ballRef: createRef() },
     ],
   });
 
   useEffect(() => {
-    console.log("basic board rendering");
-    connect(uuid, state, setState);
+    while (state.balls[15].ballRef === null) {
+      setTimeout(() => {}, 100);
+    }
+    function connectWhenRefsAreSet() {
+      if (state.balls[15].ballRef === null) {
+        setTimeout(connectWhenRefsAreSet, 50);
+      } else {
+        connect(uuid, state, setState);
+      }
+    }
+    connectWhenRefsAreSet();
   }, []);
 
   const endGame = () => {
@@ -277,6 +287,10 @@ const BasicBoard = (props) => {
               return (
                 <MarbleGeneral
                   key={i}
+                  ref={state.balls[i].ballRef}
+                  index={i}
+                  state={state}
+                  setState={setState}
                   color={state.balls[i].color}
                   position={state.balls[i].coordinates}
                   ballId={state.balls[i].id}
