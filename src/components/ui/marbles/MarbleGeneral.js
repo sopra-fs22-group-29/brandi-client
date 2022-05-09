@@ -1,7 +1,8 @@
-import { animated, useSpring } from "@react-spring/three";
+import { animated } from "@react-spring/three";
 import { useGLTF } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import { selectMarble } from "helpers/webSocket";
-import React, { useEffect, useRef, useState } from "react";
+import React, { createRef, forwardRef, useEffect, useState } from "react";
 
 const getGLTF = (color) => {
   switch (color) {
@@ -29,10 +30,17 @@ const getMaterial = (material, color) => {
   }
 };
 
-export const MarbleGeneral = (props) => {
-  const group = useRef();
-  const { nodes, materials } = useGLTF(getGLTF(props.color));
+export const MarbleGeneral = forwardRef((props, ref) => {
+  var group;
+  if (ref === null) {
+    group = createRef();
+    props.state.balls[props.index].ballRef = group;
+    props.setState({ ...props.state });
+  } else {
+    group = ref;
+  }
 
+  const { nodes, materials } = useGLTF(getGLTF(props.color));
   const [hover, setHover] = useState(false);
   const active =
     props.selectState !== "card" && props.selectedBallId == props.ballId;
@@ -41,19 +49,21 @@ export const MarbleGeneral = (props) => {
     document.body.style.cursor = hover ? "pointer" : "auto";
   }, [hover]);
 
-  const { position } = useSpring({
-    position:
-      props.selectState !== "card" && (hover || props.isHighlighted)
-        ? [props.position[0], 0.02, props.position[2]]
-        : props.position,
-    config: { duration: 100 },
+  useFrame(() => {
+    if (props.isHighlighted) {
+      if (group.current.position.y < 0.02) {
+        group.current.position.y += 0.0025;
+      }
+    } else if (group.current.position.y > 0.01) {
+      group.current.position.y -= 0.0025;
+    }
   });
 
   return (
     <animated.group
       ref={group}
       {...props}
-      position={position}
+      position={props.position}
       dispose={null}
       onPointerOver={(event) => {
         if (props.isHighlighted) {
@@ -86,4 +96,4 @@ export const MarbleGeneral = (props) => {
       </mesh>
     </animated.group>
   );
-};
+});
