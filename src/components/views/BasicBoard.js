@@ -117,7 +117,6 @@ const BasicBoard = (props) => {
     history.push("/game");
     // setShowModal(false);
   };
-  console.log(state.players.every((player) => player.playerStatus));
 
   return (
     // Loading our brändy dog board

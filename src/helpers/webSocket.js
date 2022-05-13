@@ -1,6 +1,6 @@
 import * as SockJS from "sockjs-client";
 import { over } from "stompjs";
-import { marbleJump, waitForAnimationToFinish } from "./animations";
+import { marbleMove, waitForAnimationToFinish } from "./animations";
 import { userAuthData } from "./authentification";
 import { getDomain } from "./getDomain";
 import { findMarbleIndex, marblePosition } from "./marblePosition";
@@ -170,11 +170,15 @@ export const connect = async (gameLink, state, setState) => {
           state.circlesToDisplay = [];
           state.selectedBallId = null;
 
+          let targetBallIndex = null;
+
           // find ball with the ballId and move it
           for (let i = 0; i < 16; i++) {
             state.balls[i].isHighlighted = false;
             if (state.balls[i].id === id) {
-              // const prevCoords = state.balls[i].coordinates;
+              // make sure ball is not highlighted when moving
+              setStateAfterWaitForAnimation(state, setState);
+
               const prevCoords = [
                 state.balls[i].coordinates[0],
                 state.balls[i].coordinates[1],
@@ -182,11 +186,25 @@ export const connect = async (gameLink, state, setState) => {
               ];
               state.balls[i].position = destination;
 
-              await marbleJump(state.balls[i].ballRef, prevCoords, destination);
-              state.balls[i].coordinates = marblePosition(
-                state.balls[i].position
-              );
+              const holesTravelled = data.holesTravelled;
+              await marbleMove(state.balls[i].ballRef, holesTravelled);
             }
+
+            if (state.balls[i].id === data.targetBallId) {
+              targetBallIndex = i;
+            }
+          }
+
+          // remove a ball if we need to
+          if (targetBallIndex !== null) {
+            const targetBallRef = state.balls[targetBallIndex].ballRef;
+            const targetBallPosition = state.balls[targetBallIndex].position;
+            await marbleMove(targetBallRef, [
+              targetBallPosition,
+              data.targetBallNewPosition,
+            ]);
+
+            state.balls[targetBallIndex].position = data.targetBallNewPosition;
           }
 
           setStateAfterWaitForAnimation(state, setState);
