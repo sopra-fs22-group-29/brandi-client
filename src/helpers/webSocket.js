@@ -158,6 +158,7 @@ export const connect = async (gameLink, state, setState) => {
       stompClient.subscribe(
         "/client/move" + "-user" + sessionId,
         async function (response) {
+          console.log("client/move called");
           const data = JSON.parse(response.body);
           const id = data.ballId;
           const destination = data.destinationTile;
