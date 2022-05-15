@@ -244,7 +244,7 @@ export const connect = async (gameLink, state, setState) => {
               state.players[i].username = data.player.username;
               state.players[i].playerStatus = data.playerStatus;
               state.players[i].isPlaying = data.isPlaying;
-              state.gameEnded = true;
+              // state.gameEnded = true;
               break;
             }
           }
@@ -272,6 +272,15 @@ export const connect = async (gameLink, state, setState) => {
         function (response) {
           const data = JSON.parse(response.body);
           state.gameOn = data.gameOn;
+          setStateAfterWaitForAnimation(state, setState);
+        }
+      );
+      stompClient.subscribe(
+        "/client/surrender" + "-user" + sessionId,
+        function (response) {
+          const data = JSON.parse(response.body);
+          console.log("here i went", data);
+          state.gameOver = data.gameOver;
           setStateAfterWaitForAnimation(state, setState);
         }
       );
@@ -309,6 +318,10 @@ export const leave = () => {
 
 export const pause = () => {
   stompClient.send("/app/websocket/" + gameUuid + "/pauseGame");
+};
+
+export const surrender = () => {
+  stompClient.send("/app/websocket/" + gameUuid + "/surrender");
 };
 
 export const selectCard = (index, rank, suit) => {
