@@ -8,7 +8,7 @@ import { CircleToClick } from "components/ui/CircleToClick";
 import { MarbleGeneral } from "components/ui/marbles/MarbleGeneral";
 import { getCard, positionCard } from "helpers/allCards";
 import { marblePosition } from "helpers/marblePosition";
-import { connect, disconnect } from "helpers/webSocket";
+import { connect, disconnect, pause } from "helpers/webSocket";
 import { createRef, Suspense, useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
@@ -47,6 +47,7 @@ const BasicBoard = (props) => {
   const history = useHistory();
   const [showModal, setShowModal] = useState(false);
   const [endGameModal, setEndGameModal] = useState(false);
+  const [pauseGameModal, setPauseGameModal] = useState(false);
   const { uuid } = useParams();
   // const [datGuiState, setDatGuiState] = useState({
   //   showMarble: false,
@@ -61,6 +62,7 @@ const BasicBoard = (props) => {
     selectedBallId: null,
     circlesToDisplay: [],
     gameEnded: false,
+    gameOn: true,
     players: [
       { ...defaultPlayer },
       { ...defaultPlayer },
@@ -118,6 +120,12 @@ const BasicBoard = (props) => {
     // setShowModal(false);
   };
 
+  const pauseGame = () => {
+    pause();
+    disconnect();
+    history.push("/game");
+  };
+
   return (
     // Loading our brändy dog board
     <div style={{ height: "100%", width: "100%" }}>
@@ -148,7 +156,12 @@ const BasicBoard = (props) => {
           </p>
         </div>
         <div>
-          <Button className="login button">Pause Game</Button>
+          <Button
+            className="login button"
+            onClick={() => setPauseGameModal(true)}
+          >
+            Pause Game
+          </Button>
         </div>
         <div>
           <Button
@@ -186,6 +199,36 @@ const BasicBoard = (props) => {
           </Button>
         </div>
       </Modal>
+
+      <Modal
+        isOpen={pauseGameModal}
+        onRequestClose={() => setPauseGameModal(false)}
+        className="modal mymodal"
+        overlayClassName="modal myoverlay"
+        ariaHideApp={false}
+      >
+        <div style={{ margin: "15px" }}>
+          <p className="welcome container-text" style={{ marginTop: "0" }}>
+            Pause the game?
+          </p>
+          <p>
+            The game will be paused for everyone. <br /> You will be redirected
+            to the home screen. <br /> The game can be continued at another
+            time.
+          </p>
+          <Button
+            className="board button"
+            style={{ marginRight: "70px" }}
+            onClick={() => setPauseGameModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button className="board button" onClick={() => pauseGame()}>
+            Yes
+          </Button>
+        </div>
+      </Modal>
+
       <Modal
         isOpen={state.gameEnded}
         className="modal mymodal"
