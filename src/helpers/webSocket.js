@@ -267,6 +267,14 @@ export const connect = async (gameLink, state, setState) => {
           setStateAfterWaitForAnimation(state, setState);
         }
       );
+      stompClient.subscribe(
+        "/client/pauseGame" + "-user" + sessionId,
+        function (response) {
+          const data = JSON.parse(response.body);
+          state.gameOn = data.gameOn;
+          setStateAfterWaitForAnimation(state, setState);
+        }
+      );
 
       connected = true;
       // currentUser = loggedInUsername;
@@ -297,6 +305,10 @@ export const join = (roomId) => {
 
 export const leave = () => {
   stompClient.send("/app/websocket/" + gameUuid + "/leave");
+};
+
+export const pause = () => {
+  stompClient.send("/app/websocket/" + gameUuid + "/pauseGame");
 };
 
 export const selectCard = (index, rank, suit) => {
