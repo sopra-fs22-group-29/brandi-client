@@ -350,7 +350,7 @@ export const selectMarble = (cardIndex, rank, suit, marbleId) => {
   );
 };
 
-export const moveMarble = (card, ballId, destinationTile) => {
+export const moveMarble = (card, ballId, destinationTile, index) => {
   stompClient.send(
     "/app/websocket/" + gameUuid + "/move",
     {},
@@ -358,6 +358,7 @@ export const moveMarble = (card, ballId, destinationTile) => {
       playedCard: card,
       ballId: ballId,
       destinationTile: destinationTile,
+      index: index,
     })
   );
 };

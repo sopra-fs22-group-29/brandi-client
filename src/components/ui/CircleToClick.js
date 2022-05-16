@@ -21,7 +21,7 @@ export const CircleToClick = (props) => {
       onPointerOver={(event) => setHover(true)}
       onPointerOut={(event) => setHover(false)}
       onClick={(event) => {
-        moveMarble(props.card, props.selectedBallId, props.destinationTile);
+        moveMarble(props.card, props.selectedBallId, props.destinationTile, props.index);
       }}
     >
       <mesh
