@@ -8,7 +8,7 @@ import { CircleToClick } from "components/ui/CircleToClick";
 import { MarbleGeneral } from "components/ui/marbles/MarbleGeneral";
 import { getCard, positionCard } from "helpers/allCards";
 import { marblePosition } from "helpers/marblePosition";
-import { connect, disconnect, pause } from "helpers/webSocket";
+import { connect, disconnect, pause, surrender } from "helpers/webSocket";
 import { createRef, Suspense, useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
@@ -61,7 +61,7 @@ const BasicBoard = (props) => {
     selectedCardIndex: null,
     selectedBallId: null,
     circlesToDisplay: [],
-    gameEnded: false,
+    gameOver: false,
     gameOn: true,
     players: [
       { ...defaultPlayer },
@@ -119,7 +119,11 @@ const BasicBoard = (props) => {
     history.push("/game");
     // setShowModal(false);
   };
-
+  const surrenderGame = () => {
+    surrender();
+    disconnect();
+    history.push("/game");
+  };
   const pauseGame = () => {
     pause();
     disconnect();
@@ -194,7 +198,7 @@ const BasicBoard = (props) => {
           >
             Cancel
           </Button>
-          <Button className="board button" onClick={() => endGame()}>
+          <Button className="board button" onClick={() => surrenderGame()}>
             Yes
           </Button>
         </div>
@@ -230,7 +234,7 @@ const BasicBoard = (props) => {
       </Modal>
 
       <Modal
-        isOpen={state.gameEnded}
+        isOpen={state.gameOver}
         className="modal mymodal"
         overlayClassName="modal myoverlay"
         ariaHideApp={false}
@@ -245,7 +249,31 @@ const BasicBoard = (props) => {
           <Button
             className="board button"
             style={{ marginLeft: "210px" }}
-            onClick={() => endGame(false)}
+            onClick={() => endGame()}
+          >
+            OK !
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={!state.gameOn}
+        className="modal mymodal"
+        overlayClassName="modal myoverlay"
+        ariaHideApp={false}
+      >
+        <div>
+          <p className="welcome container-text" style={{ marginTop: "0" }}>
+            Someone Paused the Game!
+          </p>
+          <p style={{ marginLeft: "95px" }}>
+            You will be redirected to your home screen. <br /> The game can be
+            continued at another time.
+          </p>
+          <Button
+            className="board button"
+            style={{ marginLeft: "210px" }}
+            onClick={() => endGame()}
           >
             OK !
           </Button>
