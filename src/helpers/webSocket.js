@@ -158,7 +158,6 @@ export const connect = async (gameLink, state, setState) => {
       stompClient.subscribe(
         "/client/move" + "-user" + sessionId,
         async function (response) {
-          console.log("client/move called");
           const data = JSON.parse(response.body);
           const id = data.ballId;
           const destination = data.destinationTile;
@@ -204,7 +203,6 @@ export const connect = async (gameLink, state, setState) => {
               
             }
           }
-          console.log(ballsToEliminate);
 
           // remove a ball if we need to
           if (targetBallIndex !== null) {
@@ -222,7 +220,6 @@ export const connect = async (gameLink, state, setState) => {
           if(ballsToEliminate.length > 0){
             for (const ball of ballsToEliminate) {
               let ballIndex = ball.index;
-              console.log("eliminate ball" + ballIndex);
               const targetBallRef = state.balls[ballIndex].ballRef;
               const targetBallPosition = state.balls[ballIndex].position;
               await marbleMove(targetBallRef, [
