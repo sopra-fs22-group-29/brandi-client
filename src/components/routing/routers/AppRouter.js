@@ -44,7 +44,7 @@ const AppRouter = () => {
         <Route exact path="/">
           <Redirect to="/game" />
         </Route>
-        <Route exact path="/profile">
+        <Route exact path="/users/:id">
           <UserProfile />
         </Route>
         <Route exact path="/board/:uuid">

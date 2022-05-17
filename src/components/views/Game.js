@@ -128,7 +128,7 @@ const Game = () => {
 
   const userProfile = () => {
     try {
-      history.push("/profile");
+      history.push("/users/" + user.id);
     } catch (error) {
       alert(
         `Something went wrong while redirecting to Profile Page: \n${handleError(
