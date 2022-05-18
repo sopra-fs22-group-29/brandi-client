@@ -87,12 +87,28 @@ export async function getUser(userId) {
   }
 }
 
-export async function updateUser(userId, birthDate) {
+export async function updateUser(username, password, id, authData) {
   try {
-    const requestBody = JSON.stringify({ birthDate: birthDate });
-    const response = await api.post("/users/" + userId, requestBody, {
+    const requestBody = JSON.stringify({
+      username: username,
+      password: password,
+    });
+    const response = await api.put("/users/" + id, requestBody, {
       headers: { Authorization: `Basic ${userAuthData()}` },
     });
+    const decoded = window.atob(authData);
+    const oldPassword = decoded.split(":").pop();
+    const user = new User(response.data);
+    localStorage.removeItem("user");
+    if (password !== "") {
+      const authData = window.btoa(username + ":" + password);
+      user.authData = authData;
+    } else {
+      const authData2 = window.btoa(username + ":" + oldPassword);
+      user.authData = authData2;
+    }
+    localStorage.setItem("user", JSON.stringify(user));
+
     return response;
   } catch (error) {
     alert(
