@@ -7,6 +7,7 @@ import { Card } from "components/ui/cards/Card";
 import { CircleToClick } from "components/ui/CircleToClick";
 import { MarbleGeneral } from "components/ui/marbles/MarbleGeneral";
 import { getCard, positionCard } from "helpers/allCards";
+import { handleError } from "helpers/api";
 import { marblePosition } from "helpers/marblePosition";
 import { connect, disconnect, pause, surrender } from "helpers/webSocket";
 import { createRef, Suspense, useEffect, useState } from "react";
@@ -16,6 +17,7 @@ import Modal from "react-modal/lib/components/Modal";
 import { useHistory, useParams } from "react-router-dom";
 import "styles/ui/Modal.scss";
 import "styles/views/Board.scss";
+import Header from "./Header";
 
 const defaultBall = {
   id: null,
@@ -49,6 +51,9 @@ const BasicBoard = (props) => {
   const [endGameModal, setEndGameModal] = useState(false);
   const [pauseGameModal, setPauseGameModal] = useState(false);
   const { uuid } = useParams();
+  const [ruleTypeShow, setRuleTypeShow] = useState(false);
+  const [className, setClassName] = useState("board icons-text");
+  const [hovered, setHovered] = useState(false);
   // const [datGuiState, setDatGuiState] = useState({
   //   showMarble: false,
   //   posX: 0,
@@ -130,20 +135,66 @@ const BasicBoard = (props) => {
     history.push("/game");
   };
 
+  const openRules = () => {
+    try {
+      window.open("/rules");
+    } catch (error) {
+      alert(
+        `Something went wrong while redirecting to Rules Page: \n${handleError(
+          error
+        )}`
+      );
+    }
+  };
+  const openCardRules = () => {
+    alert("Needs to be implemented");
+  };
+
+  const doHover = () => {
+    setClassName("board icons-text hovered");
+    setRuleTypeShow(true);
+  };
+
+  const undoHover = () => {
+    setClassName("board icons-text");
+    setRuleTypeShow(false);
+  };
+
   return (
     // Loading our brändy dog board
+
     <div style={{ height: "100%", width: "100%" }}>
       <AiOutlineMenu
-        style={{
-          fontSize: "25px",
-          marginLeft: "97%",
-          marginTop: "5px",
-          cursor: "pointer",
-          position: "absolute",
-          zIndex: 2,
-        }}
+        className="board icons"
         onClick={() => setShowModal(true)}
       />
+      <p
+        className={className}
+        onMouseEnter={() => doHover()}
+        onMouseLeave={() => undoHover()}
+      >
+        Rules
+      </p>
+      {ruleTypeShow ? (
+        <BaseContainer
+          onMouseEnter={() => doHover()}
+          onMouseLeave={() => undoHover()}
+          className="board container rules"
+        >
+          <Button
+            onClick={() => openCardRules()}
+            className="board button rules"
+          >
+            Cards only
+          </Button>
+          <Button onClick={() => openRules()} className="board button rules">
+            Complete Rules
+          </Button>
+        </BaseContainer>
+      ) : (
+        ""
+      )}
+
       <Modal
         isOpen={showModal}
         onRequestClose={() => setShowModal(false)}
