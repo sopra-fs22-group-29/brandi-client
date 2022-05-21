@@ -137,7 +137,7 @@ const BasicBoard = (props) => {
 
   const openRules = () => {
     try {
-      window.open("/rules");
+      window.open("/rule");
     } catch (error) {
       alert(
         `Something went wrong while redirecting to Rules Page: \n${handleError(
@@ -147,7 +147,15 @@ const BasicBoard = (props) => {
     }
   };
   const openCardRules = () => {
-    window.open("/rule/card", "", "width=850,height=400,left=200,top=200");
+    try {
+      window.open("/rule/card", "", "width=850,height=400,left=200,top=200");
+    } catch (error) {
+      alert(
+        `Something went wrong while redirecting to Card Rules Page: \n${handleError(
+          error
+        )}`
+      );
+    }
   };
 
   const doHover = () => {
