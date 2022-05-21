@@ -147,7 +147,7 @@ const BasicBoard = (props) => {
     }
   };
   const openCardRules = () => {
-    alert("Needs to be implemented");
+    window.open("/rule/card", "", "width=850,height=400,left=200,top=200");
   };
 
   const doHover = () => {
