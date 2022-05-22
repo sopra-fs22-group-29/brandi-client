@@ -347,6 +347,7 @@ const BasicBoard = (props) => {
                   rank: state.cards[state.selectedCardIndex].rank,
                   suit: state.cards[state.selectedCardIndex].suit,
                 }}
+                index={state.selectedCardIndex}
               />
             );
           })}

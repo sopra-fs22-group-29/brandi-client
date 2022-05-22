@@ -171,7 +171,7 @@ export const connect = async (gameLink, state, setState) => {
           state.selectedBallId = null;
 
           let targetBallIndex = null;
-
+          let ballsToEliminate = [];
           // find ball with the ballId and move it
           for (let i = 0; i < 16; i++) {
             state.balls[i].isHighlighted = false;
@@ -193,6 +193,15 @@ export const connect = async (gameLink, state, setState) => {
             if (state.balls[i].id === data.targetBallId) {
               targetBallIndex = i;
             }
+
+            if(data.ballIdsEliminated !== null/*  && data.ballIdsEliminated.some(ball => ball === state.balls[i].id) */) {
+              for(let j=0; j<data.ballIdsEliminated.length; j++){
+                if(data.ballIdsEliminated[j] === state.balls[i].id){
+                  ballsToEliminate.push({"index": i, "newPosition": data.newPositions[j]});
+                }
+              }
+              
+            }
           }
 
           // remove a ball if we need to
@@ -207,6 +216,20 @@ export const connect = async (gameLink, state, setState) => {
             state.balls[targetBallIndex].position = data.targetBallNewPosition;
           }
 
+          // Moves with a SEVEN
+          if(ballsToEliminate.length > 0){
+            for (const ball of ballsToEliminate) {
+              let ballIndex = ball.index;
+              const targetBallRef = state.balls[ballIndex].ballRef;
+              const targetBallPosition = state.balls[ballIndex].position;
+              await marbleMove(targetBallRef, [
+                targetBallPosition,
+                ball.newPosition,
+              ]);
+
+              state.balls[ballIndex].position = ball.newPosition;
+              };
+          }
           setStateAfterWaitForAnimation(state, setState);
         }
       );
@@ -349,7 +372,7 @@ export const selectMarble = (cardIndex, rank, suit, marbleId) => {
   );
 };
 
-export const moveMarble = (card, ballId, destinationTile) => {
+export const moveMarble = (card, ballId, destinationTile, index) => {
   stompClient.send(
     "/app/websocket/" + gameUuid + "/move",
     {},
@@ -357,6 +380,7 @@ export const moveMarble = (card, ballId, destinationTile) => {
       playedCard: card,
       ballId: ballId,
       destinationTile: destinationTile,
+      index: index,
     })
   );
 };
