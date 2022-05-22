@@ -324,6 +324,10 @@ export const surrender = () => {
   stompClient.send("/app/websocket/" + gameUuid + "/surrender");
 };
 
+export const surrenderCards = () => {
+  stompClient.send("/app/websocket/" + gameUuid + "/surrenderCards");
+};
+
 export const selectCard = (index, rank, suit) => {
   stompClient.send(
     "/app/websocket/" + gameUuid + "/select/card",

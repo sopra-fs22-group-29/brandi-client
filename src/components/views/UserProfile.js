@@ -1,6 +1,6 @@
 import BaseContainer from "components/ui/BaseContainer";
 import { Button } from "components/ui/Button";
-import { api, handleError } from "helpers/api";
+import { handleError } from "helpers/api";
 import {
   getUser,
   logout,
@@ -16,7 +16,6 @@ import { useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
 import { BiUser } from "react-icons/bi";
 import { useParams } from "react-router-dom";
-import { update } from "@react-spring/three";
 
 const FormField = (props) => {
   return (

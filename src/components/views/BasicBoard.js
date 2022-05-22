@@ -7,8 +7,16 @@ import { Card } from "components/ui/cards/Card";
 import { CircleToClick } from "components/ui/CircleToClick";
 import { MarbleGeneral } from "components/ui/marbles/MarbleGeneral";
 import { getCard, positionCard } from "helpers/allCards";
+import { getMovePossible } from "helpers/allGame";
+import { handleError } from "helpers/api";
 import { marblePosition } from "helpers/marblePosition";
-import { connect, disconnect, pause, surrender } from "helpers/webSocket";
+import {
+  connect,
+  disconnect,
+  pause,
+  surrender,
+  surrenderCards,
+} from "helpers/webSocket";
 import { createRef, Suspense, useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
@@ -48,6 +56,7 @@ const BasicBoard = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [endGameModal, setEndGameModal] = useState(false);
   const [pauseGameModal, setPauseGameModal] = useState(false);
+  const [movePossible, setMovePossible] = useState(true);
   const { uuid } = useParams();
   // const [datGuiState, setDatGuiState] = useState({
   //   showMarble: false,
@@ -114,6 +123,23 @@ const BasicBoard = (props) => {
     connectWhenRefsAreSet();
   }, []);
 
+  useEffect(() => {
+    async function fetchPossibleMove() {
+      try {
+        const response = await getMovePossible(uuid);
+        setMovePossible(response.data);
+        console.log("-----------------I re-fetched", response);
+      } catch (error) {
+        console.error(
+          `Something went wrong while checking if any moves possible: \n${handleError(
+            error
+          )}`
+        );
+      }
+    }
+    fetchPossibleMove();
+  }, [state, uuid]);
+
   const endGame = () => {
     disconnect();
     history.push("/game");
@@ -129,6 +155,13 @@ const BasicBoard = (props) => {
     disconnect();
     history.push("/game");
   };
+
+  const discardHand = () => {
+    surrenderCards();
+    setMovePossible(true);
+  };
+
+  console.log(movePossible);
 
   return (
     // Loading our brändy dog board
@@ -314,6 +347,26 @@ const BasicBoard = (props) => {
             : "Waiting for players to join..."}
         </BaseContainer>
       </div>
+      <div
+        style={{ position: "absolute", left: "75%", top: "75%", zIndex: "2" }}
+      >
+        {state.players.every((player) => player.playerStatus) ? (
+          state.players[state.playerIndex].isPlaying === true ? (
+            movePossible ? (
+              ""
+            ) : (
+              <BaseContainer className="board container-hand">
+                <p>You can't play any of your cards.</p>
+                <Button onClick={() => discardHand()}>Discard Hand</Button>
+              </BaseContainer>
+            )
+          ) : (
+            ""
+          )
+        ) : (
+          ""
+        )}
+      </div>
 
       <Canvas>
         <Suspense
@@ -324,12 +377,6 @@ const BasicBoard = (props) => {
           }
         >
           <Board playerColor={state.players[state.playerIndex].color} />
-          {/* marble to test with dat gui */}
-          {/* {datGuiState.showMarble && (
-            <MarbleBlue
-              position={[datGuiState.posX, datGuiState.posY, datGuiState.posZ]}
-            />
-          )} */}
           {/* circlesToDisplay */}
           {state.circlesToDisplay.map((position) => {
             return (
@@ -419,14 +466,6 @@ const BasicBoard = (props) => {
             })}
         </Suspense>
       </Canvas>
-      {/* <DatGui data={datGuiState} onUpdate={setDatGuiState}>
-        <DatFolder title="test marble" closed={false}>
-          <DatBoolean path="showMarble" />
-          <DatNumber path="posX" min={-0.7} max={0.7} step={0.001} />
-          <DatNumber path="posY" min={-0.4} max={0.4} step={0.001} />
-          <DatNumber path="posZ" min={-0.7} max={0.7} step={0.001} />
-        </DatFolder>
-      </DatGui> */}
     </div>
   );
 };
