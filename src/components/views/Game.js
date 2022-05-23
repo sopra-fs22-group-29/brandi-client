@@ -140,7 +140,7 @@ const Game = () => {
 
   const goToRules = () => {
     try {
-      history.push("/rule");
+      history.push("/rule", { from: "dashboard" });
     } catch (error) {
       alert(
         `Something went wrong while redirecting to Rules Page: \n${handleError(

@@ -4,6 +4,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { useHistory } from "react-router-dom";
 import Header from "./Header";
 import "styles/views/Rules.scss";
+import { AiOutlineClose } from "react-icons/ai";
 
 const Rules = () => {
   const history = useHistory();
@@ -18,10 +19,18 @@ const Rules = () => {
       );
     }
   };
+  const doClose = () => {
+    window.close();
+  };
   return (
     <div>
       <Header height="40px" />
-      <IoHomeOutline className="game icons-2" onClick={() => goHome()} />
+      {history.location.state === undefined ? (
+        <AiOutlineClose className="game icons-2" onClick={() => doClose()} />
+      ) : (
+        <IoHomeOutline className="game icons-2" onClick={() => goHome()} />
+      )}
+
       <BaseContainer className="rules container">
         <p className="welcome container-text">Game Rules</p>
         <p className="rules heading">General</p>
