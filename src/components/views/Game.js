@@ -6,7 +6,7 @@ import { logout } from "helpers/authentification";
 import { connect } from "helpers/webSocket";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { BiUser } from "react-icons/bi";
+import { BiHelpCircle, BiUser } from "react-icons/bi";
 import { IoLogOutOutline } from "react-icons/io5";
 import { Link, useHistory } from "react-router-dom";
 import "styles/views/Game.scss";
@@ -138,6 +138,18 @@ const Game = () => {
     }
   };
 
+  const goToRules = () => {
+    try {
+      history.push("/rule", { from: "dashboard" });
+    } catch (error) {
+      alert(
+        `Something went wrong while redirecting to Rules Page: \n${handleError(
+          error
+        )}`
+      );
+    }
+  };
+
   let content = (
     <BaseContainer className="create container">
       <p className="welcome container-text">Create a new Game Code</p>
@@ -209,6 +221,7 @@ const Game = () => {
     <div>
       <Header height="40px" />
       <BiUser className="game icons" onClick={() => userProfile()} />
+      <BiHelpCircle className="game icons-3" onClick={() => goToRules()} />
       <IoLogOutOutline className="game icons-2" onClick={() => doLogout()} />
       <div className="top">
         <BaseContainer className="game container">
