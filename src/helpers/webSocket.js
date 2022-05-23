@@ -279,8 +279,16 @@ export const connect = async (gameLink, state, setState) => {
         "/client/surrender" + "-user" + sessionId,
         function (response) {
           const data = JSON.parse(response.body);
-          console.log("here i went", data);
           state.gameOver = data.gameOver;
+          setStateAfterWaitForAnimation(state, setState);
+        }
+      );
+
+      stompClient.subscribe(
+        "/client/movePossible" + "-user" + sessionId,
+        function (response) {
+          const data = JSON.parse(response.body);
+          state.movePossible = data;
           setStateAfterWaitForAnimation(state, setState);
         }
       );

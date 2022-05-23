@@ -44,19 +44,3 @@ export async function getGameByUuid(uuid) {
     return null;
   }
 }
-
-export async function getMovePossible(uuid) {
-  try {
-    const response = await api.get("/game/" + uuid + "/movePossible", {
-      headers: { Authorization: `Basic ${userAuthData()}` },
-    });
-    return response;
-  } catch (error) {
-    alert(
-      `Something went wrong while checking if there are any possible moves: \n${handleError(
-        error
-      )}`
-    );
-    return null;
-  }
-}

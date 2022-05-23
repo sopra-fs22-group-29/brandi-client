@@ -7,8 +7,6 @@ import { Card } from "components/ui/cards/Card";
 import { CircleToClick } from "components/ui/CircleToClick";
 import { MarbleGeneral } from "components/ui/marbles/MarbleGeneral";
 import { getCard, positionCard } from "helpers/allCards";
-import { getMovePossible } from "helpers/allGame";
-import { handleError } from "helpers/api";
 import { marblePosition } from "helpers/marblePosition";
 import {
   connect,
@@ -56,7 +54,6 @@ const BasicBoard = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [endGameModal, setEndGameModal] = useState(false);
   const [pauseGameModal, setPauseGameModal] = useState(false);
-  const [movePossible, setMovePossible] = useState(true);
   const { uuid } = useParams();
   // const [datGuiState, setDatGuiState] = useState({
   //   showMarble: false,
@@ -66,6 +63,7 @@ const BasicBoard = (props) => {
   // });
   const [state, setState] = useState({
     playerIndex: 0,
+    movePossible: true,
     selectState: "card",
     selectedCardIndex: null,
     selectedBallId: null,
@@ -123,23 +121,6 @@ const BasicBoard = (props) => {
     connectWhenRefsAreSet();
   }, []);
 
-  useEffect(() => {
-    async function fetchPossibleMove() {
-      try {
-        const response = await getMovePossible(uuid);
-        setMovePossible(response.data);
-        console.log("-----------------I re-fetched", response);
-      } catch (error) {
-        console.error(
-          `Something went wrong while checking if any moves possible: \n${handleError(
-            error
-          )}`
-        );
-      }
-    }
-    fetchPossibleMove();
-  }, [state, uuid]);
-
   const endGame = () => {
     disconnect();
     history.push("/game");
@@ -158,10 +139,8 @@ const BasicBoard = (props) => {
 
   const discardHand = () => {
     surrenderCards();
-    setMovePossible(true);
+    state.movePossible = true;
   };
-
-  console.log(movePossible);
 
   return (
     // Loading our brändy dog board
@@ -348,11 +327,11 @@ const BasicBoard = (props) => {
         </BaseContainer>
       </div>
       <div
-        style={{ position: "absolute", left: "75%", top: "75%", zIndex: "2" }}
+        style={{ position: "absolute", left: "75%", top: "60%", zIndex: "2" }}
       >
         {state.players.every((player) => player.playerStatus) ? (
           state.players[state.playerIndex].isPlaying === true ? (
-            movePossible ? (
+            state.movePossible ? (
               ""
             ) : (
               <BaseContainer className="board container-hand">
