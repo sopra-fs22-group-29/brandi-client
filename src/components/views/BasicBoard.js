@@ -178,6 +178,7 @@ const BasicBoard = (props) => {
   const discardHand = () => {
     surrenderCards();
     state.movePossible = true;
+    setState({ ...state });
   };
 
   return (
