@@ -20,6 +20,14 @@
       z-index: 2;
     }
   }
+  &.container-hand{
+    background: $container;
+    border-radius: $borderRadius;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+
+  }
    &.button{
     // margin: 20px;
     font-size: 20px;

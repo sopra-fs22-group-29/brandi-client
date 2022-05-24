@@ -9,7 +9,13 @@ import { MarbleGeneral } from "components/ui/marbles/MarbleGeneral";
 import { getCard, positionCard } from "helpers/allCards";
 import { handleError } from "helpers/api";
 import { marblePosition } from "helpers/marblePosition";
-import { connect, disconnect, pause, surrender } from "helpers/webSocket";
+import {
+  connect,
+  disconnect,
+  pause,
+  surrender,
+  surrenderCards,
+} from "helpers/webSocket";
 import { createRef, Suspense, useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
@@ -62,6 +68,7 @@ const BasicBoard = (props) => {
   // });
   const [state, setState] = useState({
     playerIndex: 0,
+    movePossible: true,
     selectState: "card",
     selectedCardIndex: null,
     selectedBallId: null,
@@ -166,6 +173,12 @@ const BasicBoard = (props) => {
   const undoHover = () => {
     setClassName("board icons-text");
     setRuleTypeShow(false);
+
+  };
+  const discardHand = () => {
+    surrenderCards();
+    state.movePossible = true;
+    setState({ ...state });
   };
 
   return (
@@ -373,6 +386,26 @@ const BasicBoard = (props) => {
             : "Waiting for players to join..."}
         </BaseContainer>
       </div>
+      <div
+        style={{ position: "absolute", left: "75%", top: "60%", zIndex: "2" }}
+      >
+        {state.players.every((player) => player.playerStatus) ? (
+          state.players[state.playerIndex].isPlaying === true ? (
+            state.movePossible ? (
+              ""
+            ) : (
+              <BaseContainer className="board container-hand">
+                <p>You can't play any of your cards.</p>
+                <Button onClick={() => discardHand()}>Discard Hand</Button>
+              </BaseContainer>
+            )
+          ) : (
+            ""
+          )
+        ) : (
+          ""
+        )}
+      </div>
 
       <Canvas>
         <Suspense
@@ -383,12 +416,6 @@ const BasicBoard = (props) => {
           }
         >
           <Board playerColor={state.players[state.playerIndex].color} />
-          {/* marble to test with dat gui */}
-          {/* {datGuiState.showMarble && (
-            <MarbleBlue
-              position={[datGuiState.posX, datGuiState.posY, datGuiState.posZ]}
-            />
-          )} */}
           {/* circlesToDisplay */}
           {state.circlesToDisplay.map((position) => {
             return (
@@ -479,14 +506,6 @@ const BasicBoard = (props) => {
             })}
         </Suspense>
       </Canvas>
-      {/* <DatGui data={datGuiState} onUpdate={setDatGuiState}>
-        <DatFolder title="test marble" closed={false}>
-          <DatBoolean path="showMarble" />
-          <DatNumber path="posX" min={-0.7} max={0.7} step={0.001} />
-          <DatNumber path="posY" min={-0.4} max={0.4} step={0.001} />
-          <DatNumber path="posZ" min={-0.7} max={0.7} step={0.001} />
-        </DatFolder>
-      </DatGui> */}
     </div>
   );
 };
