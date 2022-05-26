@@ -23,7 +23,6 @@ import Modal from "react-modal/lib/components/Modal";
 import { useHistory, useParams } from "react-router-dom";
 import "styles/ui/Modal.scss";
 import "styles/views/Board.scss";
-import Header from "./Header";
 
 const defaultBall = {
   id: null,
@@ -41,6 +40,7 @@ const defaultPlayer = {
   status: null,
   isPlaying: false,
   playerStatus: false,
+  team: 2,
 };
 
 const defaultCard = {
@@ -59,7 +59,6 @@ const BasicBoard = (props) => {
   const { uuid } = useParams();
   const [ruleTypeShow, setRuleTypeShow] = useState(false);
   const [className, setClassName] = useState("board icons-text");
-  const [hovered, setHovered] = useState(false);
   // const [datGuiState, setDatGuiState] = useState({
   //   showMarble: false,
   //   posX: 0,
@@ -68,6 +67,7 @@ const BasicBoard = (props) => {
   // });
   const [state, setState] = useState({
     playerIndex: 0,
+    teamMemberIndex: 0,
     movePossible: true,
     selectState: "card",
     selectedCardIndex: null,
@@ -173,13 +173,14 @@ const BasicBoard = (props) => {
   const undoHover = () => {
     setClassName("board icons-text");
     setRuleTypeShow(false);
-
   };
   const discardHand = () => {
     surrenderCards();
     state.movePossible = true;
     setState({ ...state });
   };
+
+  console.log(state.players);
 
   return (
     // Loading our brändy dog board
@@ -365,9 +366,14 @@ const BasicBoard = (props) => {
                     marginRight: "10px",
                   }}
                 />
-                {`${state.playerIndex === i ? "You: " : ""}${
-                  state.players[i].username ?? ""
-                }${
+                {`${
+                  state.playerIndex === i
+                    ? "You: "
+                    : state.players[i].team ===
+                      state.players[state.playerIndex].team
+                    ? "Your Partner: "
+                    : ""
+                }${state.players[i].username ?? ""}${
                   state.players[i].playerStatus === true ? "" : " (offline) "
                 }`}
               </div>
