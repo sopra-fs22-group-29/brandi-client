@@ -6,6 +6,7 @@ Brändi Dog is an awesome board game played by 4 people and now you are able to 
 - [ThreeJS](https://threejs.org) - Used to display 3D-objects 
 - [ReactJS](https://reactjs.org) - Used to build UI
 
+## Components
 
 ## Getting started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
