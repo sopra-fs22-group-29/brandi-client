@@ -61,7 +61,6 @@ const BasicBoard = (props) => {
   const [className, setClassName] = useState("board icons-text");
   const [state, setState] = useState({
     playerIndex: 0,
-    teamMemberIndex: 0,
     movePossible: true,
     selectState: "card",
     selectedCardIndex: null,
@@ -175,8 +174,6 @@ const BasicBoard = (props) => {
     state.movePossible = true;
     setState({ ...state });
   };
-
-  console.log(state.players);
 
   return (
     // Loading our brändy dog board
