@@ -10,13 +10,13 @@ import { Redirect } from "react-router-dom";
  * @Guard
  * @param props
  */
-export const GameGuard = props => {
+export const GameGuard = (props) => {
   if (localStorage.getItem("user")) {
     return props.children;
   }
-  return <Redirect to="/login"/>;
+  return <Redirect to="/welcome" />;
 };
 
 GameGuard.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };

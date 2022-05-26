@@ -1,9 +1,9 @@
 import { api, handleError } from "./api";
 import { userAuthData } from "./authentification";
 
-export async function createLobby(uuid) {
+export async function createLobby(id, name) {
   try {
-    const requestBody = JSON.stringify({ id: uuid });
+    const requestBody = JSON.stringify({ id, name });
     const response = await api.post("/game", requestBody, {
       headers: { Authorization: `Basic ${userAuthData()}` },
     });
