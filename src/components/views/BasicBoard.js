@@ -67,7 +67,6 @@ const BasicBoard = (props) => {
   // });
   const [state, setState] = useState({
     playerIndex: 0,
-    teamMemberIndex: 0,
     movePossible: true,
     selectState: "card",
     selectedCardIndex: null,
