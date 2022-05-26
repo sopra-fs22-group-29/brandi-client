@@ -58,6 +58,7 @@ export async function register(username, password, redirect) {
     alert(
       `Something went wrong during the registration: \n${handleError(error)}`
     );
+    window.location.pathname = "/welcome";
   }
 }
 
@@ -70,6 +71,7 @@ export async function getUsers() {
   } catch (error) {
     localStorage.removeItem("user");
     alert(`Something went wrong while fetching users: \n${handleError(error)}`);
+    window.location.pathname = "/welcome";
     return null;
   }
 }
@@ -83,7 +85,22 @@ export async function getUser(userId) {
   } catch (error) {
     localStorage.removeItem("user");
     alert(`Something went wrong while fetching user: \n${handleError(error)}`);
+    window.location.pathname = "/welcome";
     return null;
+  }
+}
+
+export async function getGames() {
+  try {
+    const response = await api.get("/game", {
+      headers: { Authorization: `Basic ${userAuthData()}` },
+    });
+    return response.data === null ? [] : response.data;
+  } catch (error) {
+    localStorage.removeItem("user");
+    alert(`Something went wrong while fetching games: \n${handleError(error)}`);
+    window.location.pathname = "/welcome";
+    return [];
   }
 }
 
@@ -114,6 +131,7 @@ export async function updateUser(username, password, id, authData) {
     alert(
       `Something went wrong while updating the user: \n${handleError(error)}`
     );
+    window.location.pathname = "/welcome";
     return null;
   }
 }
