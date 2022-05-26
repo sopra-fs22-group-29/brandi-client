@@ -40,6 +40,7 @@ const defaultPlayer = {
   status: null,
   isPlaying: false,
   playerStatus: false,
+  team: 2,
 };
 
 const defaultCard = {
@@ -58,9 +59,9 @@ const BasicBoard = (props) => {
   const { uuid } = useParams();
   const [ruleTypeShow, setRuleTypeShow] = useState(false);
   const [className, setClassName] = useState("board icons-text");
-
   const [state, setState] = useState({
     playerIndex: 0,
+    teamMemberIndex: 0,
     movePossible: true,
     selectState: "card",
     selectedCardIndex: null,
@@ -174,6 +175,8 @@ const BasicBoard = (props) => {
     state.movePossible = true;
     setState({ ...state });
   };
+
+  console.log(state.players);
 
   return (
     // Loading our brändy dog board
@@ -399,9 +402,14 @@ const BasicBoard = (props) => {
                     marginRight: "10px",
                   }}
                 />
-                {`${state.playerIndex === i ? "You: " : ""}${
-                  state.players[i].username ?? ""
-                }${
+                {`${
+                  state.playerIndex === i
+                    ? "You: "
+                    : state.players[i].team ===
+                      state.players[state.playerIndex].team
+                    ? "Your Partner: "
+                    : ""
+                }${state.players[i].username ?? ""}${
                   state.players[i].playerStatus === true ? "" : " (offline) "
                 }`}
               </div>

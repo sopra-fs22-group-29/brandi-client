@@ -55,6 +55,7 @@ export const connect = async (gameLink, state, setState) => {
             state.players[i].status = data.playerStates[i].status;
             state.players[i].playerStatus = data.playerStates[i].playerStatus;
             state.players[i].isPlaying = data.playerStates[i].isPlaying;
+            state.players[i].team = data.playerStates[i].team;
           }
 
           for (let i = 0; i < data.boardstate.balls.length; i++) {
@@ -254,6 +255,7 @@ export const connect = async (gameLink, state, setState) => {
               state.players[i].username = data.player.username;
               state.players[i].playerStatus = data.playerStatus;
               state.players[i].isPlaying = data.isPlaying;
+              state.players[i].team = data.team;
               break;
             }
           }
@@ -272,7 +274,7 @@ export const connect = async (gameLink, state, setState) => {
               state.players[i].username = data.player.username;
               state.players[i].playerStatus = data.playerStatus;
               state.players[i].isPlaying = data.isPlaying;
-              // state.gameEnded = true;
+              state.players[i].team = data.team;
               break;
             }
           }
