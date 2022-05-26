@@ -321,13 +321,17 @@ export const connect = async (gameLink, state, setState) => {
         }
       );
 
-      //TODO: make it fit with backend
       stompClient.subscribe(
-        "/client/game/done" + "-user" + sessionId,
+        "/client/gameOver" + "-user" + sessionId,
         function (response) {
           const data = JSON.parse(response.body);
-          state.won = data.won;
-          state.lost = data.lost;
+          if (data) {
+            state.won = true;
+            state.lost = false;
+          } else {
+            state.won = false;
+            state.lost = true;
+          }
           setStateAfterWaitForAnimation(state, setState);
         }
       );
