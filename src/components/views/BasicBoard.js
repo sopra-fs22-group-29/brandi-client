@@ -23,7 +23,6 @@ import Modal from "react-modal/lib/components/Modal";
 import { useHistory, useParams } from "react-router-dom";
 import "styles/ui/Modal.scss";
 import "styles/views/Board.scss";
-import Header from "./Header";
 
 const defaultBall = {
   id: null,
@@ -59,13 +58,7 @@ const BasicBoard = (props) => {
   const { uuid } = useParams();
   const [ruleTypeShow, setRuleTypeShow] = useState(false);
   const [className, setClassName] = useState("board icons-text");
-  const [hovered, setHovered] = useState(false);
-  // const [datGuiState, setDatGuiState] = useState({
-  //   showMarble: false,
-  //   posX: 0,
-  //   posY: 0.01,
-  //   posZ: 0,
-  // });
+
   const [state, setState] = useState({
     playerIndex: 0,
     movePossible: true,
@@ -75,6 +68,8 @@ const BasicBoard = (props) => {
     circlesToDisplay: [],
     gameOver: false,
     gameOn: true,
+    won: false,
+    lost: false,
     players: [
       { ...defaultPlayer },
       { ...defaultPlayer },
@@ -173,7 +168,6 @@ const BasicBoard = (props) => {
   const undoHover = () => {
     setClassName("board icons-text");
     setRuleTypeShow(false);
-
   };
   const discardHand = () => {
     surrenderCards();
@@ -306,7 +300,7 @@ const BasicBoard = (props) => {
       </Modal>
 
       <Modal
-        isOpen={state.gameOver}
+        isOpen={state.gameOver && !state.won && !state.lost}
         className="modal mymodal"
         overlayClassName="modal myoverlay"
         ariaHideApp={false}
@@ -329,7 +323,7 @@ const BasicBoard = (props) => {
       </Modal>
 
       <Modal
-        isOpen={!state.gameOn}
+        isOpen={!state.gameOn && !state.won && !state.lost}
         className="modal mymodal"
         overlayClassName="modal myoverlay"
         ariaHideApp={false}
@@ -348,6 +342,46 @@ const BasicBoard = (props) => {
             onClick={() => endGame()}
           >
             OK !
+          </Button>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={state.won}
+        className="modal mymodal"
+        overlayClassName="modal myoverlay"
+        ariaHideApp={false}
+      >
+        <div>
+          <p className="welcome container-text" style={{ marginTop: "0" }}>
+            Woohoo! <br />
+            Your Team Won!
+          </p>
+          <Button
+            className="login button"
+            // style={{ marginLeft: "210px" }}
+            onClick={() => endGame()}
+          >
+            Leave Game
+          </Button>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={state.lost}
+        className="modal mymodal"
+        overlayClassName="modal myoverlay"
+        ariaHideApp={false}
+      >
+        <div>
+          <p className="welcome container-text" style={{ marginTop: "0" }}>
+            Ooo! <br />
+            Your Team Lost!
+          </p>
+          <Button
+            className="login button"
+            // style={{ marginLeft: "100px" }}
+            onClick={() => endGame()}
+          >
+            Leave Game
           </Button>
         </div>
       </Modal>
