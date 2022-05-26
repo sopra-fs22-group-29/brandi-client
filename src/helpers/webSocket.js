@@ -194,13 +194,18 @@ export const connect = async (gameLink, state, setState) => {
               targetBallIndex = i;
             }
 
-            if(data.ballIdsEliminated !== null/*  && data.ballIdsEliminated.some(ball => ball === state.balls[i].id) */) {
-              for(let j=0; j<data.ballIdsEliminated.length; j++){
-                if(data.ballIdsEliminated[j] === state.balls[i].id){
-                  ballsToEliminate.push({"index": i, "newPosition": data.newPositions[j]});
+            if (
+              data.ballIdsEliminated !==
+              null /*  && data.ballIdsEliminated.some(ball => ball === state.balls[i].id) */
+            ) {
+              for (let j = 0; j < data.ballIdsEliminated.length; j++) {
+                if (data.ballIdsEliminated[j] === state.balls[i].id) {
+                  ballsToEliminate.push({
+                    index: i,
+                    newPosition: data.newPositions[j],
+                  });
                 }
               }
-              
             }
           }
 
@@ -217,7 +222,7 @@ export const connect = async (gameLink, state, setState) => {
           }
 
           // Moves with a SEVEN
-          if(ballsToEliminate.length > 0){
+          if (ballsToEliminate.length > 0) {
             for (const ball of ballsToEliminate) {
               let ballIndex = ball.index;
               const targetBallRef = state.balls[ballIndex].ballRef;
@@ -228,7 +233,7 @@ export const connect = async (gameLink, state, setState) => {
               ]);
 
               state.balls[ballIndex].position = ball.newPosition;
-              };
+            }
           }
           setStateAfterWaitForAnimation(state, setState);
         }
@@ -312,6 +317,21 @@ export const connect = async (gameLink, state, setState) => {
         function (response) {
           const data = JSON.parse(response.body);
           state.movePossible = data;
+          setStateAfterWaitForAnimation(state, setState);
+        }
+      );
+
+      stompClient.subscribe(
+        "/client/gameOver" + "-user" + sessionId,
+        function (response) {
+          const data = JSON.parse(response.body);
+          if (data) {
+            state.won = true;
+            state.lost = false;
+          } else {
+            state.won = false;
+            state.lost = true;
+          }
           setStateAfterWaitForAnimation(state, setState);
         }
       );
