@@ -41,7 +41,12 @@ export const Board = (props) => {
   return (
     <group ref={group} {...props} dispose={null}>
       <group position={[0, 8.16, 0]}>
-        <pointLight intensity={1} decay={2} rotation={[-Math.PI / 2, 0, 0]} />
+        <pointLight
+          castShadow
+          intensity={1}
+          decay={2}
+          rotation={[-Math.PI / 2, 0, 0]}
+        />
       </group>
 
       <group
@@ -58,14 +63,12 @@ export const Board = (props) => {
       </group>
 
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Cube.geometry}
         material={materials.Material}
         scale={[0.6, 0.01, 0.6]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle.geometry}
         material={nodes.Circle.material}
@@ -73,7 +76,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle001.geometry}
         material={nodes.Circle001.material}
@@ -81,7 +83,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle002.geometry}
         material={nodes.Circle002.material}
@@ -89,7 +90,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle003.geometry}
         material={nodes.Circle003.material}
@@ -97,7 +97,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle004.geometry}
         material={nodes.Circle004.material}
@@ -105,7 +104,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle005.geometry}
         material={nodes.Circle005.material}
@@ -113,7 +111,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle006.geometry}
         material={nodes.Circle006.material}
@@ -121,7 +118,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle007.geometry}
         material={nodes.Circle007.material}
@@ -129,7 +125,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle008.geometry}
         material={nodes.Circle008.material}
@@ -137,7 +132,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle009.geometry}
         material={nodes.Circle009.material}
@@ -146,7 +140,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle010.geometry}
         material={nodes.Circle010.material}
@@ -155,7 +148,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle011.geometry}
         material={nodes.Circle011.material}
@@ -164,7 +156,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle012.geometry}
         material={nodes.Circle012.material}
@@ -173,7 +164,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle013.geometry}
         material={nodes.Circle013.material}
@@ -182,7 +172,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle014.geometry}
         material={nodes.Circle014.material}
@@ -191,7 +180,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle015.geometry}
         material={nodes.Circle015.material}
@@ -200,7 +188,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle016.geometry}
         material={nodes.Circle016.material}
@@ -209,7 +196,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle017.geometry}
         material={nodes.Circle017.material}
@@ -218,7 +204,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle018.geometry}
         material={nodes.Circle018.material}
@@ -227,7 +212,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle019.geometry}
         material={nodes.Circle019.material}
@@ -236,7 +220,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle020.geometry}
         material={nodes.Circle020.material}
@@ -245,7 +228,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle021.geometry}
         material={nodes.Circle021.material}
@@ -254,7 +236,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle022.geometry}
         material={nodes.Circle022.material}
@@ -263,7 +244,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle023.geometry}
         material={nodes.Circle023.material}
@@ -272,7 +252,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle024.geometry}
         material={nodes.Circle024.material}
@@ -281,7 +260,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle025.geometry}
         material={nodes.Circle025.material}
@@ -290,7 +268,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle026.geometry}
         material={nodes.Circle026.material}
@@ -299,7 +276,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle027.geometry}
         material={nodes.Circle027.material}
@@ -308,7 +284,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle028.geometry}
         material={nodes.Circle028.material}
@@ -317,7 +292,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle029.geometry}
         material={nodes.Circle029.material}
@@ -326,7 +300,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle030.geometry}
         material={nodes.Circle030.material}
@@ -335,7 +308,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle031.geometry}
         material={nodes.Circle031.material}
@@ -344,7 +316,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle032.geometry}
         material={nodes.Circle032.material}
@@ -353,7 +324,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle033.geometry}
         material={nodes.Circle033.material}
@@ -362,7 +332,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle034.geometry}
         material={nodes.Circle034.material}
@@ -371,7 +340,6 @@ export const Board = (props) => {
         scale={[0.03, 1, 0.03]}
       />
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Circle035.geometry}
         material={nodes.Circle035.material}

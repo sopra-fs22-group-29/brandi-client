@@ -70,6 +70,7 @@ export const MarbleGeneral = forwardRef((props, ref) => {
           setHover(true);
         }
       }}
+      castShadow
       onPointerOut={(event) => {
         if (props.isHighlighted) {
           setHover(false);
@@ -89,6 +90,7 @@ export const MarbleGeneral = forwardRef((props, ref) => {
         geometry={nodes.Sphere.geometry}
         material={getMaterial(materials, props.color, hover)}
         scale={active ? 0.1 : 0.09}
+        castShadow
       >
         {props.selectState !== "card" && (hover || active) && (
           <meshPhysicalMaterial />
