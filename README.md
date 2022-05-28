@@ -40,10 +40,10 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 TO ADD!
 
 ## Userflow 
-After registering you get directed to the dashboard. Here you can create a new game or join a game using an existing game code. In the "Halted Games" section you will see all your unfinished games and will be able to rejoin them.
-<img width="720" alt="image" src="https://user-images.githubusercontent.com/91155540/170496155-9d908738-4c17-487b-8ecc-7b82824dbde1.png">
-You create a new game and give it the name "NewGame". You can copy the link to your clipboard and share it with your friends such that they can join your game.
-<img width="720" alt="image" src="https://user-images.githubusercontent.com/91155540/170496634-605c6d53-fce3-4c17-bac6-b5e2d6f29ff4.png">
+After registering you get directed to the dashboard. Here you can create a new game or join a game using an existing game code. In the "Halted Games" section you will see all your unfinished games and will be able to rejoin them.<br>
+<img width="720" alt="image" src="https://user-images.githubusercontent.com/91155540/170496155-9d908738-4c17-487b-8ecc-7b82824dbde1.png"><br>
+You create a new game and give it the name "NewGame". You can copy the link to your clipboard and share it with your friends such that they can join your game. <br>
+<img width="720" alt="image" src="https://user-images.githubusercontent.com/91155540/170496634-605c6d53-fce3-4c17-bac6-b5e2d6f29ff4.png"><br>
 You join the "NewGame" game and wait until all other players joined. At the top left you can see which color you got assigned and who your partner is. When all players have joined you can do your first move. To do so click on the card you want to play, all marbles which can be moved by this card pop up. Click on one of the marbles and the field(s) you can move to get highlited. Choose a field and the marble moves to the field. Then it's the next players turn.<br>
 ![Gif_FirstMove](https://user-images.githubusercontent.com/91155540/170503391-ee1b3e65-710d-46f8-93e8-42430c86aeda.gif)
 <br>
