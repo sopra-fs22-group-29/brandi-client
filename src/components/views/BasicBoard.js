@@ -183,32 +183,33 @@ const BasicBoard = (props) => {
         className="board icons"
         onClick={() => setShowModal(true)}
       />
+
       <p
         className={className}
         onMouseEnter={() => doHover()}
         onMouseLeave={() => undoHover()}
       >
         Rules
-      </p>
-      {ruleTypeShow ? (
-        <BaseContainer
-          onMouseEnter={() => doHover()}
-          onMouseLeave={() => undoHover()}
-          className="board container rules"
-        >
-          <Button
-            onClick={() => openCardRules()}
-            className="board button rules"
+        {ruleTypeShow ? (
+          <BaseContainer
+            onMouseEnter={() => doHover()}
+            onMouseLeave={() => undoHover()}
+            className="board container rules"
           >
-            Cards only
-          </Button>
-          <Button onClick={() => openRules()} className="board button rules">
-            Complete Rules
-          </Button>
-        </BaseContainer>
-      ) : (
-        ""
-      )}
+            <Button
+              onClick={() => openCardRules()}
+              className="board button rules"
+            >
+              Cards only
+            </Button>
+            <Button onClick={() => openRules()} className="board button rules">
+              Complete Rules
+            </Button>
+          </BaseContainer>
+        ) : (
+          ""
+        )}
+      </p>
 
       <Modal
         isOpen={showModal}
