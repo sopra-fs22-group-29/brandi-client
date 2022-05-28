@@ -37,7 +37,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 
 ### Release
-TO ADD!
+The project is automatically deployed after every change to the master branch, therefore we implemented a requirement, such that each change must first be reviewed and approved by at least one other developer.
 
 ## Userflow 
 After registering you get directed to the dashboard. Here you can create a new game or join a game using an existing game code. In the "Halted Games" section you will see all your unfinished games and will be able to rejoin them.<br>
