@@ -12,7 +12,7 @@ export const Card = (props) => {
 
   const { scale } = useSpring({
     scale:
-      props.cardIndex == props.selectedIndex
+      props.cardIndex === props.selectedIndex
         ? [0.0653125, 0.4, 0.095]
         : hover
         ? [0.0570625, 0.3, 0.083]
